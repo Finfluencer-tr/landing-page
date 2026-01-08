@@ -15,6 +15,34 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Finfluencer - Yapay Zeka Destekli Finansal Analiz",
   description: "Finansal influencerların başarı oranlarını takip edin ve yapay zeka destekli analizlerle yatırımlarınıza yön verin.",
+  icons: {
+    icon: "/favicon/favicon.ico",
+    shortcut: "/favicon/favicon-16x16.png",
+    apple: "/favicon/apple-touch-icon.png",
+  },
+  manifest: "/favicon/site.webmanifest",
+  openGraph: {
+    title: "Finfluencer - Yapay Zeka Destekli Finansal Analiz",
+    description: "Finansal influencerların başarı oranlarını takip edin.",
+    url: "https://finfluencer.app", // Replace with actual domain if known, or keep generic
+    siteName: "Finfluencer",
+    images: [
+      {
+        url: "/favicon/android-chrome-512x512.png",
+        width: 512,
+        height: 512,
+        alt: "Finfluencer Logo",
+      },
+    ],
+    locale: "tr_TR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Finfluencer - Yapay Zeka Destekli Finansal Analiz",
+    description: "Finansal influencerların başarı oranlarını takip edin.",
+    images: ["/favicon/android-chrome-512x512.png"],
+  },
 };
 
 import { LanguageProvider } from "@/context/LanguageContext";
