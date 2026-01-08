@@ -3,6 +3,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/context/LanguageContext";
+import Link from "next/link";
 
 export const Hero = () => {
     const { t } = useLanguage();
@@ -44,9 +45,9 @@ export const Hero = () => {
                         transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
                         className="mt-8 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
                     >
-                        <button className="px-8 py-3 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold transition-all shadow-[0_0_20px_rgba(16,185,129,0.5)] hover:shadow-[0_0_30px_rgba(16,185,129,0.7)]">
+                        <Link href="/leaderboard" className="px-8 py-3 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold transition-all shadow-[0_0_20px_rgba(16,185,129,0.5)] hover:shadow-[0_0_30px_rgba(16,185,129,0.7)]">
                             {t.hero.cta_primary}
-                        </button>
+                        </Link>
                         <button
                             onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
                             className="px-8 py-3 rounded-full glass text-white hover:bg-white/10 transition-all cursor-pointer"

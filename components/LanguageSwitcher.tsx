@@ -13,12 +13,16 @@ const languages = [
     { code: "ar", label: "العربية", flag: "🇸🇦" },
 ] as const;
 
-export const LanguageSwitcher = () => {
+interface LanguageSwitcherProps {
+    className?: string;
+}
+
+export const LanguageSwitcher = ({ className }: LanguageSwitcherProps) => {
     const { language, setLanguage } = useLanguage();
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <div className="fixed top-6 right-6 z-50">
+        <div className={cn("z-50", className)}>
             <div className="relative">
                 <button
                     onClick={() => setIsOpen(!isOpen)}

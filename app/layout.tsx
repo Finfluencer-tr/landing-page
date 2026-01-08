@@ -47,6 +47,7 @@ export const metadata: Metadata = {
 };
 
 import { LanguageProvider } from "@/context/LanguageContext";
+import { AuthProvider } from "@/context/AuthContext";
 import { PageTitleHandler } from "@/components/PageTitleHandler";
 
 export default function RootLayout({
@@ -60,8 +61,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <LanguageProvider>
-          <PageTitleHandler />
-          {children}
+          <AuthProvider>
+            <PageTitleHandler />
+            {children}
+          </AuthProvider>
         </LanguageProvider>
       </body>
     </html>

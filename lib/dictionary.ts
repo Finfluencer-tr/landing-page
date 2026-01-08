@@ -76,6 +76,53 @@ export const translations = {
     },
     footer: {
       rights: "Graduation Project © 2025 Istanbul Technical University"
+    },
+    leaderboard: {
+      title: "Top Financial Minds",
+      subtitle: "We track, verify, and rank thousands of financial predictions every day. See who really knows the market.",
+      search_placeholder: "Search influencers or assets (e.g. BTC)...",
+      filters: {
+        all: "All",
+        twitter: "X (Twitter)",
+        instagram: "Instagram",
+        telegram: "Telegram",
+        soon: "SOON"
+      },
+      columns: {
+        rank: "Rank",
+        influencer: "Influencer",
+        score: "Score",
+        trend: "7D Trend",
+        asset: "Top Asset",
+        prediction: "Prediction"
+      },
+      empty_state: {
+        title: "No results found",
+        desc: "Try adjusting your filters or search term."
+      },
+      pro: "PRO",
+      last_days: "Last 7 Days",
+      latest: "Latest",
+      hit: "HIT ✅",
+      miss: "MISS ❌"
+    },
+    auth: {
+      join_beta: "Join Beta",
+      welcome_back: "Welcome Back",
+      start_tracking: "Start tracking the best predictors today.",
+      sign_in_text: "Sign in to join the conversation",
+      full_name: "Full Name",
+      email: "Email Address",
+      password: "Password",
+      confirm_password: "Confirm Password",
+      terms: "I agree to the Terms and Privacy Policy.",
+      create_account: "Create Account",
+      sign_in: "Sign In",
+      continue_with: "Or continue with",
+      already_have_account: "Already have an account?",
+      dont_have_account: "Don't have an account?",
+      register: "Register",
+      processing: "Processing..."
     }
   },
   tr: {
@@ -153,6 +200,53 @@ export const translations = {
     },
     footer: {
       rights: "Bitirme Projesi © 2025 İstanbul Teknik Üniversitesi"
+    },
+    leaderboard: {
+      title: "En İyi Finansal Zihinler",
+      subtitle: "Her gün binlerce finansal tahmini takip ediyor, doğruluyor ve sıralıyoruz. Piyasayı gerçekten kimin bildiğini görün.",
+      search_placeholder: "Influencer veya varlık ara (örn. BTC)...",
+      filters: {
+        all: "Tümü",
+        twitter: "X (Twitter)",
+        instagram: "Instagram",
+        telegram: "Telegram",
+        soon: "YAKINDA"
+      },
+      columns: {
+        rank: "Sıra",
+        influencer: "Influencer",
+        score: "Skor",
+        trend: "7G Trend",
+        asset: "En İyi Varlık",
+        prediction: "Tahmin"
+      },
+      empty_state: {
+        title: "Sonuç bulunamadı",
+        desc: "Filtrelerinizi veya arama teriminizi değiştirmeyi deneyin."
+      },
+      pro: "PRO",
+      last_days: "Son 7 Gün",
+      latest: "Son",
+      hit: "TUTTU ✅",
+      miss: "TUTMADI ❌"
+    },
+    auth: {
+      join_beta: "Beta'ya Katıl",
+      welcome_back: "Tekrar Hoşgeldin",
+      start_tracking: "En iyi tahmincileri bugün takip etmeye başla.",
+      sign_in_text: "Sohbete katılmak için giriş yap",
+      full_name: "Ad Soyad",
+      email: "E-posta Adresi",
+      password: "Şifre",
+      confirm_password: "Şifreyi Onayla",
+      terms: "Şartlar ve Gizlilik Politikasını kabul ediyorum.",
+      create_account: "Hesap Oluştur",
+      sign_in: "Giriş Yap",
+      continue_with: "Veya şununla devam et",
+      already_have_account: "Zaten hesabın var mı?",
+      dont_have_account: "Hesabın yok mu?",
+      register: "Kayıt Ol",
+      processing: "İşleniyor..."
     }
   },
   zh: {
@@ -230,6 +324,53 @@ export const translations = {
     },
     footer: {
       rights: "毕业设计 © 2025 伊斯坦布尔技术大学"
+    },
+    leaderboard: {
+      title: "顶级金融头脑",
+      subtitle: "我们每天追踪、验证和排名数千个金融预测。看看谁真正了解市场。",
+      search_placeholder: "搜索影响者或资产（例如 BTC）...",
+      filters: {
+        all: "全部",
+        twitter: "X (推特)",
+        instagram: "Instagram",
+        telegram: "电报",
+        soon: "即将来临"
+      },
+      columns: {
+        rank: "排名",
+        influencer: "影响者",
+        score: "评分",
+        trend: "7天趋势",
+        asset: "顶级资产",
+        prediction: "预测"
+      },
+      empty_state: {
+        title: "未找到结果",
+        desc: "尝试调整您的过滤器或搜索词。"
+      },
+      pro: "专业",
+      last_days: "过去7天",
+      latest: "最新",
+      hit: "命中 ✅",
+      miss: "未中 ❌"
+    },
+    auth: {
+      join_beta: "加入测试版",
+      welcome_back: "欢迎回来",
+      start_tracking: "立即开始追踪最佳预测者。",
+      sign_in_text: "登录以加入对话",
+      full_name: "全名",
+      email: "电子邮件地址",
+      password: "密码",
+      confirm_password: "确认密码",
+      terms: "我同意条款和隐私政策。",
+      create_account: "创建账户",
+      sign_in: "登录",
+      continue_with: "或继续使用",
+      already_have_account: "已经有账户了吗？",
+      dont_have_account: "还没有账户？",
+      register: "注册",
+      processing: "处理中..."
     }
   },
   ar: {
@@ -307,6 +448,53 @@ export const translations = {
     },
     footer: {
       rights: "مشروع التخرج © 2025 جامعة إسطنبول التقنية"
+    },
+    leaderboard: {
+      title: "أفضل العقول المالية",
+      subtitle: "نحن نتتبع، نتحقق، ونصنف آلاف التوقعات المالية كل يوم. انظر من يعرف السوق حقًا.",
+      search_placeholder: "ابحث عن المؤثرين أو الأصول (مثل BTC)...",
+      filters: {
+        all: "الكل",
+        twitter: "X (Twitter)",
+        instagram: "Instagram",
+        telegram: "Telegram",
+        soon: "قريبًا"
+      },
+      columns: {
+        rank: "الرتبة",
+        influencer: "المؤثر",
+        score: "النتيجة",
+        trend: "اتجاه 7 أيام",
+        asset: "أفضل أصل",
+        prediction: "تنبؤ"
+      },
+      empty_state: {
+        title: "لا توجد نتائج",
+        desc: "حاول تعديل الفلاتر أو مصطلحات البحث."
+      },
+      pro: "محترف",
+      last_days: "آخر 7 أيام",
+      latest: "الأحدث",
+      hit: "إصابة ✅",
+      miss: "فشل ❌"
+    },
+    auth: {
+      join_beta: "انضم إلى النسخة التجريبية",
+      welcome_back: "مرحبًا بعودتك",
+      start_tracking: "ابدأ في تتبع أفضل المتنبئين اليوم.",
+      sign_in_text: "سجل الدخول للانضمام إلى المحادثة",
+      full_name: "الاسم الكامل",
+      email: "البريد الإلكتروني",
+      password: "كلمة المرور",
+      confirm_password: "تأكيد كلمة المرور",
+      terms: "أوافق على الشروط وسياسة الخصوصية.",
+      create_account: "إنشاء حساب",
+      sign_in: "تسجيل الدخول",
+      continue_with: "أو الاستمرار مع",
+      already_have_account: "هل لديك حساب بالفعل؟",
+      dont_have_account: "ليس لديك حساب؟",
+      register: "تسجيل",
+      processing: "جاري المعالجة..."
     }
   }
 };
