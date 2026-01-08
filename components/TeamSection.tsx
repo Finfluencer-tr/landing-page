@@ -4,20 +4,11 @@ import React from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { IconBrandLinkedin, IconBrandGithub, IconWorld } from "@tabler/icons-react";
-
-type Language = "en" | "tr";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface TeamMember {
     id: number;
     name: string;
-    role: {
-        en: string;
-        tr: string;
-    };
-    affiliation: {
-        en: string;
-        tr: string;
-    };
     image: string;
     gradient: string; // Tailwind classes for gradient
     glowColor: string; // Hex for shadow
@@ -32,8 +23,6 @@ const teamData: TeamMember[] = [
     {
         id: 1,
         name: "İbrahim Enes Duran",
-        role: { en: "Co-Founder", tr: "Kurucu Ortak" },
-        affiliation: { en: "Istanbul Technical University", tr: "İstanbul Teknik Üniversitesi" },
         image: "https://api.dicebear.com/7.x/avataaars/svg?seed=EnesDuran&gender=male&topChance=85&facialHairChance=40",
         gradient: "from-cyan-500 to-blue-500",
         glowColor: "#06b6d4",
@@ -41,30 +30,15 @@ const teamData: TeamMember[] = [
     {
         id: 2,
         name: "Baran Adanır",
-        role: { en: "Co-Founder", tr: "Kurucu Ortak" },
-        affiliation: { en: "Istanbul Technical University", tr: "İstanbul Teknik Üniversitesi" },
         image: "https://api.dicebear.com/7.x/avataaars/svg?seed=BaranAdanir&gender=male&topChance=85&facialHairChance=40",
         gradient: "from-purple-500 to-pink-500",
         glowColor: "#d946ef",
     },
 ];
 
-const dictionary = {
-    header: {
-        en: "Meet the Minds",
-        tr: "Ekiple Tanışın",
-    },
-    subheader: {
-        en: "The engineers behind the algorithms.",
-        tr: "Algoritmaların arkasındaki mühendisler.",
-    }
-};
+export const TeamSection = () => {
+    const { t } = useLanguage();
 
-interface TeamSectionProps {
-    lang?: Language;
-}
-
-export const TeamSection = ({ lang = "en" }: TeamSectionProps) => {
     return (
         <section className="relative w-full py-20 overflow-hidden bg-slate-950">
             {/* Background Ambience */}
@@ -82,7 +56,7 @@ export const TeamSection = ({ lang = "en" }: TeamSectionProps) => {
                         transition={{ duration: 0.6 }}
                         className="text-3xl md:text-5xl font-bold text-white mb-4"
                     >
-                        {dictionary.header[lang]}
+                        {t.team.header}
                     </motion.h2>
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
@@ -91,13 +65,13 @@ export const TeamSection = ({ lang = "en" }: TeamSectionProps) => {
                         transition={{ duration: 0.6, delay: 0.1 }}
                         className="text-neutral-400 text-lg"
                     >
-                        {dictionary.subheader[lang]}
+                        {t.team.subheader}
                     </motion.p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
                     {teamData.map((member, index) => (
-                        <Card key={member.id} member={member} lang={lang} index={index} />
+                        <Card key={member.id} member={member} index={index} role={t.team.role} university={t.team.university} />
                     ))}
                 </div>
             </div>
@@ -105,7 +79,7 @@ export const TeamSection = ({ lang = "en" }: TeamSectionProps) => {
     );
 };
 
-const Card = ({ member, lang, index }: { member: TeamMember; lang: Language; index: number }) => {
+const Card = ({ member, index, role, university }: { member: TeamMember; index: number; role: string; university: string }) => {
     return (
         <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -145,11 +119,11 @@ const Card = ({ member, lang, index }: { member: TeamMember; lang: Language; ind
 
                 <h3 className="text-2xl font-bold text-white mb-1">{member.name}</h3>
                 <p className={cn("text-transparent bg-clip-text bg-gradient-to-r font-medium mb-4", member.gradient)}>
-                    {member.role[lang]}
+                    {role}
                 </p>
 
                 <p className="text-neutral-400 text-sm mb-6">
-                    {member.affiliation[lang]}
+                    {university}
                 </p>
 
                 {/* Social Placeholders */}

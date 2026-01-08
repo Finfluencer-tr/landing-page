@@ -70,6 +70,10 @@ export const translations = {
       role: "Co-Founder",
       university: "Istanbul Technical University"
     },
+    metadata: {
+      title: "Finfluencer - AI Supported Financial Analysis",
+      focus_lost: "Miss you! 💔"
+    },
     footer: {
       rights: "Graduation Project © 2025 Istanbul Technical University"
     }
@@ -142,6 +146,10 @@ export const translations = {
       subheader: "Algoritmaların arkasındaki mühendisler.",
       role: "Kurucu Ortak",
       university: "İstanbul Teknik Üniversitesi"
+    },
+    metadata: {
+      title: "Finfluencer - Yapay Zeka Destekli Finansal Analiz",
+      focus_lost: "Seni özledik! 💔"
     },
     footer: {
       rights: "Bitirme Projesi © 2025 İstanbul Teknik Üniversitesi"
@@ -216,6 +224,10 @@ export const translations = {
       role: "联合创始人",
       university: "伊斯坦布尔技术大学"
     },
+    metadata: {
+      title: "Finfluencer - 人工智能支持的金融分析",
+      focus_lost: "想念你！💔"
+    },
     footer: {
       rights: "毕业设计 © 2025 伊斯坦布尔技术大学"
     }
@@ -288,6 +300,10 @@ export const translations = {
       subheader: "المهندسون وراء الخوارزميات.",
       role: "شريك مؤسس",
       university: "جامعة إسطنبول التقنية"
+    },
+    metadata: {
+      title: "Finfluencer - تحليل مالي مدعوم بالذكاء الاصطناعي",
+      focus_lost: "اشتقنا لك! 💔"
     },
     footer: {
       rights: "مشروع التخرج © 2025 جامعة إسطنبول التقنية"

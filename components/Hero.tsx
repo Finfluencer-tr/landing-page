@@ -18,7 +18,7 @@ export const Hero = () => {
             <div className="z-10 flex flex-col lg:flex-row items-center justify-between w-full max-w-7xl px-4 md:px-8">
 
                 {/* Text Content */}
-                <div className="flex-1 text-center lg:text-left mb-12 lg:mb-0">
+                <div className="flex-1 text-center lg:text-start mb-12 lg:mb-0">
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
