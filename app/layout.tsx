@@ -13,6 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://finfluencer.tr/"),
   title: "Finfluencer - Yapay Zeka Destekli Finansal Analiz",
   description: "Finansal influencerların başarı oranlarını takip edin ve yapay zeka destekli analizlerle yatırımlarınıza yön verin.",
   icons: {
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Finfluencer - Yapay Zeka Destekli Finansal Analiz",
     description: "Finansal influencerların başarı oranlarını takip edin.",
-    url: "https://finfluencer.app", // Replace with actual domain if known, or keep generic
+    url: "https://finfluencer.tr",
     siteName: "Finfluencer",
     images: [
       {
