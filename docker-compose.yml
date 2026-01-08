@@ -1,0 +1,9 @@
+services:
+  app:
+    container_name: landing-page
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      - NODE_ENV=production
