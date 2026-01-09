@@ -4,16 +4,30 @@ export const translations = {
   en: {
     hero: {
       title_start: "Trust Data,",
-      title_end: "Not Hype.",
-      subtitle: "We track thousands of predictions from X, Instagram, and Telegram using AI to reveal who really knows the market.",
+      title_end: "Not Hype",
+      subtitle: "The first AI-powered leaderboard ranking crypto influencers by the accuracy of their financial predictions.",
       cta_primary: "Explore Leaderboard",
       cta_secondary: "How it Works",
+      scroll: "Scroll",
       floating_card: {
-        accuracy: "Prediction Accuracy",
+        accuracy: "Accuracy",
         trust_score: "Trust Score",
         latest_signal: "Latest Signal:",
-        signal_text: "BTC to surpass $100k by Q4"
+        signal_text: "Bitcoin to $100k"
       }
+    },
+    influencer: {
+      trust_score: "Trust Score",
+      accuracy: "Accuracy",
+      signals: "Signals",
+      follow: "Follow",
+      following: "Following",
+      financial_insights: "Financial Insights",
+      all_activity: "All Activity",
+      no_posts: "No posts found for this category.",
+      back_to_leaderboard: "Back to Leaderboard",
+      not_found_title: "404",
+      not_found_desc: "Influencer not found in our database.",
     },
     bento: {
       header: "From Chaos to",
@@ -67,7 +81,8 @@ export const translations = {
     team: {
       header: "Meet the Minds",
       subheader: "The engineers behind the algorithms.",
-      role: "Co-Founder",
+      role: "Co-Founder & Full Stack Developer",
+      advisor_role: "Project Advisor & Visionary",
       university: "Istanbul Technical University"
     },
     metadata: {
@@ -127,17 +142,31 @@ export const translations = {
   },
   tr: {
     hero: {
-      title_start: "Veriye Güven,",
-      title_end: "Hype'a Değil.",
-      subtitle: "Kimin piyasayı gerçekten bildiğini ortaya çıkarmak için X, Instagram ve Telegram'dan binlerce tahmini yapay zeka ile izliyoruz.",
-      cta_primary: "Sıralamayı Keşfet",
+      title_start: "Sadece Veriye,",
+      title_end: "Güvenin",
+      subtitle: "Kripto fenomenlerini finansal tahminlerinin doğruluğuna göre sıralayan ilk yapay zeka destekli liderlik tablosu.",
+      cta_primary: "Sıralamayı Gör",
       cta_secondary: "Nasıl Çalışır",
+      scroll: "Kaydır",
       floating_card: {
-        accuracy: "Tahmin Doğruluğu",
+        accuracy: "Doğruluk",
         trust_score: "Güven Skoru",
         latest_signal: "Son Sinyal:",
-        signal_text: "BTC 4. Çeyrekte 100k$'ı geçecek"
-      }
+        signal_text: "Bitcoin 100k$ Hedef",
+      },
+    },
+    influencer: {
+      trust_score: "Güven Skoru",
+      accuracy: "Doğruluk",
+      signals: "Sinyaller",
+      follow: "Takip Et",
+      following: "Takip Ediliyor",
+      financial_insights: "Finansal Analizler",
+      all_activity: "Tüm Aktivite",
+      no_posts: "Bu kategoride gönderi bulunamadı.",
+      back_to_leaderboard: "Sıralamaya Dön",
+      not_found_title: "404",
+      not_found_desc: "Fenomen veritabanımızda bulunamadı.",
     },
     bento: {
       header: "Kaostan",
@@ -191,7 +220,8 @@ export const translations = {
     team: {
       header: "Ekiple Tanışın",
       subheader: "Algoritmaların arkasındaki mühendisler.",
-      role: "Kurucu Ortak",
+      role: "Kurucu Ortak & Full Stack Geliştirici",
+      advisor_role: "Proje Danışmanı & Yol Gösterici",
       university: "İstanbul Teknik Üniversitesi"
     },
     metadata: {
@@ -250,19 +280,33 @@ export const translations = {
     }
   },
   zh: {
-    hero: {
-      title_start: "相信数据，",
-      title_end: "而非炒作。",
-      subtitle: "我们要利用人工智能追踪来自 X、Instagram 和 Telegram 的数千个预测，以揭示谁真正了解市场。",
-      cta_primary: "探索排行榜",
-      cta_secondary: "工作原理",
-      floating_card: {
-        accuracy: "预测准确度",
-        trust_score: "信任评分",
-        latest_signal: "最新信号：",
-        signal_text: "BTC 将在第四季度突破 10 万美元"
-      }
-    },
+        hero: {
+            title_start: "相信数据，",
+            title_end: "拒绝炒作",
+            subtitle: "首个根据金融预测准确性对加密货币影响者进行排名的 AI 驱动排行榜。",
+            cta_primary: "探索排行榜",
+            cta_secondary: "工作原理",
+            scroll: "滚动",
+            floating_card: {
+                accuracy: "准确率",
+                trust_score: "信任评分",
+                latest_signal: "最新信号：",
+                signal_text: "比特币目标 $100k",
+            },
+        },
+        influencer: {
+            trust_score: "信任评分",
+            accuracy: "准确率",
+            signals: "信号",
+            follow: "关注",
+            following: "已关注",
+            financial_insights: "金融洞察",
+            all_activity: "所有活动",
+            no_posts: "没有找到此类别的帖子。",
+            back_to_leaderboard: "返回排行榜",
+            not_found_title: "404",
+            not_found_desc: "未在我们的数据库中找到该影响者。",
+        },
     bento: {
       header: "从混乱到",
       header_accent: "清晰",
@@ -315,7 +359,8 @@ export const translations = {
     team: {
       header: "遇见团队",
       subheader: "算法背后的工程师。",
-      role: "联合创始人",
+      role: "联合创始人 & 全栈开发者",
+      advisor_role: "项目顾问 & 远见者",
       university: "伊斯坦布尔技术大学"
     },
     metadata: {
@@ -380,12 +425,26 @@ export const translations = {
       subtitle: "نحن نتتبع آلاف التوقعات من X و Instagram و Telegram باستخدام الذكاء الاصطناعي للكشف عمن يعرف السوق حقًا.",
       cta_primary: "استكشف لوحة الصدارة",
       cta_secondary: "كيف يعمل",
+      scroll: "تمرير",
       floating_card: {
         accuracy: "دقة التنبؤ",
         trust_score: "درجة الثقة",
         latest_signal: "أحدث إشارة:",
         signal_text: "البتكوين ستتجاوز 100 ألف دولار بحلول الربع الرابع"
       }
+    },
+    influencer: {
+      trust_score: "درجة الثقة",
+      accuracy: "الدقة",
+      signals: "إشارات",
+      follow: "متابعة",
+      following: "تتابع",
+      financial_insights: "رؤى مالية",
+      all_activity: "كل النشاط",
+      no_posts: "لا توجد منشورات في هذه الفئة.",
+      back_to_leaderboard: "العودة إلى لوحة الصدارة",
+      not_found_title: "404",
+      not_found_desc: "لم يتم العثور على المؤثر في قاعدتنا.",
     },
     bento: {
       header: "من الفوضى إلى",
@@ -439,7 +498,8 @@ export const translations = {
     team: {
       header: "قابل الفريق",
       subheader: "المهندسون وراء الخوارزميات.",
-      role: "شريك مؤسس",
+      role: "مؤسس مشارك & مطور شامل",
+      advisor_role: "مستشار المشروع والرؤي",
       university: "جامعة إسطنبول التقنية"
     },
     metadata: {

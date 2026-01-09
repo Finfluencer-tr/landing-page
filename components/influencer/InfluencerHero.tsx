@@ -5,12 +5,14 @@ import { motion } from "framer-motion";
 import { IconBell, IconBellFilled, IconBrandInstagram, IconBrandTelegram, IconBrandTwitter, IconUserPlus } from "@tabler/icons-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface InfluencerHeroProps {
     influencer: Influencer;
 }
 
 export const InfluencerHero = ({ influencer }: InfluencerHeroProps) => {
+    const { t } = useLanguage();
     const [isFollowing, setIsFollowing] = useState(false);
     const [isAlarmActive, setIsAlarmActive] = useState(false);
 
@@ -60,7 +62,7 @@ export const InfluencerHero = ({ influencer }: InfluencerHeroProps) => {
                     {/* HUD Stats */}
                     <div className="flex flex-wrap justify-center md:justify-start gap-4 md:gap-8">
                         <div className="flex flex-col items-center md:items-start p-3 bg-slate-900/50 rounded-xl border border-white/5 min-w-[100px]">
-                            <span className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Trust Score</span>
+                            <span className="text-xs text-slate-500 uppercase tracking-wider font-semibold">{t.influencer.trust_score}</span>
                             <div className="flex items-end gap-1">
                                 <span className={cn("text-2xl font-bold", scoreColorClass.split(" ")[0])}>
                                     {influencer.credibilityScore}
@@ -70,7 +72,7 @@ export const InfluencerHero = ({ influencer }: InfluencerHeroProps) => {
                         </div>
 
                         <div className="flex flex-col items-center md:items-start p-3 bg-slate-900/50 rounded-xl border border-white/5 min-w-[100px]">
-                            <span className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Accuracy</span>
+                            <span className="text-xs text-slate-500 uppercase tracking-wider font-semibold">{t.influencer.accuracy}</span>
                             <div className="flex items-end gap-1">
                                 <span className="text-2xl font-bold text-white">
                                     {influencer.stats.accuracy}%
@@ -79,7 +81,7 @@ export const InfluencerHero = ({ influencer }: InfluencerHeroProps) => {
                         </div>
 
                         <div className="flex flex-col items-center md:items-start p-3 bg-slate-900/50 rounded-xl border border-white/5 min-w-[100px]">
-                            <span className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Signals</span>
+                            <span className="text-xs text-slate-500 uppercase tracking-wider font-semibold">{t.influencer.signals}</span>
                             <div className="flex items-end gap-1">
                                 <span className="text-2xl font-bold text-white">
                                     {influencer.stats.totalSignals}
@@ -101,7 +103,7 @@ export const InfluencerHero = ({ influencer }: InfluencerHeroProps) => {
                         )}
                     >
                         <IconUserPlus size={20} />
-                        {isFollowing ? "Following" : "Follow"}
+                        {isFollowing ? t.influencer.following : t.influencer.follow}
                     </button>
 
                     <button

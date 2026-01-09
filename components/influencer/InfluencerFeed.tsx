@@ -5,12 +5,14 @@ import { useState } from "react";
 import { PostCard } from "./PostCard";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface InfluencerFeedProps {
     influencer: Influencer;
 }
 
 export const InfluencerFeed = ({ influencer }: InfluencerFeedProps) => {
+    const { t } = useLanguage();
     const [activeTab, setActiveTab] = useState<"financial" | "all">("financial");
 
     const filteredPosts = influencer.posts.filter(post =>
@@ -28,7 +30,7 @@ export const InfluencerFeed = ({ influencer }: InfluencerFeedProps) => {
                         activeTab === "financial" ? "text-indigo-400" : "text-slate-500 hover:text-slate-300"
                     )}
                 >
-                    Financial Insights
+                    {t.influencer.financial_insights}
                     {activeTab === "financial" && (
                         <motion.div layoutId="activeTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-500" />
                     )}
@@ -40,7 +42,7 @@ export const InfluencerFeed = ({ influencer }: InfluencerFeedProps) => {
                         activeTab === "all" ? "text-indigo-400" : "text-slate-500 hover:text-slate-300"
                     )}
                 >
-                    All Activity
+                    {t.influencer.all_activity}
                     {activeTab === "all" && (
                         <motion.div layoutId="activeTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-500" />
                     )}
@@ -55,7 +57,7 @@ export const InfluencerFeed = ({ influencer }: InfluencerFeedProps) => {
                     ))
                 ) : (
                     <div className="text-center py-12 text-slate-500">
-                        <p>No posts found for this category.</p>
+                        <p>{t.influencer.no_posts}</p>
                     </div>
                 )}
             </div>

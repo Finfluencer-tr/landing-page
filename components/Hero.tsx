@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/context/LanguageContext";
 import Link from "next/link";
+import { IconChevronDown } from "@tabler/icons-react";
 
 export const Hero = () => {
     const { t } = useLanguage();
@@ -133,6 +134,23 @@ export const Hero = () => {
                     />
                 </div>
             </div>
+            {/* Scroll Indicator */}
+            <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1, duration: 1 }}
+                className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer z-20"
+                onClick={() => document.getElementById('bento-grid')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+                <span className="text-xs text-slate-500 uppercase tracking-widest font-medium">{t.hero.scroll}</span>
+                <motion.div
+                    animate={{ y: [0, 8, 0] }}
+                    transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+                    className="p-2 rounded-full border border-slate-800 bg-slate-900/50 backdrop-blur-sm text-slate-400"
+                >
+                    <IconChevronDown size={20} />
+                </motion.div>
+            </motion.div>
         </div>
     );
 };

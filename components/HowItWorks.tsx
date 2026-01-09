@@ -59,7 +59,7 @@ export const HowItWorks = () => {
             </div>
 
             {/* Tracing Beam Line (Central) */}
-            <div className="absolute left-4 md:left-1/2 top-40 bottom-40 w-1 md:-ml-0.5 bg-neutral-800 z-0">
+            <div className="absolute left-4 md:left-1/2 top-64 bottom-40 w-1 md:-ml-0.5 bg-neutral-800 z-0">
                 <motion.div
                     style={{ scaleY, transformOrigin: "top" }}
                     className="w-full h-full bg-gradient-to-b from-purple-500 via-blue-500 to-emerald-500"

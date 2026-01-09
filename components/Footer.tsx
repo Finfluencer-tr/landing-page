@@ -19,14 +19,6 @@ export const Footer = () => {
                 </div>
 
                 <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8 text-sm text-neutral-400">
-                    <a href="https://github.com/ibrahimenesduran" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
-                        İbrahim Enes Duran
-                    </a>
-                    <span className="hidden md:inline text-neutral-700">|</span>
-                    <a href="https://github.com/BaranAdanir" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
-                        Baran Adanır
-                    </a>
-
                     <a href="https://github.com/Finfluencer-tr" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors ml-4">
                         <IconBrandGithub size={20} />
                     </a>
