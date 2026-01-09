@@ -64,7 +64,7 @@ export const LeaderboardItem = ({ influencer, index, onCommentClick }: Leaderboa
             </div>
 
             {/* Influencer Info */}
-            <div className="col-span-12 md:col-span-4 flex items-center gap-4">
+            <div className="flex-1 flex items-center gap-4 min-w-[200px]">
                 <div className="relative">
                     <img
                         src={influencer.avatar}

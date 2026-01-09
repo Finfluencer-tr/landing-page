@@ -10,7 +10,7 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col justify-between">
-      <LanguageSwitcher />
+      <LanguageSwitcher className="fixed top-4 right-4" />
       <Hero />
       <BentoGrid />
       <HowItWorks />
