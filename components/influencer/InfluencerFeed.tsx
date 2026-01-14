@@ -1,7 +1,7 @@
 "use client";
 
-import { DetailedInfluencer, InfluencerTweet, fetchInfluencerTweets } from "@/lib/api";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { DetailedInfluencer, InfluencerTweet, fetchInfluencerTweets, getMediaUrl } from "@/lib/api";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { PostCard } from "./PostCard";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
@@ -23,6 +23,11 @@ export const InfluencerFeed = ({ influencer }: InfluencerFeedProps) => {
     const isLoadingRef = useRef(false);
     const hasMoreRef = useRef(true);
     const observer = useRef<IntersectionObserver | null>(null);
+
+    // Cache the avatar URL to prevent redundant requests
+    const cachedAvatarUrl = useMemo(() => {
+        return getMediaUrl(influencer.profile.avatar);
+    }, [influencer.profile.avatar]);
 
     const loadTweets = useCallback(async (pageNum: number, isInitial = false) => {
         if (isLoadingRef.current) return;
@@ -130,7 +135,7 @@ export const InfluencerFeed = ({ influencer }: InfluencerFeedProps) => {
                             exit={{ opacity: 0, scale: 0.95 }}
                             transition={{ duration: 0.3 }}
                         >
-                            <PostCard tweet={tweet} authorAvatar={influencer.profile.avatar} />
+                            <PostCard tweet={tweet} authorAvatar={cachedAvatarUrl} />
                         </motion.div>
                     ))}
                 </AnimatePresence>

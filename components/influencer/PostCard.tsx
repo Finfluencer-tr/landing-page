@@ -72,7 +72,7 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
             {/* Author Info */}
             <div className="flex items-center gap-3 mb-4">
                 <InfluencerImage
-                    src={getMediaUrl(authorAvatar || tweet.author.avatar)}
+                    src={authorAvatar || getMediaUrl(tweet.author.avatar)}
                     alt={tweet.author.username}
                     className="w-10 h-10 rounded-full border border-slate-800"
                 />
