@@ -110,6 +110,13 @@ export interface TweetMetrics {
   views: number;
 }
 
+export interface AnalysisEntity {
+  symbol: string;
+  asset_type: string;
+  sentiment: "BULLISH" | "BEARISH" | "NEUTRAL";
+  score: number;
+}
+
 export interface InfluencerTweet {
   id: string;
   text: string;
@@ -118,7 +125,7 @@ export interface InfluencerTweet {
   metrics: TweetMetrics;
   media?: TweetMedia[];
   analysis: {
-    entities: any[];
+    entities: AnalysisEntity[];
     sentiment?: "Bullish" | "Bearish" | "Neutral";
     asset?: string;
   };
@@ -140,7 +147,14 @@ export interface InfluencerTweetsResponse {
 export const getMediaUrl = (key: string): string => {
   if (!key) return "";
   if (key.startsWith("http") || key.startsWith("data:")) return key;
+  
   const normalizedKey = key.startsWith("/") ? key : `/${key}`;
+  
+  // Per user request: if it starts with media/, use get-media
+  if (key.startsWith("media/")) {
+    return `${BASE_URL}/get-media?key=${normalizedKey}`;
+  }
+  
   return `${BASE_URL}/media?key=${normalizedKey}`;
 };
 
@@ -196,7 +210,7 @@ const mapApiInfluencerToInfluencer = (apiInf: ApiInfluencer): Influencer => {
       icon: getAssetIcon(apiInf.top_asset),
     },
 
-    avatar: apiInf.avatar ? `${BASE_URL}/media?key=/${apiInf.avatar}` : `https://api.dicebear.com/7.x/avataaars/svg?seed=${apiInf.username}`,
+    avatar: apiInf.avatar ? getMediaUrl(apiInf.avatar) : `https://api.dicebear.com/7.x/avataaars/svg?seed=${apiInf.username}`,
     platform: "twitter", // Default
     lastPrediction: (apiInf.latest_prediction?.toLowerCase().includes("hit") ? "hit" : "miss") as "hit" | "miss", // Heuristic
     followers: formatFollowers(apiInf.followers),
@@ -276,8 +290,8 @@ export const fetchInfluencerTweets = async (
       page: page.toString(),
       limit: limit.toString(),
     });
-    if (isFinancial !== undefined) {
-      queryParams.append("is_financial", isFinancial.toString());
+    if (isFinancial === true) {
+      queryParams.append("is_financial", "true");
     }
 
     const res = await fetch(`${BASE_URL}/influencers/${username}/tweets?${queryParams.toString()}`);

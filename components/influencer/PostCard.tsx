@@ -13,6 +13,7 @@ import {
 import { InfluencerImage } from "../InfluencerImage";
 import { useState } from "react";
 import { MediaModal } from "./MediaModal";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface PostCardProps {
     tweet: InfluencerTweet;
@@ -112,25 +113,71 @@ export const PostCard = ({ tweet }: PostCardProps) => {
             {/* AI Analysis Overlay for Financial Tweets */}
             {tweet.is_financial && tweet.analysis && (
                 <div className="mb-4 p-4 rounded-xl bg-indigo-500/5 border border-indigo-500/10">
-                    <div className="flex items-center justify-between mb-2">
-                        <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">AI Analysis</span>
-                        {tweet.analysis.sentiment && (
-                            <div className={cn(
-                                "flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold border",
-                                tweet.analysis.sentiment === "Bullish"
-                                    ? "bg-emerald-950/50 text-emerald-400 border-emerald-900/50"
-                                    : tweet.analysis.sentiment === "Bearish"
-                                        ? "bg-rose-950/50 text-rose-400 border-rose-900/50"
-                                        : "bg-slate-800 text-slate-400 border-slate-700"
-                            )}>
-                                {tweet.analysis.sentiment === "Bullish" ? <IconTrendingUp size={12} /> : tweet.analysis.sentiment === "Bearish" ? <IconTrendingDown size={12} /> : null}
-                                {tweet.analysis.sentiment}
-                            </div>
-                        )}
+                    <div className="flex items-center justify-between mb-3 pb-2 border-b border-indigo-500/10">
+                        <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">AI Financial Analysis</span>
                     </div>
-                    {tweet.analysis.asset && (
-                        <div className="text-sm font-medium text-slate-300">
-                            Projection for <span className="text-indigo-400 font-bold">${tweet.analysis.asset}</span>
+
+                    {tweet.analysis.entities && tweet.analysis.entities.length > 0 ? (
+                        <div className="space-y-3">
+                            {tweet.analysis.entities.map((entity, idx) => {
+                                const sentiment = entity.sentiment.toUpperCase();
+                                return (
+                                    <div key={idx} className="flex flex-col gap-1.5">
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-sm font-bold text-white">${entity.symbol}</span>
+                                                <div className={cn(
+                                                    "flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-bold border",
+                                                    sentiment === "BULLISH"
+                                                        ? "bg-emerald-950/50 text-emerald-400 border-emerald-900/50"
+                                                        : sentiment === "BEARISH"
+                                                            ? "bg-rose-950/50 text-rose-400 border-rose-900/50"
+                                                            : "bg-slate-800 text-slate-400 border-slate-700"
+                                                )}>
+                                                    {sentiment === "BULLISH" ? <IconTrendingUp size={10} /> : sentiment === "BEARISH" ? <IconTrendingDown size={10} /> : null}
+                                                    {sentiment}
+                                                </div>
+                                            </div>
+                                            <span className="text-[10px] font-medium text-slate-500">Confidence: {entity.score}%</span>
+                                        </div>
+                                        {/* Confidence Score Bar */}
+                                        <div className="h-1 w-full bg-slate-800 rounded-full overflow-hidden">
+                                            <motion.div
+                                                initial={{ width: 0 }}
+                                                animate={{ width: `${entity.score}%` }}
+                                                className={cn(
+                                                    "h-full",
+                                                    sentiment === "BULLISH" ? "bg-emerald-500" : sentiment === "BEARISH" ? "bg-rose-500" : "bg-slate-500"
+                                                )}
+                                            />
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    ) : (
+                        /* Fallback for legacy structure */
+                        <div>
+                            <div className="flex items-center justify-between mb-2">
+                                {tweet.analysis.sentiment && (
+                                    <div className={cn(
+                                        "flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold border",
+                                        tweet.analysis.sentiment === "Bullish"
+                                            ? "bg-emerald-950/50 text-emerald-400 border-emerald-900/50"
+                                            : tweet.analysis.sentiment === "Bearish"
+                                                ? "bg-rose-950/50 text-rose-400 border-rose-900/50"
+                                                : "bg-slate-800 text-slate-400 border-slate-700"
+                                    )}>
+                                        {tweet.analysis.sentiment === "Bullish" ? <IconTrendingUp size={12} /> : tweet.analysis.sentiment === "Bearish" ? <IconTrendingDown size={12} /> : null}
+                                        {tweet.analysis.sentiment}
+                                    </div>
+                                )}
+                            </div>
+                            {tweet.analysis.asset && (
+                                <div className="text-sm font-medium text-slate-300">
+                                    Projection for <span className="text-indigo-400 font-bold">${tweet.analysis.asset}</span>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
