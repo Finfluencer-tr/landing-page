@@ -32,6 +32,9 @@ export const translations = {
       financial_count: "Financial Analysis",
       avg_performance: "Avg. Performance",
       posts_coming_soon: "Analysis and Tweets Coming Soon",
+      followers_label: "Followers",
+      following_label: "Following",
+      rank_label: "Rank",
     },
     bento: {
       header: "From Chaos to",
@@ -142,6 +145,12 @@ export const translations = {
       dont_have_account: "Don't have an account?",
       register: "Register",
       processing: "Processing..."
+    },
+    error404: {
+      title: "Lost in the Signal?",
+      subtitle: "The page you are looking for has been swallowed by market volatility.",
+      go_back: "Go Back Now",
+      redirecting: "Redirecting in {seconds} seconds...",
     }
   },
   tr: {
@@ -175,6 +184,9 @@ export const translations = {
       financial_count: "Finansal Analiz",
       avg_performance: "Ort. Performans",
       posts_coming_soon: "Analizler ve Tweetler Yakında",
+      followers_label: "Takipçi",
+      following_label: "Takip Edilen",
+      rank_label: "Sıra",
     },
     bento: {
       header: "Kaostan",
@@ -285,6 +297,12 @@ export const translations = {
       dont_have_account: "Hesabın yok mu?",
       register: "Kayıt Ol",
       processing: "İşleniyor..."
+    },
+    error404: {
+      title: "Sinyal Mi Kayboldu?",
+      subtitle: "Aradığınız sayfa piyasa oynaklığına kurban gitmiş olabilir.",
+      go_back: "Hemen Geri Dön",
+      redirecting: "{seconds} saniye içinde yönlendiriliyorsunuz...",
     }
   },
   zh: {
@@ -312,8 +330,14 @@ export const translations = {
             all_activity: "所有活动",
             no_posts: "没有找到此类别的帖子。",
             back_to_leaderboard: "返回排行榜",
-            not_found_title: "404",
             not_found_desc: "未在我们的数据库中找到该影响者。",
+            total_analyzed: "总分析量",
+            financial_count: "金融分析",
+            avg_performance: "平均表现",
+            posts_coming_soon: "分析和推文即將推出",
+            followers_label: "关注者",
+            following_label: "关注中",
+            rank_label: "排名",
         },
     bento: {
       header: "从混乱到",
@@ -424,6 +448,12 @@ export const translations = {
       dont_have_account: "还没有账户？",
       register: "注册",
       processing: "处理中..."
+    },
+    error404: {
+      title: "信号丢失？",
+      subtitle: "您正在寻找的页面已被市场波动吞噬。",
+      go_back: "现在返回",
+      redirecting: "将在 {seconds} 秒内重定向...",
     }
   },
   ar: {
@@ -453,6 +483,13 @@ export const translations = {
       back_to_leaderboard: "العودة إلى لوحة الصدارة",
       not_found_title: "404",
       not_found_desc: "لم يتم العثور على المؤثر في قاعدتنا.",
+      total_analyzed: "إجمالي التحليلات",
+      financial_count: "التحليل المالي",
+      avg_performance: "متوسط الأداء",
+      posts_coming_soon: "التحليلات والتغريدات قريباً",
+      followers_label: "متابع",
+      following_label: "يتابع",
+      rank_label: "الترتيب",
     },
     bento: {
       header: "من الفوضى إلى",
@@ -563,6 +600,12 @@ export const translations = {
       dont_have_account: "ليس لديك حساب؟",
       register: "تسجيل",
       processing: "جاري المعالجة..."
+    },
+    error404: {
+      title: "هل فقدت الإشارة؟",
+      subtitle: "الصفحة التي تبحث عنها ابتلعها تقلب السوق.",
+      go_back: "العودة الآن",
+      redirecting: "سيتم إعادة توجيهك خلال {seconds} ثوانٍ...",
     }
   }
 };

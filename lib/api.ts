@@ -149,7 +149,16 @@ export const fetchInfluencerDetails = async (username: string): Promise<Detailed
         if (res.status === 404) return null;
         throw new Error(`API error: ${res.status}`);
     }
-    const data: DetailedInfluencer = await res.json();
+    const data = await res.json();
+    
+    // Handle { success: false, message: "..." } or similar
+    if (data.success === false) {
+      console.error("API returned success: false", data.message);
+      return null;
+    }
+
+    // If the data is nested under a key, handle it (though current mock shows direct)
+    // Based on previous screenshots, it was direct.
     return data;
   } catch (error) {
     console.error("Failed to fetch influencer details:", error);

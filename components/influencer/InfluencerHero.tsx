@@ -144,11 +144,11 @@ export const InfluencerHero = ({ influencer }: InfluencerHeroProps) => {
                         <div className="flex gap-6 pt-2">
                             <div className="flex items-center gap-2">
                                 <span className="text-white font-bold">{profile.followers.toLocaleString()}</span>
-                                <span className="text-slate-500 uppercase tracking-tighter text-xs font-bold">Followers</span>
+                                <span className="text-slate-500 uppercase tracking-tighter text-xs font-bold">{t.influencer.followers_label}</span>
                             </div>
                             <div className="flex items-center gap-2">
                                 <span className="text-white font-bold">{profile.following.toLocaleString()}</span>
-                                <span className="text-slate-500 uppercase tracking-tighter text-xs font-bold">Following</span>
+                                <span className="text-slate-500 uppercase tracking-tighter text-xs font-bold">{t.influencer.following_label}</span>
                             </div>
                         </div>
                     </div>
@@ -157,7 +157,7 @@ export const InfluencerHero = ({ influencer }: InfluencerHeroProps) => {
                     <div className={cn("lg:w-72 p-6 rounded-3xl border text-center space-y-3 shadow-xl", scoreStyle)}>
                         <div className="text-sm font-black uppercase tracking-[0.2em] opacity-80">{t.influencer.trust_score}</div>
                         <div className="text-6xl font-black tracking-tight">{metrics.score}</div>
-                        <div className="text-xs font-bold opacity-60">RANK #{metrics.rank || "N/A"}</div>
+                        <div className="text-xs font-bold opacity-60 uppercase">{t.influencer.rank_label} #{metrics.rank || "N/A"}</div>
                         <div className="pt-2">
                             <div className="h-2 w-full bg-black/20 rounded-full overflow-hidden">
                                 <motion.div
