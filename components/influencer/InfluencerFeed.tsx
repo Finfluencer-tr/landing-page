@@ -24,29 +24,20 @@ export const InfluencerFeed = ({ influencer }: InfluencerFeedProps) => {
     const hasMoreRef = useRef(true);
     const observer = useRef<IntersectionObserver | null>(null);
 
-    const loadTweets = useCallback(async (pageNum: number, isInitial: boolean = false) => {
-        if (!isInitial && (isLoadingRef.current || !hasMoreRef.current)) return;
-
+    const loadTweets = useCallback(async (pageNum: number, isInitial = false) => {
+        if (isLoadingRef.current) return;
         isLoadingRef.current = true;
         setIsLoading(true);
+
         try {
             const isFinancial = activeTab === "financial";
             const data = await fetchInfluencerTweets(influencer.profile.username, pageNum, 10, isFinancial);
 
-            if (data) {
-                const noMore = data.meta.page >= data.meta.totalPages || data.tweets.length === 0;
-                if (noMore) {
-                    hasMoreRef.current = false;
-                    setHasMore(false);
-                }
-
-                if (isInitial) {
-                    setTweets(data.tweets);
-                } else {
-                    setTweets(prev => [...prev, ...data.tweets]);
-                }
+            if (data && data.tweets) {
+                setTweets(prev => isInitial ? data.tweets : [...prev, ...data.tweets]);
+                hasMoreRef.current = data.meta.current_page < data.meta.total_pages;
+                setHasMore(data.meta.current_page < data.meta.total_pages);
             } else {
-                hasMoreRef.current = false;
                 setHasMore(false);
                 if (isInitial) setTweets([]);
             }
