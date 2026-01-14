@@ -330,6 +330,7 @@ export const translations = {
             all_activity: "所有活动",
             no_posts: "没有找到此类别的帖子。",
             back_to_leaderboard: "返回排行榜",
+            not_found_title: "404",
             not_found_desc: "未在我们的数据库中找到该影响者。",
             total_analyzed: "总分析量",
             financial_count: "金融分析",
