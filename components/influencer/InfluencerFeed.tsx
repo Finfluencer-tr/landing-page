@@ -61,24 +61,32 @@ export const InfluencerFeed = ({ influencer }: InfluencerFeedProps) => {
     useEffect(() => {
         setPage(1);
         setHasMore(true);
+        hasMoreRef.current = true;
         loadTweets(1, true);
     }, [influencer.profile.username, activeTab, loadTweets]);
 
-    const lastTweetRef = useCallback((node: HTMLDivElement | null) => {
-        if (isLoadingRef.current) return;
-        if (observer.current) observer.current.disconnect();
+    // Scroll event listener for infinite scroll
+    useEffect(() => {
+        const handleScroll = () => {
+            if (isLoadingRef.current || !hasMoreRef.current) return;
 
-        observer.current = new IntersectionObserver(entries => {
-            if (entries[0].isIntersecting && hasMoreRef.current) {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight;
+            const clientHeight = document.documentElement.clientHeight;
+
+            // Load more when user is 300px from bottom
+            if (scrollTop + clientHeight >= scrollHeight - 300) {
                 setPage(prevPage => {
                     const nextPage = prevPage + 1;
+                    console.log(`Scroll triggered - Loading page ${nextPage}`);
                     loadTweets(nextPage);
                     return nextPage;
                 });
             }
-        });
+        };
 
-        if (node) observer.current.observe(node);
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
     }, [loadTweets]);
 
     return (
@@ -121,7 +129,6 @@ export const InfluencerFeed = ({ influencer }: InfluencerFeedProps) => {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95 }}
                             transition={{ duration: 0.3 }}
-                            ref={index === tweets.length - 1 ? lastTweetRef : null}
                         >
                             <PostCard tweet={tweet} authorAvatar={influencer.profile.avatar} />
                         </motion.div>
