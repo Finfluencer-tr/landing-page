@@ -253,28 +253,25 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
         </div>
     );
 };
-            </div >
 
-    {/* Media Modal */ }
-    < MediaModal
-isOpen = { isModalOpen }
-onClose = {() => setIsModalOpen(false)}
-imageUrl = { selectedImage || ""}
+            {/* Media Modal */}
+            <MediaModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                imageUrl={selectedImage || ""}
             />
 
-{/* Chart Modal */ }
-{
-    selectedChart && chartData.get(selectedChart.entityId) && (
-        <ChartModal
-            isOpen={!!selectedChart}
-            onClose={() => setSelectedChart(null)}
-            data={chartData.get(selectedChart.entityId)!.ohlc}
-            symbol={selectedChart.symbol}
-            tweetDate={chartData.get(selectedChart.entityId)!.tweet_date}
-            sentiment={tweet.analysis?.entities?.find(e => e.entity_id === selectedChart.entityId)?.sentiment}
-        />
-    )
-}
-        </div >
+            {/* Chart Modal */}
+            {selectedChart && chartData.get(selectedChart.entityId) && (
+                <ChartModal
+                    isOpen={!!selectedChart}
+                    onClose={() => setSelectedChart(null)}
+                    data={chartData.get(selectedChart.entityId)!.ohlc}
+                    symbol={selectedChart.symbol}
+                    tweetDate={chartData.get(selectedChart.entityId)!.tweet_date}
+                    sentiment={tweet.analysis?.entities?.find(e => e.entity_id === selectedChart.entityId)?.sentiment}
+                />
+            )}
+        </div>
     );
 };
