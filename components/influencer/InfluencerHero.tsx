@@ -60,13 +60,15 @@ export const InfluencerHero = ({ influencer }: InfluencerHeroProps) => {
                 <div className="flex flex-col md:flex-row items-end justify-between -mt-16 md:-mt-20 gap-6">
                     <div className="relative group">
                         <div className="absolute inset-0 rounded-full bg-indigo-500/30 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                        <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-slate-950 bg-slate-900 p-1 flex-shrink-0 overflow-hidden">
-                            <InfluencerImage
-                                src={avatarUrl}
-                                alt={profile.name}
-                                className="w-full h-full rounded-full object-cover"
-                                fallback={`https://api.dicebear.com/7.x/avataaars/svg?seed=${profile.username}`}
-                            />
+                        <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-slate-950 bg-slate-900 p-1 flex-shrink-0">
+                            <div className="w-full h-full rounded-full overflow-hidden">
+                                <InfluencerImage
+                                    src={avatarUrl}
+                                    alt={profile.name}
+                                    className="w-full h-full object-cover"
+                                    fallback={`https://api.dicebear.com/7.x/avataaars/svg?seed=${profile.username}`}
+                                />
+                            </div>
                             {profile.verified && (
                                 <div className="absolute bottom-1 right-1 bg-indigo-500 text-white p-1.5 rounded-full border-4 border-slate-950 shadow-lg z-10" title="Verified">
                                     <IconCheck size={16} strokeWidth={3} />
