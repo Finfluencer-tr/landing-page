@@ -148,10 +148,27 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
                                 const sentiment = entity.sentiment.toUpperCase();
                                 const entityChartData = entity.entity_id ? chartData.get(entity.entity_id) : null;
 
+                                // Calculate price metrics
+                                let startingPrice, maxPrice, minPrice, avgPrice;
+                                if (entityChartData) {
+                                    const tweetTime = new Date(entityChartData.tweet_date).getTime();
+                                    const tweetCandle = entityChartData.ohlc.find(d => tweetTime >= d.openTime && tweetTime <= d.closeTime);
+                                    startingPrice = tweetCandle?.close;
+                                    maxPrice = Math.max(...entityChartData.ohlc.map(d => d.high));
+                                    minPrice = Math.min(...entityChartData.ohlc.map(d => d.low));
+                                    const totalClose = entityChartData.ohlc.reduce((sum, d) => sum + d.close, 0);
+                                    avgPrice = totalClose / entityChartData.ohlc.length;
+                                }
+
+                                const formatPrice = (price?: number) => {
+                                    if (!price) return 'N/A';
+                                    return `$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                                };
+
                                 return (
                                     <div key={idx} className="flex gap-4">
                                         {/* Left: Entity Info */}
-                                        <div className="flex-1 flex flex-col gap-2">
+                                        <div className="flex-1 flex flex-col gap-3">
                                             <div className="flex items-center gap-2">
                                                 <span className="text-lg font-bold text-white">${entity.symbol}</span>
                                                 <div className={cn(
@@ -166,6 +183,28 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
                                                     {sentiment}
                                                 </div>
                                             </div>
+
+                                            {/* Price Metrics Grid */}
+                                            {entityChartData && (
+                                                <div className="grid grid-cols-2 gap-2">
+                                                    <div className="flex flex-col">
+                                                        <span className="text-[10px] text-slate-500 uppercase">Starting</span>
+                                                        <span className="text-xs font-semibold text-indigo-400">{formatPrice(startingPrice)}</span>
+                                                    </div>
+                                                    <div className="flex flex-col">
+                                                        <span className="text-[10px] text-slate-500 uppercase">Avg</span>
+                                                        <span className="text-xs font-semibold text-slate-300">{formatPrice(avgPrice)}</span>
+                                                    </div>
+                                                    <div className="flex flex-col">
+                                                        <span className="text-[10px] text-emerald-500 uppercase">Max</span>
+                                                        <span className="text-xs font-semibold text-emerald-400">{formatPrice(maxPrice)}</span>
+                                                    </div>
+                                                    <div className="flex flex-col">
+                                                        <span className="text-[10px] text-rose-500 uppercase">Min</span>
+                                                        <span className="text-xs font-semibold text-rose-400">{formatPrice(minPrice)}</span>
+                                                    </div>
+                                                </div>
+                                            )}
 
                                             {/* Performance Score */}
                                             <div className="space-y-1">
