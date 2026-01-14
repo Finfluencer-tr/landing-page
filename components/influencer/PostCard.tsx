@@ -151,19 +151,24 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
                                 const entityChartData = entity.entity_id ? chartData.get(entity.entity_id) : null;
 
                                 // Calculate price metrics
-                                let startingPrice, maxPrice, minPrice, avgPrice;
+                                let startingPrice, maxPrice, minPrice, currentPrice;
                                 if (entityChartData) {
                                     // Starting price is the first OHLC data's open price
                                     startingPrice = entityChartData.ohlc[0]?.open;
                                     maxPrice = Math.max(...entityChartData.ohlc.map(d => d.high));
                                     minPrice = Math.min(...entityChartData.ohlc.map(d => d.low));
-                                    const totalClose = entityChartData.ohlc.reduce((sum, d) => sum + d.close, 0);
-                                    avgPrice = totalClose / entityChartData.ohlc.length;
+                                    currentPrice = entityChartData.ohlc[entityChartData.ohlc.length - 1]?.close;
                                 }
 
                                 const formatPrice = (price?: number) => {
                                     if (!price) return 'N/A';
                                     return `$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                                };
+
+                                const calculatePercentChange = (current?: number, base?: number) => {
+                                    if (!current || !base) return null;
+                                    const change = ((current - base) / base) * 100;
+                                    return change;
                                 };
 
                                 return (
@@ -193,16 +198,41 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
                                                         <span className="text-xs font-semibold text-indigo-400">{formatPrice(startingPrice)}</span>
                                                     </div>
                                                     <div className="flex flex-col">
-                                                        <span className="text-[10px] text-slate-500 uppercase">Avg</span>
-                                                        <span className="text-xs font-semibold text-slate-300">{formatPrice(avgPrice)}</span>
+                                                        <span className="text-[10px] text-slate-500 uppercase">Current</span>
+                                                        <div className="flex items-center gap-1">
+                                                            <span className="text-xs font-semibold text-slate-300">{formatPrice(currentPrice)}</span>
+                                                            {calculatePercentChange(currentPrice, startingPrice) !== null && (
+                                                                <span className={cn(
+                                                                    "text-[9px] font-bold",
+                                                                    calculatePercentChange(currentPrice, startingPrice)! >= 0 ? "text-emerald-400" : "text-rose-400"
+                                                                )}>
+                                                                    {calculatePercentChange(currentPrice, startingPrice)! >= 0 ? "+" : ""}
+                                                                    {calculatePercentChange(currentPrice, startingPrice)!.toFixed(1)}%
+                                                                </span>
+                                                            )}
+                                                        </div>
                                                     </div>
                                                     <div className="flex flex-col">
                                                         <span className="text-[10px] text-emerald-500 uppercase">Max</span>
-                                                        <span className="text-xs font-semibold text-emerald-400">{formatPrice(maxPrice)}</span>
+                                                        <div className="flex items-center gap-1">
+                                                            <span className="text-xs font-semibold text-emerald-400">{formatPrice(maxPrice)}</span>
+                                                            {calculatePercentChange(maxPrice, startingPrice) !== null && (
+                                                                <span className="text-[9px] font-bold text-emerald-400">
+                                                                    +{calculatePercentChange(maxPrice, startingPrice)!.toFixed(1)}%
+                                                                </span>
+                                                            )}
+                                                        </div>
                                                     </div>
                                                     <div className="flex flex-col">
                                                         <span className="text-[10px] text-rose-500 uppercase">Min</span>
-                                                        <span className="text-xs font-semibold text-rose-400">{formatPrice(minPrice)}</span>
+                                                        <div className="flex items-center gap-1">
+                                                            <span className="text-xs font-semibold text-rose-400">{formatPrice(minPrice)}</span>
+                                                            {calculatePercentChange(minPrice, startingPrice) !== null && (
+                                                                <span className="text-[9px] font-bold text-rose-400">
+                                                                    {calculatePercentChange(minPrice, startingPrice)!.toFixed(1)}%
+                                                                </span>
+                                                            )}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             )}
