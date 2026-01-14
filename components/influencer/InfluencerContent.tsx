@@ -57,7 +57,7 @@ export const InfluencerContent = ({ influencer }: InfluencerContentProps) => {
                         <InfluencerHero influencer={influencer} />
 
                         {/* Summary Stats Grid */}
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="glass-card p-6 rounded-2xl border border-white/5 bg-slate-900/40">
                                 <span className="text-sm text-slate-500 font-medium uppercase tracking-wider">{t.influencer.total_analyzed}</span>
                                 <div className="text-3xl font-bold text-white mt-1">{influencer.stats?.total_analyzed || 0}</div>
@@ -65,10 +65,6 @@ export const InfluencerContent = ({ influencer }: InfluencerContentProps) => {
                             <div className="glass-card p-6 rounded-2xl border border-white/5 bg-slate-900/40">
                                 <span className="text-sm text-slate-500 font-medium uppercase tracking-wider">{t.influencer.financial_count}</span>
                                 <div className="text-3xl font-bold text-white mt-1">{influencer.stats?.financial_count || 0}</div>
-                            </div>
-                            <div className="glass-card p-6 rounded-2xl border border-white/5 bg-slate-900/40">
-                                <span className="text-sm text-slate-500 font-medium uppercase tracking-wider">{t.influencer.avg_performance}</span>
-                                <div className="text-3xl font-bold text-indigo-400 mt-1">{influencer.stats?.avg_performance || 0}%</div>
                             </div>
                         </div>
 
