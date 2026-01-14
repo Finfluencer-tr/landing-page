@@ -146,55 +146,61 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
                         <div className="space-y-3">
                             {tweet.analysis.entities.map((entity, idx) => {
                                 const sentiment = entity.sentiment.toUpperCase();
+                                const entityChartData = entity.entity_id ? chartData.get(entity.entity_id) : null;
+
                                 return (
-                                    <div key={idx} className="flex flex-col gap-1.5">
-                                        <div className="flex items-center justify-between">
+                                    <div key={idx} className="flex gap-4">
+                                        {/* Left: Entity Info */}
+                                        <div className="flex-1 flex flex-col gap-2">
                                             <div className="flex items-center gap-2">
-                                                <span className="text-sm font-bold text-white">${entity.symbol}</span>
+                                                <span className="text-lg font-bold text-white">${entity.symbol}</span>
                                                 <div className={cn(
-                                                    "flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-bold border",
+                                                    "flex items-center gap-1 px-2 py-1 rounded text-xs font-bold border",
                                                     sentiment === "BULLISH"
                                                         ? "bg-emerald-950/50 text-emerald-400 border-emerald-900/50"
                                                         : sentiment === "BEARISH"
                                                             ? "bg-rose-950/50 text-rose-400 border-rose-900/50"
                                                             : "bg-slate-800 text-slate-400 border-slate-700"
                                                 )}>
-                                                    {sentiment === "BULLISH" ? <IconTrendingUp size={10} /> : sentiment === "BEARISH" ? <IconTrendingDown size={10} /> : null}
+                                                    {sentiment === "BULLISH" ? <IconTrendingUp size={12} /> : sentiment === "BEARISH" ? <IconTrendingDown size={12} /> : null}
                                                     {sentiment}
                                                 </div>
                                             </div>
-                                            <span className="text-[10px] font-medium text-slate-500">
-                                                {t.influencer.performance_score}: {entity.score}%
-                                            </span>
-                                        </div>
-                                        {/* Performance Score Bar */}
-                                        <div className="h-1 w-full bg-slate-800 rounded-full overflow-hidden">
-                                            <motion.div
-                                                initial={{ width: 0 }}
-                                                animate={{ width: `${entity.score}%` }}
-                                                className={cn(
-                                                    "h-full",
-                                                    sentiment === "BULLISH" ? "bg-emerald-500" : sentiment === "BEARISH" ? "bg-rose-500" : "bg-slate-500"
-                                                )}
-                                            />
+
+                                            {/* Performance Score */}
+                                            <div className="space-y-1">
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-xs font-medium text-slate-400">
+                                                        {t.influencer.performance_score}
+                                                    </span>
+                                                    <span className="text-sm font-bold text-white">
+                                                        {entity.score}%
+                                                    </span>
+                                                </div>
+                                                <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+                                                    <motion.div
+                                                        initial={{ width: 0 }}
+                                                        animate={{ width: `${entity.score}%` }}
+                                                        className={cn(
+                                                            "h-full",
+                                                            sentiment === "BULLISH" ? "bg-emerald-500" : sentiment === "BEARISH" ? "bg-rose-500" : "bg-slate-500"
+                                                        )}
+                                                    />
+                                                </div>
+                                            </div>
                                         </div>
 
-                                        {/* OHLC Chart */}
-                                        {entity.entity_id && chartData.get(entity.entity_id) && (
-                                            <div className="mt-3 relative group/chart">
+                                        {/* Right: OHLC Chart */}
+                                        {entityChartData && (
+                                            <div
+                                                className="flex-1 cursor-pointer rounded-lg bg-slate-900/50 p-3 border border-slate-800/50 hover:border-indigo-500/30 transition-all"
+                                                onClick={() => setSelectedChart({ entityId: entity.entity_id, symbol: entity.symbol })}
+                                            >
                                                 <CompactOHLCChart
-                                                    data={chartData.get(entity.entity_id)!.ohlc}
-                                                    tweetDate={chartData.get(entity.entity_id)!.tweet_date}
+                                                    data={entityChartData.ohlc}
+                                                    tweetDate={entityChartData.tweet_date}
                                                     sentiment={entity.sentiment}
-                                                    className="rounded-lg bg-slate-900/50 p-2 border border-slate-800/50"
                                                 />
-                                                <button
-                                                    onClick={() => setSelectedChart({ entityId: entity.entity_id, symbol: entity.symbol })}
-                                                    className="absolute top-2 right-2 p-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-white transition-all opacity-0 group-hover/chart:opacity-100 border border-white/5"
-                                                    title="Expand chart"
-                                                >
-                                                    <IconMaximize size={14} />
-                                                </button>
                                             </div>
                                         )}
                                     </div>

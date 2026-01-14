@@ -8,14 +8,12 @@ interface CompactOHLCChartProps {
     data: OHLCData[];
     tweetDate: string;
     sentiment?: "BULLISH" | "BEARISH" | "NEUTRAL";
-    className?: string;
 }
 
 export const CompactOHLCChart = ({
     data,
     tweetDate,
-    sentiment,
-    className
+    sentiment
 }: CompactOHLCChartProps) => {
     if (!data || data.length === 0) return null;
 
@@ -27,7 +25,7 @@ export const CompactOHLCChart = ({
     const tweetPrice = tweetCandle?.close;
 
     return (
-        <div className={cn("w-full", className)}>
+        <div className="w-full">
             <ResponsiveContainer width="100%" height={120}>
                 <LineChart data={data} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
                     <XAxis
