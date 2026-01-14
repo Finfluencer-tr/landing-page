@@ -159,6 +159,13 @@ export const fetchInfluencerDetails = async (username: string): Promise<Detailed
 
     // If the data is nested under a key, handle it (though current mock shows direct)
     // Based on previous screenshots, it was direct.
+    
+    // Defensive check: ensure critical fields exist
+    if (!data || !data.profile || !data.metrics || !data.stats) {
+      console.error("API returned incomplete data for influencer", username, data);
+      return null;
+    }
+
     return data;
   } catch (error) {
     console.error("Failed to fetch influencer details:", error);
