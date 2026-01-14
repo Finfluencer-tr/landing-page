@@ -11,10 +11,14 @@ import {
     IconChartBar,
 } from "@tabler/icons-react";
 import { InfluencerImage } from "../InfluencerImage";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MediaModal } from "./MediaModal";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
+import { CompactOHLCChart } from "./CompactOHLCChart";
+import { ChartModal } from "./ChartModal";
+import { fetchOHLCData, OHLCResponse } from "@/lib/api";
+import { IconMaximize } from "@tabler/icons-react";
 
 interface PostCardProps {
     tweet: InfluencerTweet;
@@ -25,11 +29,27 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
     const { t } = useLanguage();
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [chartData, setChartData] = useState<Map<string, OHLCResponse>>(new Map());
+    const [selectedChart, setSelectedChart] = useState<{ entityId: string; symbol: string } | null>(null);
 
     const handleImageClick = (url: string) => {
         setSelectedImage(url);
         setIsModalOpen(true);
     };
+
+    // Fetch OHLC data for entities
+    useEffect(() => {
+        if (tweet.is_financial && tweet.analysis?.entities) {
+            tweet.analysis.entities.forEach(async (entity) => {
+                if (entity.entity_id && !chartData.has(entity.entity_id)) {
+                    const data = await fetchOHLCData(entity.entity_id);
+                    if (data) {
+                        setChartData(prev => new Map(prev).set(entity.entity_id, data));
+                    }
+                }
+            });
+        }
+    }, [tweet.analysis?.entities]);
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
@@ -158,6 +178,28 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
                                                 )}
                                             />
                                         </div>
+
+                                        {/* OHLC Chart */}
+                                        {entity.entity_id && chartData.get(entity.entity_id) && (
+                                            <div className="mt-3 relative group/chart">
+                                                <CompactOHLCChart
+                                                    data={chartData.get(entity.entity_id)!.data}
+                                                    tweetPrice={chartData.get(entity.entity_id)!.tweet_price}
+                                                    maxPrice={chartData.get(entity.entity_id)!.max_price}
+                                                    minPrice={chartData.get(entity.entity_id)!.min_price}
+                                                    currentPrice={chartData.get(entity.entity_id)!.current_price}
+                                                    sentiment={entity.sentiment}
+                                                    className="rounded-lg bg-slate-900/50 p-2 border border-slate-800/50"
+                                                />
+                                                <button
+                                                    onClick={() => setSelectedChart({ entityId: entity.entity_id, symbol: entity.symbol })}
+                                                    className="absolute top-2 right-2 p-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-white transition-all opacity-0 group-hover/chart:opacity-100 border border-white/5"
+                                                    title="Expand chart"
+                                                >
+                                                    <IconMaximize size={14} />
+                                                </button>
+                                            </div>
+                                        )}
                                     </div>
                                 );
                             })}

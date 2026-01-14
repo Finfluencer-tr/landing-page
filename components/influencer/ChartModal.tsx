@@ -1,0 +1,181 @@
+"use client";
+
+import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { IconX, IconMaximize } from "@tabler/icons-react";
+import { OHLCData } from "@/lib/api";
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine, CartesianGrid } from "recharts";
+
+interface ChartModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    data: OHLCData[];
+    symbol: string;
+    tweetPrice?: number;
+    maxPrice?: number;
+    minPrice?: number;
+    currentPrice?: number;
+    sentiment?: "BULLISH" | "BEARISH" | "NEUTRAL";
+}
+
+export const ChartModal = ({
+    isOpen,
+    onClose,
+    data,
+    symbol,
+    tweetPrice,
+    maxPrice,
+    minPrice,
+    currentPrice,
+    sentiment
+}: ChartModalProps) => {
+    React.useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "unset";
+        }
+        return () => {
+            document.body.style.overflow = "unset";
+        };
+    }, [isOpen]);
+
+    const sentimentColor = sentiment === "BULLISH" ? "#10b981" : sentiment === "BEARISH" ? "#ef4444" : "#64748b";
+    const priceChange = tweetPrice && currentPrice ? ((currentPrice - tweetPrice) / tweetPrice) * 100 : 0;
+
+    return (
+        <AnimatePresence>
+            {isOpen && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
+                    {/* Backdrop */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={onClose}
+                        className="absolute inset-0 bg-slate-950/90 backdrop-blur-md cursor-pointer"
+                    />
+
+                    {/* Content Container */}
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                        transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                        className="relative z-10 w-full max-w-6xl bg-slate-900 rounded-2xl border border-white/10 shadow-2xl overflow-hidden"
+                    >
+                        {/* Header */}
+                        <div className="flex items-center justify-between p-6 border-b border-white/10">
+                            <div>
+                                <h2 className="text-2xl font-bold text-white">${symbol}</h2>
+                                <p className="text-sm text-slate-400 mt-1">Price Performance Analysis</p>
+                            </div>
+                            <button
+                                onClick={onClose}
+                                className="p-2 rounded-full bg-slate-800/50 hover:bg-slate-700 text-slate-300 hover:text-white transition-all border border-white/5"
+                            >
+                                <IconX size={20} />
+                            </button>
+                        </div>
+
+                        {/* Stats */}
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-slate-900/50">
+                            {tweetPrice && (
+                                <div className="p-4 rounded-xl bg-indigo-500/10 border border-indigo-500/20">
+                                    <span className="text-xs text-indigo-400 font-medium uppercase">Tweet Price</span>
+                                    <div className="text-lg font-bold text-white mt-1">${tweetPrice.toFixed(2)}</div>
+                                </div>
+                            )}
+                            {currentPrice && (
+                                <div className="p-4 rounded-xl bg-slate-800/50 border border-white/5">
+                                    <span className="text-xs text-slate-400 font-medium uppercase">Current Price</span>
+                                    <div className="text-lg font-bold text-white mt-1">${currentPrice.toFixed(2)}</div>
+                                </div>
+                            )}
+                            {maxPrice && (
+                                <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                                    <span className="text-xs text-emerald-400 font-medium uppercase">Max Price</span>
+                                    <div className="text-lg font-bold text-white mt-1">${maxPrice.toFixed(2)}</div>
+                                </div>
+                            )}
+                            {minPrice && (
+                                <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20">
+                                    <span className="text-xs text-rose-400 font-medium uppercase">Min Price</span>
+                                    <div className="text-lg font-bold text-white mt-1">${minPrice.toFixed(2)}</div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Chart */}
+                        <div className="p-6">
+                            <ResponsiveContainer width="100%" height={400}>
+                                <LineChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                                    <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                                    <XAxis
+                                        dataKey="timestamp"
+                                        tick={{ fontSize: 12, fill: "#94a3b8" }}
+                                        tickFormatter={(value) => {
+                                            const date = new Date(value);
+                                            return `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
+                                        }}
+                                        stroke="#475569"
+                                    />
+                                    <YAxis
+                                        tick={{ fontSize: 12, fill: "#94a3b8" }}
+                                        domain={['auto', 'auto']}
+                                        stroke="#475569"
+                                    />
+                                    <Tooltip
+                                        contentStyle={{
+                                            backgroundColor: "#1e293b",
+                                            border: "1px solid #475569",
+                                            borderRadius: "12px",
+                                            padding: "12px"
+                                        }}
+                                        labelStyle={{ color: "#cbd5e1", marginBottom: "8px" }}
+                                        itemStyle={{ color: "#e2e8f0" }}
+                                    />
+                                    {tweetPrice && (
+                                        <ReferenceLine
+                                            y={tweetPrice}
+                                            stroke="#6366f1"
+                                            strokeDasharray="5 5"
+                                            strokeWidth={2}
+                                            label={{
+                                                value: `Tweet Price: $${tweetPrice.toFixed(2)}`,
+                                                position: "right",
+                                                fill: "#6366f1",
+                                                fontSize: 12,
+                                                fontWeight: 600
+                                            }}
+                                        />
+                                    )}
+                                    <Line
+                                        type="monotone"
+                                        dataKey="close"
+                                        stroke={sentimentColor}
+                                        strokeWidth={3}
+                                        dot={false}
+                                        activeDot={{ r: 6, fill: sentimentColor }}
+                                    />
+                                </LineChart>
+                            </ResponsiveContainer>
+
+                            {/* Performance Summary */}
+                            {tweetPrice && currentPrice && (
+                                <div className="mt-6 p-4 rounded-xl bg-slate-800/30 border border-white/5">
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-sm text-slate-400">Performance since tweet</span>
+                                        <span className={`text-lg font-bold ${priceChange >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                                            {priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)}%
+                                        </span>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </motion.div>
+                </div>
+            )}
+        </AnimatePresence>
+    );
+};

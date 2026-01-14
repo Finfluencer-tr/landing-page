@@ -111,10 +111,30 @@ export interface TweetMetrics {
 }
 
 export interface AnalysisEntity {
+  entity_id : string;
   symbol: string;
   asset_type: string;
   sentiment: "BULLISH" | "BEARISH" | "NEUTRAL";
   score: number;
+}
+
+export interface OHLCData {
+  timestamp: string;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume?: number;
+}
+
+export interface OHLCResponse {
+  entity_id: string;
+  symbol: string;
+  data: OHLCData[];
+  tweet_price?: number;
+  current_price?: number;
+  max_price?: number;
+  min_price?: number;
 }
 
 export interface InfluencerTweet {
@@ -296,6 +316,20 @@ export const fetchInfluencerTweets = async (
     return data;
   } catch (error) {
     console.error("Failed to fetch influencer tweets:", error);
+    return null;
+  }
+};
+
+export const fetchOHLCData = async (entityId: string): Promise<OHLCResponse | null> => {
+  try {
+    const res = await fetch(`${BASE_URL}/market/ohlc/${entityId}`);
+    if (!res.ok) {
+      throw new Error(`API error: ${res.status}`);
+    }
+    const data: OHLCResponse = await res.json();
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch OHLC data:", error);
     return null;
   }
 };
