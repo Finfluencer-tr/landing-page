@@ -56,7 +56,9 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
         return new Intl.DateTimeFormat('en-US', {
             month: 'short',
             day: 'numeric',
-            year: 'numeric'
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
         }).format(date);
     };
 
