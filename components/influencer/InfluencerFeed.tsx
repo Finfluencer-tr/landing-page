@@ -1,6 +1,6 @@
 "use client";
 
-import { Influencer } from "@/lib/mockData";
+import { DetailedInfluencer } from "@/lib/api";
 import { useState } from "react";
 import { PostCard } from "./PostCard";
 import { cn } from "@/lib/utils";
@@ -8,16 +8,12 @@ import { motion } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 
 interface InfluencerFeedProps {
-    influencer: Influencer;
+    influencer: DetailedInfluencer;
 }
 
 export const InfluencerFeed = ({ influencer }: InfluencerFeedProps) => {
     const { t } = useLanguage();
     const [activeTab, setActiveTab] = useState<"financial" | "all">("financial");
-
-    const filteredPosts = influencer.posts.filter(post =>
-        activeTab === "all" ? true : post.isFinancial
-    );
 
     return (
         <div className="mt-8">
@@ -35,31 +31,13 @@ export const InfluencerFeed = ({ influencer }: InfluencerFeedProps) => {
                         <motion.div layoutId="activeTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-500" />
                     )}
                 </button>
-                <button
-                    onClick={() => setActiveTab("all")}
-                    className={cn(
-                        "pb-3 text-sm font-medium transition-colors relative",
-                        activeTab === "all" ? "text-indigo-400" : "text-slate-500 hover:text-slate-300"
-                    )}
-                >
-                    {t.influencer.all_activity}
-                    {activeTab === "all" && (
-                        <motion.div layoutId="activeTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-500" />
-                    )}
-                </button>
             </div>
 
-            {/* Feed */}
+            {/* Feed Empty State */}
             <div className="space-y-4">
-                {filteredPosts.length > 0 ? (
-                    filteredPosts.map((post) => (
-                        <PostCard key={post.id} post={post} />
-                    ))
-                ) : (
-                    <div className="text-center py-12 text-slate-500">
-                        <p>{t.influencer.no_posts}</p>
-                    </div>
-                )}
+                <div className="text-center py-20 bg-slate-900/20 border-2 border-dashed border-white/5 rounded-3xl">
+                    <p className="text-slate-500 font-medium">{t.influencer.posts_coming_soon || "Post Analysis Coming Soon"}</p>
+                </div>
             </div>
         </div>
     );

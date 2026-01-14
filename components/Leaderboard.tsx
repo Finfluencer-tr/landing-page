@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { MOCK_INFLUENCERS } from "@/lib/mockData";
+import React, { useState, useMemo, useEffect } from "react";
+import { fetchInfluencers } from "@/lib/api";
+import { Influencer } from "@/lib/mockData";
 import { LeaderboardItem } from "./LeaderboardItem";
 import { IconSearch, IconFilter, IconUserCircle } from "@tabler/icons-react";
 import { motion } from "framer-motion";
@@ -10,56 +11,89 @@ import { AuthModal } from "./AuthModal";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { Header } from "./Header";
 
 export const Leaderboard = () => {
     const { user, logout } = useAuth();
     const { t } = useLanguage();
     const [searchTerm, setSearchTerm] = useState("");
     const [platformFilter, setPlatformFilter] = useState<"all" | "twitter" | "instagram" | "telegram">("all");
-    const [sortConfig, setSortConfig] = useState<{ key: keyof typeof MOCK_INFLUENCERS[0] | "trend7d"; direction: "asc" | "desc" }>({ key: "rank", direction: "asc" });
+    const [sortConfig, setSortConfig] = useState<{ key: "rank" | "score" | "name" | "trend7d" | "topAsset"; direction: "asc" | "desc" }>({ key: "rank", direction: "asc" });
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
-    // Filter & Sort Logic
-    const processedInfluencers = useMemo(() => {
-        let result = MOCK_INFLUENCERS.filter((inf) => {
-            const matchesSearch = inf.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                inf.handle.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                inf.topAsset.symbol.toLowerCase().includes(searchTerm.toLowerCase());
-            const matchesPlatform = platformFilter === "all" || inf.platform === platformFilter;
-            return matchesSearch && matchesPlatform;
-        });
+    // API State
+    const [influencers, setInfluencers] = useState<Influencer[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-        // Sorting
-        result.sort((a, b) => {
-            let aValue: any = a[sortConfig.key as keyof typeof a];
-            let bValue: any = b[sortConfig.key as keyof typeof b];
+    // Fetch Data
+    useEffect(() => {
+        let ismounted = true;
+        const loadData = async () => {
+            setIsLoading(true);
+            try {
+                // Determine API sort param
+                // API supports 'score' and 'rank'. For other UI sort keys, we might fetch default (rank) and sort client-side, 
+                // or just pass 'rank' as default for now if client-side sort isn't fully implemented.
+                const apiSortBy = (sortConfig.key === "rank" || sortConfig.key === "score") ? sortConfig.key : "rank";
 
-            if (sortConfig.key === "trend7d") {
-                // Sort by latest trend value
-                aValue = a.trend[a.trend.length - 1];
-                bValue = b.trend[b.trend.length - 1];
-            } else if (sortConfig.key === "topAsset") {
-                aValue = a.topAsset.symbol;
-                bValue = b.topAsset.symbol;
+                const data = await fetchInfluencers({
+                    search: searchTerm,
+                    sortBy: apiSortBy,
+                    // If API doesn't support explicit direction, we rely on its default.
+                });
+
+                if (ismounted) {
+                    setInfluencers(data);
+                }
+            } catch (err) {
+                console.error("Failed to load leaderboard", err);
+            } finally {
+                if (ismounted) setIsLoading(false);
             }
+        };
 
-            if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
-            if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
-            return 0;
-        });
+        // Debounce search
+        const timeoutId = setTimeout(loadData, 300);
+        return () => {
+            ismounted = false;
+            clearTimeout(timeoutId);
+        };
+    }, [searchTerm, sortConfig.key]); // Dependencies for API fetch
+
+    // Client-side filtering for platform (since API doesn't seem to support it yet)
+    // AND Client-side sorting for direction if API doesn't support direction (API docs didn't show order param)
+    const processedInfluencers = useMemo(() => {
+        let result = [...influencers];
+
+        // Platform Filter
+        if (platformFilter !== "all") {
+            result = result.filter(inf => inf.platform === platformFilter);
+        }
+
+        // Client-side sort direction handling (if needed) or tertiary sorting
+        // If API returns sorted by 'score', we might want to reverse it if user wants ASC.
+        // For now, let's assume API returns DESC for score and ASC for rank by default.
+        // We can manually reverse if direction mismatches common expectation or user selection.
+        if (sortConfig.key === "rank") {
+            result.sort((a, b) => sortConfig.direction === "asc" ? a.rank - b.rank : b.rank - a.rank);
+        } else if (sortConfig.key === "score") { // credibilityScore
+            result.sort((a, b) => sortConfig.direction === "desc" ? b.credibilityScore - a.credibilityScore : a.credibilityScore - b.credibilityScore);
+        }
 
         return result;
-    }, [searchTerm, platformFilter, sortConfig]);
+    }, [influencers, platformFilter, sortConfig]);
 
     const handleSort = (key: string) => {
-        let direction: "asc" | "desc" = "desc";
-        // Default to asc for Rank, desc for everything else
-        if (key === "rank") direction = "asc";
+        let stateKey = key as any;
+        if (key === "credibilityScore") stateKey = "score";
 
-        if (sortConfig.key === key) {
+        let direction: "asc" | "desc" = "desc";
+        if (stateKey === "rank") direction = "asc";
+
+        if (sortConfig.key === stateKey) {
             direction = sortConfig.direction === "asc" ? "desc" : "asc";
         }
-        setSortConfig({ key: key as any, direction });
+        setSortConfig({ key: stateKey, direction });
     };
 
     const SortIcon = ({ active, direction }: { active: boolean; direction: "asc" | "desc" }) => {
@@ -79,44 +113,7 @@ export const Leaderboard = () => {
     return (
         <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-indigo-500/30">
             {/* Header / Nav */}
-            <header className="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
-                <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <Link href="/" className="flex items-center gap-2 group">
-                            <div className="relative w-8 h-8 rounded-lg overflow-hidden">
-                                <img src="/logo/logo.png" alt="Finfluencer Logo" className="w-full h-full object-cover" />
-                            </div>
-                            <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-400 group-hover:opacity-80 transition-opacity">
-                                Finfluencer
-                            </span>
-                        </Link>
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">BETA</span>
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                        <LanguageSwitcher className="relative top-0 right-0 hidden sm:block" />
-
-                        {user ? (
-                            <>
-                                <div className="text-right hidden sm:block">
-                                    <div className="text-sm font-medium">{user.name}</div>
-                                    <div className="text-xs text-slate-500">{t.leaderboard.pro} Member</div>
-                                </div>
-                                <button onClick={logout} className="relative group">
-                                    <img src={user.avatar} alt={user.name} className="w-9 h-9 rounded-full border border-slate-700" />
-                                </button>
-                            </>
-                        ) : (
-                            <button
-                                onClick={() => setIsAuthModalOpen(true)}
-                                className="px-4 py-2 text-sm font-medium bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors border border-slate-700"
-                            >
-                                {t.auth.join_beta}
-                            </button>
-                        )}
-                    </div>
-                </div>
-            </header>
+            <Header onOpenAuthModal={() => setIsAuthModalOpen(true)} />
 
             <main className="container mx-auto px-4 py-12">
                 {/* Hero Section of Leaderboard */}
@@ -179,7 +176,7 @@ export const Leaderboard = () => {
                         {t.leaderboard.columns.influencer} <SortIcon active={sortConfig.key === "name"} direction={sortConfig.direction} />
                     </button>
                     <button onClick={() => handleSort("credibilityScore")} className="w-24 text-center hover:text-slate-300 flex items-center justify-center cursor-pointer">
-                        {t.leaderboard.columns.score} <SortIcon active={sortConfig.key === "credibilityScore"} direction={sortConfig.direction} />
+                        {t.leaderboard.columns.score} <SortIcon active={sortConfig.key === "score"} direction={sortConfig.direction} />
                     </button>
                     <button onClick={() => handleSort("trend7d")} className="w-32 mx-4 text-left hover:text-slate-300 flex items-center cursor-pointer">
                         {t.leaderboard.columns.trend} <SortIcon active={sortConfig.key === "trend7d"} direction={sortConfig.direction} />
@@ -193,21 +190,30 @@ export const Leaderboard = () => {
 
                 {/* List Items */}
                 <div className="space-y-2">
-                    {processedInfluencers.map((influencer, index) => (
-                        <LeaderboardItem
-                            key={influencer.id}
-                            influencer={influencer}
-                            index={index}
-                            onCommentClick={handleCommentClick}
-                        />
-                    ))}
-
-                    {processedInfluencers.length === 0 && (
-                        <div className="text-center py-20">
-                            <div className="text-4xl mb-4">🛸</div>
-                            <h3 className="text-xl font-bold text-slate-300">{t.leaderboard.empty_state.title}</h3>
-                            <p className="text-slate-500">{t.leaderboard.empty_state.desc}</p>
+                    {isLoading ? (
+                        <div className="py-20 text-center text-slate-500">
+                            <div className="animate-spin w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                            Loading influencers...
                         </div>
+                    ) : (
+                        <>
+                            {processedInfluencers.map((influencer, index) => (
+                                <LeaderboardItem
+                                    key={influencer.id}
+                                    influencer={influencer}
+                                    index={index}
+                                    onCommentClick={handleCommentClick}
+                                />
+                            ))}
+
+                            {processedInfluencers.length === 0 && (
+                                <div className="text-center py-20">
+                                    <div className="text-4xl mb-4">🛸</div>
+                                    <h3 className="text-xl font-bold text-slate-300">{t.leaderboard.empty_state.title}</h3>
+                                    <p className="text-slate-500">{t.leaderboard.empty_state.desc}</p>
+                                </div>
+                            )}
+                        </>
                     )}
                 </div>
             </main>

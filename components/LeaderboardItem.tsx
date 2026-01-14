@@ -14,6 +14,7 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
+import { InfluencerImage } from "./InfluencerImage";
 
 interface LeaderboardItemProps {
     influencer: Influencer;
@@ -66,7 +67,7 @@ export const LeaderboardItem = ({ influencer, index, onCommentClick }: Leaderboa
             {/* Influencer Info */}
             <div className="flex-1 flex items-center gap-4 min-w-[200px]">
                 <div className="relative">
-                    <img
+                    <InfluencerImage
                         src={influencer.avatar}
                         alt={influencer.name}
                         className="w-12 h-12 rounded-full object-cover border-2 border-slate-800 group-hover:border-slate-600 transition-colors"

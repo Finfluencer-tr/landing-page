@@ -28,6 +28,10 @@ export const translations = {
       back_to_leaderboard: "Back to Leaderboard",
       not_found_title: "404",
       not_found_desc: "Influencer not found in our database.",
+      total_analyzed: "Total Analyzed",
+      financial_count: "Financial Analysis",
+      avg_performance: "Avg. Performance",
+      posts_coming_soon: "Analysis and Tweets Coming Soon",
     },
     bento: {
       header: "From Chaos to",
@@ -167,6 +171,10 @@ export const translations = {
       back_to_leaderboard: "Sıralamaya Dön",
       not_found_title: "404",
       not_found_desc: "Fenomen veritabanımızda bulunamadı.",
+      total_analyzed: "İncelenen Toplam",
+      financial_count: "Finansal Analiz",
+      avg_performance: "Ort. Performans",
+      posts_coming_soon: "Analizler ve Tweetler Yakında",
     },
     bento: {
       header: "Kaostan",
