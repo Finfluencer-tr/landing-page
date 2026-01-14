@@ -19,36 +19,44 @@ export const InfluencerFeed = ({ influencer }: InfluencerFeedProps) => {
     const [page, setPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
+
+    const isLoadingRef = useRef(false);
+    const hasMoreRef = useRef(true);
     const observer = useRef<IntersectionObserver | null>(null);
 
     const loadTweets = useCallback(async (pageNum: number, isInitial: boolean = false) => {
-        if (!isInitial && (isLoading || !hasMore)) return;
+        if (!isInitial && (isLoadingRef.current || !hasMoreRef.current)) return;
 
+        isLoadingRef.current = true;
         setIsLoading(true);
         try {
             const isFinancial = activeTab === "financial";
             const data = await fetchInfluencerTweets(influencer.profile.username, pageNum, 10, isFinancial);
 
             if (data) {
-                if (data.tweets.length === 0) {
-                    if (isInitial) setTweets([]);
+                const noMore = data.meta.page >= data.meta.totalPages || data.tweets.length === 0;
+                if (noMore) {
+                    hasMoreRef.current = false;
                     setHasMore(false);
+                }
+
+                if (isInitial) {
+                    setTweets(data.tweets);
                 } else {
-                    setTweets(prev => isInitial ? data.tweets : [...prev, ...data.tweets]);
-                    if (data.meta.page >= data.meta.totalPages) {
-                        setHasMore(false);
-                    }
+                    setTweets(prev => [...prev, ...data.tweets]);
                 }
             } else {
-                if (isInitial) setTweets([]);
+                hasMoreRef.current = false;
                 setHasMore(false);
+                if (isInitial) setTweets([]);
             }
         } catch (error) {
             console.error("Error loading tweets:", error);
         } finally {
+            isLoadingRef.current = false;
             setIsLoading(false);
         }
-    }, [influencer.profile.username, isLoading, hasMore, activeTab]);
+    }, [influencer.profile.username, activeTab]);
 
     // Initial load and Reset when influencer or tab changes
     useEffect(() => {
@@ -58,11 +66,11 @@ export const InfluencerFeed = ({ influencer }: InfluencerFeedProps) => {
     }, [influencer.profile.username, activeTab, loadTweets]);
 
     const lastTweetRef = useCallback((node: HTMLDivElement | null) => {
-        if (isLoading) return;
+        if (isLoadingRef.current) return;
         if (observer.current) observer.current.disconnect();
 
         observer.current = new IntersectionObserver(entries => {
-            if (entries[0].isIntersecting && hasMore) {
+            if (entries[0].isIntersecting && hasMoreRef.current) {
                 setPage(prevPage => {
                     const nextPage = prevPage + 1;
                     loadTweets(nextPage);
@@ -72,7 +80,7 @@ export const InfluencerFeed = ({ influencer }: InfluencerFeedProps) => {
         });
 
         if (node) observer.current.observe(node);
-    }, [isLoading, hasMore, loadTweets]);
+    }, [loadTweets]);
 
     return (
         <div className="mt-8">

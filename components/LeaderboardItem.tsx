@@ -3,7 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { Influencer } from "@/lib/api";
+import { Influencer, getMediaUrl } from "@/lib/api";
 import {
     IconBrandTwitter,
     IconBrandInstagram,
@@ -72,7 +72,7 @@ export const LeaderboardItem = ({ influencer, index, onCommentClick }: Leaderboa
             <div className="flex-1 flex items-center gap-4 min-w-[200px]">
                 <div className="relative">
                     <InfluencerImage
-                        src={influencer.avatar}
+                        src={getMediaUrl(influencer.avatar)}
                         alt={influencer.name}
                         className="w-12 h-12 rounded-full object-cover border-2 border-slate-800 group-hover:border-slate-600 transition-colors"
                     />
