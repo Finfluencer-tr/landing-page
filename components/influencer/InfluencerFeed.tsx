@@ -124,7 +124,7 @@ export const InfluencerFeed = ({ influencer }: InfluencerFeedProps) => {
                             transition={{ duration: 0.3 }}
                             ref={index === tweets.length - 1 ? lastTweetRef : null}
                         >
-                            <PostCard tweet={tweet} />
+                            <PostCard tweet={tweet} authorAvatar={influencer.profile.avatar} />
                         </motion.div>
                     ))}
                 </AnimatePresence>
