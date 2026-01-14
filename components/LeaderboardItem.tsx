@@ -13,6 +13,7 @@ import {
     IconTrendingDown,
 } from "@tabler/icons-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
 import { InfluencerImage } from "./InfluencerImage";
 
@@ -23,6 +24,8 @@ interface LeaderboardItemProps {
 }
 
 export const LeaderboardItem = ({ influencer, index, onCommentClick }: LeaderboardItemProps) => {
+    const router = useRouter();
+
     // 1. Determine Platform Icon
     const PlatformIcon = {
         twitter: IconBrandTwitter,
@@ -49,7 +52,8 @@ export const LeaderboardItem = ({ influencer, index, onCommentClick }: Leaderboa
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1, duration: 0.4 }}
             whileHover={{ y: -4, scale: 1.01 }}
-            className="group relative flex items-center justify-between p-4 mb-3 rounded-2xl bg-slate-900/50 border border-slate-800 backdrop-blur-sm hover:border-indigo-500/30 hover:shadow-[0_0_20px_-10px_rgba(99,102,241,0.3)] transition-all duration-300"
+            onClick={() => router.push(`/influencer/${influencer.slug}`)}
+            className="group relative flex items-center justify-between p-4 mb-3 rounded-2xl bg-slate-900/50 border border-slate-800 backdrop-blur-sm hover:border-indigo-500/30 hover:shadow-[0_0_20px_-10px_rgba(99,102,241,0.3)] transition-all duration-300 cursor-pointer"
         >
             {/* Rank */}
             <div className="w-12 flex-shrink-0 text-center">
@@ -180,7 +184,10 @@ export const LeaderboardItem = ({ influencer, index, onCommentClick }: Leaderboa
             {/* Action */}
             <div className="w-16 flex justify-end">
                 <button
-                    onClick={onCommentClick}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onCommentClick();
+                    }}
                     className="p-2.5 rounded-xl bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 transition-colors"
                 >
                     <IconMessageCircle size={20} />
