@@ -35,6 +35,8 @@ export const translations = {
       followers_label: "Followers",
       following_label: "Following",
       rank_label: "Rank",
+      ai_analysis_title: "AI Financial Analysis",
+      performance_score: "Performance Score",
     },
     bento: {
       header: "From Chaos to",
@@ -187,6 +189,8 @@ export const translations = {
       followers_label: "Takipçi",
       following_label: "Takip Edilen",
       rank_label: "Sıra",
+      ai_analysis_title: "Yapay Zeka Finansal Analizi",
+      performance_score: "Performans Skoru",
     },
     bento: {
       header: "Kaostan",
@@ -339,6 +343,8 @@ export const translations = {
             followers_label: "关注者",
             following_label: "关注中",
             rank_label: "排名",
+            ai_analysis_title: "人工智能金融分析",
+            performance_score: "表现评分",
         },
     bento: {
       header: "从混乱到",
@@ -491,6 +497,8 @@ export const translations = {
       followers_label: "متابع",
       following_label: "يتابع",
       rank_label: "الترتيب",
+      ai_analysis_title: "تحليل مالي بالذكاء الاصطناعي",
+      performance_score: "درجة الأداء",
     },
     bento: {
       header: "من الفوضى إلى",

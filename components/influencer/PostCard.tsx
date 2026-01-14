@@ -14,12 +14,14 @@ import { InfluencerImage } from "../InfluencerImage";
 import { useState } from "react";
 import { MediaModal } from "./MediaModal";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface PostCardProps {
     tweet: InfluencerTweet;
 }
 
 export const PostCard = ({ tweet }: PostCardProps) => {
+    const { t } = useLanguage();
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -114,7 +116,9 @@ export const PostCard = ({ tweet }: PostCardProps) => {
             {tweet.is_financial && tweet.analysis && (
                 <div className="mb-4 p-4 rounded-xl bg-indigo-500/5 border border-indigo-500/10">
                     <div className="flex items-center justify-between mb-3 pb-2 border-b border-indigo-500/10">
-                        <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">AI Financial Analysis</span>
+                        <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">
+                            {t.influencer.ai_analysis_title}
+                        </span>
                     </div>
 
                     {tweet.analysis.entities && tweet.analysis.entities.length > 0 ? (
@@ -138,9 +142,11 @@ export const PostCard = ({ tweet }: PostCardProps) => {
                                                     {sentiment}
                                                 </div>
                                             </div>
-                                            <span className="text-[10px] font-medium text-slate-500">Confidence: {entity.score}%</span>
+                                            <span className="text-[10px] font-medium text-slate-500">
+                                                {t.influencer.performance_score}: {entity.score}%
+                                            </span>
                                         </div>
-                                        {/* Confidence Score Bar */}
+                                        {/* Performance Score Bar */}
                                         <div className="h-1 w-full bg-slate-800 rounded-full overflow-hidden">
                                             <motion.div
                                                 initial={{ width: 0 }}

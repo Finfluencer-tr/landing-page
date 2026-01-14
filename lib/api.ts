@@ -149,12 +149,6 @@ export const getMediaUrl = (key: string): string => {
   if (key.startsWith("http") || key.startsWith("data:")) return key;
   
   const normalizedKey = key.startsWith("/") ? key : `/${key}`;
-  
-  // Per user request: if it starts with media/, use get-media
-  if (key.startsWith("media/")) {
-    return `${BASE_URL}/get-media?key=${normalizedKey}`;
-  }
-  
   return `${BASE_URL}/media?key=${normalizedKey}`;
 };
 
