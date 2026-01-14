@@ -153,9 +153,8 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
                                 // Calculate price metrics
                                 let startingPrice, maxPrice, minPrice, avgPrice;
                                 if (entityChartData) {
-                                    const tweetTime = new Date(entityChartData.tweet_date).getTime();
-                                    const tweetCandle = entityChartData.ohlc.find(d => tweetTime >= d.openTime && tweetTime <= d.closeTime);
-                                    startingPrice = tweetCandle?.close;
+                                    // Starting price is the first OHLC data's open price
+                                    startingPrice = entityChartData.ohlc[0]?.open;
                                     maxPrice = Math.max(...entityChartData.ohlc.map(d => d.high));
                                     minPrice = Math.min(...entityChartData.ohlc.map(d => d.low));
                                     const totalClose = entityChartData.ohlc.reduce((sum, d) => sum + d.close, 0);
