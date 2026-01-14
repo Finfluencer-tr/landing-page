@@ -91,7 +91,7 @@ export const PostCard = ({ tweet }: PostCardProps) => {
                                 )}
                                 onClick={() => handleImageClick(imageUrl)}
                             >
-                                <img
+                                <InfluencerImage
                                     src={imageUrl}
                                     alt={`Tweet media ${idx + 1}`}
                                     className={cn(
