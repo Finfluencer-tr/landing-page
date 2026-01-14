@@ -6,8 +6,16 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
+# Install pnpm
+RUN corepack enable pnpm
+
 # Install dependencies based on the preferred package manager
-COPY package.json ./
+COPY package.json pnpm-lock.yaml* package-lock.json* ./
+RUN \
+  if [ -f pnpm-lock.yaml ]; then pnpm i --frozen-lockfile; \
+  elif [ -f package-lock.json ]; then npm ci; \
+  else npm i; \
+  fi
 
 
 # Rebuild the source code only when needed
@@ -15,6 +23,9 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+
+# Install pnpm for build
+RUN corepack enable pnpm
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
