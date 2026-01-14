@@ -6,20 +6,14 @@ import { cn } from "@/lib/utils";
 
 interface CompactOHLCChartProps {
     data: OHLCData[];
-    tweetPrice?: number;
-    maxPrice?: number;
-    minPrice?: number;
-    currentPrice?: number;
+    tweetDate: string;
     sentiment?: "BULLISH" | "BEARISH" | "NEUTRAL";
     className?: string;
 }
 
 export const CompactOHLCChart = ({
     data,
-    tweetPrice,
-    maxPrice,
-    minPrice,
-    currentPrice,
+    tweetDate,
     sentiment,
     className
 }: CompactOHLCChartProps) => {
@@ -27,12 +21,17 @@ export const CompactOHLCChart = ({
 
     const sentimentColor = sentiment === "BULLISH" ? "#10b981" : sentiment === "BEARISH" ? "#ef4444" : "#64748b";
 
+    // Find the price at tweet time
+    const tweetTime = new Date(tweetDate).getTime();
+    const tweetCandle = data.find(d => tweetTime >= d.openTime && tweetTime <= d.closeTime);
+    const tweetPrice = tweetCandle?.close;
+
     return (
         <div className={cn("w-full", className)}>
             <ResponsiveContainer width="100%" height={120}>
                 <LineChart data={data} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
                     <XAxis
-                        dataKey="timestamp"
+                        dataKey="openTime"
                         tick={{ fontSize: 10, fill: "#64748b" }}
                         tickFormatter={(value) => {
                             const date = new Date(value);
@@ -54,6 +53,10 @@ export const CompactOHLCChart = ({
                         }}
                         labelStyle={{ color: "#94a3b8" }}
                         itemStyle={{ color: "#e2e8f0" }}
+                        labelFormatter={(value) => {
+                            const date = new Date(value);
+                            return date.toLocaleString();
+                        }}
                     />
                     {tweetPrice && (
                         <ReferenceLine

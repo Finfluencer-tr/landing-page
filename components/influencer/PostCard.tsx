@@ -183,11 +183,8 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
                                         {entity.entity_id && chartData.get(entity.entity_id) && (
                                             <div className="mt-3 relative group/chart">
                                                 <CompactOHLCChart
-                                                    data={chartData.get(entity.entity_id)!.data}
-                                                    tweetPrice={chartData.get(entity.entity_id)!.tweet_price}
-                                                    maxPrice={chartData.get(entity.entity_id)!.max_price}
-                                                    minPrice={chartData.get(entity.entity_id)!.min_price}
-                                                    currentPrice={chartData.get(entity.entity_id)!.current_price}
+                                                    data={chartData.get(entity.entity_id)!.ohlc}
+                                                    tweetDate={chartData.get(entity.entity_id)!.tweet_date}
                                                     sentiment={entity.sentiment}
                                                     className="rounded-lg bg-slate-900/50 p-2 border border-slate-800/50"
                                                 />
@@ -254,5 +251,30 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
                 )}
             </div>
         </div>
+    );
+};
+            </div >
+
+    {/* Media Modal */ }
+    < MediaModal
+isOpen = { isModalOpen }
+onClose = {() => setIsModalOpen(false)}
+imageUrl = { selectedImage || ""}
+            />
+
+{/* Chart Modal */ }
+{
+    selectedChart && chartData.get(selectedChart.entityId) && (
+        <ChartModal
+            isOpen={!!selectedChart}
+            onClose={() => setSelectedChart(null)}
+            data={chartData.get(selectedChart.entityId)!.ohlc}
+            symbol={selectedChart.symbol}
+            tweetDate={chartData.get(selectedChart.entityId)!.tweet_date}
+            sentiment={tweet.analysis?.entities?.find(e => e.entity_id === selectedChart.entityId)?.sentiment}
+        />
+    )
+}
+        </div >
     );
 };

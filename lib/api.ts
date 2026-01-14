@@ -119,22 +119,19 @@ export interface AnalysisEntity {
 }
 
 export interface OHLCData {
-  timestamp: string;
+  openTime: number;
   open: number;
   high: number;
   low: number;
   close: number;
-  volume?: number;
+  volume: number;
+  closeTime: number;
 }
 
 export interface OHLCResponse {
-  entity_id: string;
   symbol: string;
-  data: OHLCData[];
-  tweet_price?: number;
-  current_price?: number;
-  max_price?: number;
-  min_price?: number;
+  tweet_date: string;
+  ohlc: OHLCData[];
 }
 
 export interface InfluencerTweet {

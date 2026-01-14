@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { IconX, IconMaximize } from "@tabler/icons-react";
+import { IconX } from "@tabler/icons-react";
 import { OHLCData } from "@/lib/api";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine, CartesianGrid } from "recharts";
 
@@ -11,10 +11,7 @@ interface ChartModalProps {
     onClose: () => void;
     data: OHLCData[];
     symbol: string;
-    tweetPrice?: number;
-    maxPrice?: number;
-    minPrice?: number;
-    currentPrice?: number;
+    tweetDate: string;
     sentiment?: "BULLISH" | "BEARISH" | "NEUTRAL";
 }
 
@@ -23,10 +20,7 @@ export const ChartModal = ({
     onClose,
     data,
     symbol,
-    tweetPrice,
-    maxPrice,
-    minPrice,
-    currentPrice,
+    tweetDate,
     sentiment
 }: ChartModalProps) => {
     React.useEffect(() => {
@@ -41,6 +35,14 @@ export const ChartModal = ({
     }, [isOpen]);
 
     const sentimentColor = sentiment === "BULLISH" ? "#10b981" : sentiment === "BEARISH" ? "#ef4444" : "#64748b";
+
+    // Calculate metrics from data
+    const tweetTime = new Date(tweetDate).getTime();
+    const tweetCandle = data.find(d => tweetTime >= d.openTime && tweetTime <= d.closeTime);
+    const tweetPrice = tweetCandle?.close;
+    const currentPrice = data.length > 0 ? data[data.length - 1].close : undefined;
+    const maxPrice = Math.max(...data.map(d => d.high));
+    const minPrice = Math.min(...data.map(d => d.low));
     const priceChange = tweetPrice && currentPrice ? ((currentPrice - tweetPrice) / tweetPrice) * 100 : 0;
 
     return (
@@ -92,18 +94,14 @@ export const ChartModal = ({
                                     <div className="text-lg font-bold text-white mt-1">${currentPrice.toFixed(2)}</div>
                                 </div>
                             )}
-                            {maxPrice && (
-                                <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
-                                    <span className="text-xs text-emerald-400 font-medium uppercase">Max Price</span>
-                                    <div className="text-lg font-bold text-white mt-1">${maxPrice.toFixed(2)}</div>
-                                </div>
-                            )}
-                            {minPrice && (
-                                <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20">
-                                    <span className="text-xs text-rose-400 font-medium uppercase">Min Price</span>
-                                    <div className="text-lg font-bold text-white mt-1">${minPrice.toFixed(2)}</div>
-                                </div>
-                            )}
+                            <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                                <span className="text-xs text-emerald-400 font-medium uppercase">Max Price</span>
+                                <div className="text-lg font-bold text-white mt-1">${maxPrice.toFixed(2)}</div>
+                            </div>
+                            <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20">
+                                <span className="text-xs text-rose-400 font-medium uppercase">Min Price</span>
+                                <div className="text-lg font-bold text-white mt-1">${minPrice.toFixed(2)}</div>
+                            </div>
                         </div>
 
                         {/* Chart */}
@@ -112,7 +110,7 @@ export const ChartModal = ({
                                 <LineChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                                     <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
                                     <XAxis
-                                        dataKey="timestamp"
+                                        dataKey="openTime"
                                         tick={{ fontSize: 12, fill: "#94a3b8" }}
                                         tickFormatter={(value) => {
                                             const date = new Date(value);
@@ -134,6 +132,10 @@ export const ChartModal = ({
                                         }}
                                         labelStyle={{ color: "#cbd5e1", marginBottom: "8px" }}
                                         itemStyle={{ color: "#e2e8f0" }}
+                                        labelFormatter={(value) => {
+                                            const date = new Date(value);
+                                            return date.toLocaleString();
+                                        }}
                                     />
                                     {tweetPrice && (
                                         <ReferenceLine
