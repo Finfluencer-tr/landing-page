@@ -268,10 +268,19 @@ export const getInfluencerBySlug = async (slug: string): Promise<DetailedInfluen
 export const fetchInfluencerTweets = async (
   username: string,
   page: number = 1,
-  limit: number = 10
+  limit: number = 10,
+  isFinancial?: boolean
 ): Promise<InfluencerTweetsResponse | null> => {
   try {
-    const res = await fetch(`${BASE_URL}/influencers/${username}/tweets?page=${page}&limit=${limit}`);
+    const queryParams = new URLSearchParams({
+      page: page.toString(),
+      limit: limit.toString(),
+    });
+    if (isFinancial !== undefined) {
+      queryParams.append("is_financial", isFinancial.toString());
+    }
+
+    const res = await fetch(`${BASE_URL}/influencers/${username}/tweets?${queryParams.toString()}`);
     if (!res.ok) {
       throw new Error(`API error: ${res.status}`);
     }
