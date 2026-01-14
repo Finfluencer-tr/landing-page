@@ -31,14 +31,22 @@ export const InfluencerFeed = ({ influencer }: InfluencerFeedProps) => {
 
         try {
             const isFinancial = activeTab === "financial";
+            console.log(`Loading tweets - Page: ${pageNum}, Tab: ${activeTab}, isFinancial: ${isFinancial}`);
+
             const data = await fetchInfluencerTweets(influencer.profile.username, pageNum, 10, isFinancial);
+
+            console.log('API Response:', data);
 
             if (data && data.tweets) {
                 setTweets(prev => isInitial ? data.tweets : [...prev, ...data.tweets]);
-                hasMoreRef.current = data.meta.page < data.meta.totalPages;
-                setHasMore(data.meta.page < data.meta.totalPages);
+                const hasMore = data.meta.page < data.meta.totalPages;
+                console.log(`Pagination - Current: ${data.meta.page}, Total: ${data.meta.totalPages}, HasMore: ${hasMore}`);
+                hasMoreRef.current = hasMore;
+                setHasMore(hasMore);
             } else {
+                console.log('No data or tweets received');
                 setHasMore(false);
+                hasMoreRef.current = false;
                 if (isInitial) setTweets([]);
             }
         } catch (error) {
