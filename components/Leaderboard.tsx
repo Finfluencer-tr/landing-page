@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState, useMemo, useEffect } from "react";
-import { fetchInfluencers } from "@/lib/api";
-import { Influencer } from "@/lib/mockData";
+import { fetchInfluencers, Influencer } from "@/lib/api";
 import { LeaderboardItem } from "./LeaderboardItem";
 import { IconSearch, IconFilter, IconUserCircle } from "@tabler/icons-react";
 import { motion } from "framer-motion";

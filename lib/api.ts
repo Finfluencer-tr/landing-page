@@ -1,6 +1,47 @@
-import { Influencer } from "./mockData";
-
 const BASE_URL = "https://api.finfluencer.tr";
+
+export interface AIAnalysis {
+    asset: string;
+    sentiment: "Bullish" | "Bearish" | "Neutral";
+    outcome?: string; // e.g., "✅ +5.4% Profit"
+}
+
+export interface Post {
+    id: string;
+    content: string;
+    date: string;
+    isFinancial: boolean;
+    aiAnalysis?: AIAnalysis;
+}
+
+export interface InfluencerLeaderboardStats {
+    accuracy: number;
+    totalSignals: string;
+}
+
+export interface Influencer {
+    id: string;
+    rank: number;
+    name: string;
+    handle: string;
+    avatar: string;
+    platform: "twitter" | "instagram" | "telegram";
+    slug: string;
+    
+    // Leaderboard specific
+    credibilityScore: number;
+    trend: number[];
+    topAsset: {
+        symbol: string;
+        icon: string; 
+    };
+    lastPrediction: "hit" | "miss";
+    followers: string;
+
+    // Profile specific (legacy/mixed)
+    stats: InfluencerLeaderboardStats;
+    posts: Post[];
+}
 
 export interface ApiInfluencer {
   id: number;
@@ -48,6 +89,52 @@ export interface DetailedInfluencer {
   profile: InfluencerProfile;
   metrics: InfluencerMetrics;
   stats: InfluencerStats;
+}
+
+export interface TweetAuthor {
+  username: string;
+  avatar: string;
+}
+
+export interface TweetMedia {
+  type: string;
+  url: string;
+  width: number;
+  height: number;
+}
+
+export interface TweetMetrics {
+  likes: number;
+  retweets: number;
+  replies: number;
+  views: number;
+}
+
+export interface InfluencerTweet {
+  id: string;
+  text: string;
+  created_at: string;
+  is_financial: boolean;
+  metrics: TweetMetrics;
+  media?: TweetMedia[];
+  analysis: {
+    entities: any[];
+    sentiment?: "Bullish" | "Bearish" | "Neutral";
+    asset?: string;
+  };
+  author: TweetAuthor;
+}
+
+export interface TweetMeta {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
+export interface InfluencerTweetsResponse {
+  tweets: InfluencerTweet[];
+  meta: TweetMeta;
 }
 
 export const getMediaUrl = (key: string): string => {
@@ -176,4 +263,22 @@ export const fetchInfluencerDetails = async (username: string): Promise<Detailed
 export const getInfluencerBySlug = async (slug: string): Promise<DetailedInfluencer | null> => {
     // Slug is assumed to be username
     return await fetchInfluencerDetails(slug);
+};
+
+export const fetchInfluencerTweets = async (
+  username: string,
+  page: number = 1,
+  limit: number = 10
+): Promise<InfluencerTweetsResponse | null> => {
+  try {
+    const res = await fetch(`${BASE_URL}/influencers/${username}/tweets?page=${page}&limit=${limit}`);
+    if (!res.ok) {
+      throw new Error(`API error: ${res.status}`);
+    }
+    const data: InfluencerTweetsResponse = await res.json();
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch influencer tweets:", error);
+    return null;
+  }
 };

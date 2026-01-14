@@ -3,7 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { Influencer } from "@/lib/mockData";
+import { Influencer } from "@/lib/api";
 import {
     IconBrandTwitter,
     IconBrandInstagram,

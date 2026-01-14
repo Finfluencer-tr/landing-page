@@ -10,6 +10,8 @@ import { Header } from "../Header";
 import { AuthModal } from "../AuthModal";
 import { useState } from "react";
 
+import { InfluencerFeed } from "./InfluencerFeed";
+
 interface InfluencerContentProps {
     influencer: DetailedInfluencer | null;
 }
@@ -70,10 +72,8 @@ export const InfluencerContent = ({ influencer }: InfluencerContentProps) => {
                             </div>
                         </div>
 
-                        {/* Future section for tweets */}
-                        <div className="mt-12 text-center py-20 border-2 border-dashed border-white/5 rounded-3xl bg-slate-900/20">
-                            <div className="text-slate-500 font-medium">{t.influencer.posts_coming_soon || "Analysis and Tweets Coming Soon"}</div>
-                        </div>
+                        {/* Influencer Feed with Infinite Scroll */}
+                        <InfluencerFeed influencer={influencer} />
                     </div>
                 </div>
             </main>
