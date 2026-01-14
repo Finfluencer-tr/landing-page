@@ -250,9 +250,6 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
                     </div>
                 )}
             </div>
-        </div>
-    );
-};
 
             {/* Media Modal */}
             <MediaModal
