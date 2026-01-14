@@ -4,6 +4,8 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { IconX, IconDownload } from "@tabler/icons-react";
 
+import { InfluencerImage } from "../InfluencerImage";
+
 interface MediaModalProps {
     isOpen: boolean;
     onClose: () => void;
@@ -66,7 +68,7 @@ export const MediaModal = ({ isOpen, onClose, imageUrl }: MediaModalProps) => {
 
                         {/* Image */}
                         <div className="relative w-full h-full flex items-center justify-center rounded-2xl overflow-hidden bg-slate-900/50 border border-white/5 shadow-2xl">
-                            <img
+                            <InfluencerImage
                                 src={imageUrl}
                                 alt="Enlarged media"
                                 className="max-w-full max-h-[85vh] object-contain select-none"
