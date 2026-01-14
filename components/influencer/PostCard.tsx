@@ -11,12 +11,22 @@ import {
     IconChartBar,
 } from "@tabler/icons-react";
 import { InfluencerImage } from "../InfluencerImage";
+import { useState } from "react";
+import { MediaModal } from "./MediaModal";
 
 interface PostCardProps {
     tweet: InfluencerTweet;
 }
 
 export const PostCard = ({ tweet }: PostCardProps) => {
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleImageClick = (url: string) => {
+        setSelectedImage(url);
+        setIsModalOpen(true);
+    };
+
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
         return new Intl.DateTimeFormat('en-US', {
@@ -60,17 +70,44 @@ export const PostCard = ({ tweet }: PostCardProps) => {
 
             {/* Media */}
             {tweet.media && tweet.media.length > 0 && (
-                <div className="mb-4 overflow-hidden rounded-xl border border-slate-800">
-                    {tweet.media.map((item, idx) => (
-                        <img
-                            key={idx}
-                            src={getMediaUrl(item.url)}
-                            alt="Tweet media"
-                            className="w-full h-auto object-cover max-h-[400px]"
-                        />
-                    ))}
+                <div className={cn(
+                    "mb-4 overflow-hidden rounded-2xl border border-slate-800/50 bg-slate-900/20",
+                    tweet.media.length === 1 ? "flex" : "grid gap-2",
+                    tweet.media.length === 2 ? "grid-cols-2 aspect-[16/9]" :
+                        tweet.media.length === 3 ? "grid-cols-2 grid-rows-2 aspect-[16/9]" :
+                            tweet.media.length >= 4 ? "grid-cols-2 aspect-square" : ""
+                )}>
+                    {tweet.media.map((item, idx) => {
+                        const imageUrl = getMediaUrl(item.url);
+                        return (
+                            <div
+                                key={idx}
+                                className={cn(
+                                    "relative group/img cursor-zoom-in overflow-hidden",
+                                    tweet.media?.length === 3 && idx === 0 ? "row-span-2" : ""
+                                )}
+                                onClick={() => handleImageClick(imageUrl)}
+                            >
+                                <img
+                                    src={imageUrl}
+                                    alt={`Tweet media ${idx + 1}`}
+                                    className={cn(
+                                        "w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105",
+                                        tweet.media?.length === 1 ? "max-h-[500px] w-auto mx-auto object-contain" : ""
+                                    )}
+                                />
+                                <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/10 transition-colors duration-300" />
+                            </div>
+                        );
+                    })}
                 </div>
             )}
+
+            <MediaModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                imageUrl={selectedImage || ""}
+            />
 
             {/* AI Analysis Overlay for Financial Tweets */}
             {tweet.is_financial && tweet.analysis && (
