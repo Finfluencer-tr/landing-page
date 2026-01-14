@@ -35,8 +35,8 @@ export const InfluencerFeed = ({ influencer }: InfluencerFeedProps) => {
 
             if (data && data.tweets) {
                 setTweets(prev => isInitial ? data.tweets : [...prev, ...data.tweets]);
-                hasMoreRef.current = data.meta.current_page < data.meta.total_pages;
-                setHasMore(data.meta.current_page < data.meta.total_pages);
+                hasMoreRef.current = data.meta.page < data.meta.totalPages;
+                setHasMore(data.meta.page < data.meta.totalPages);
             } else {
                 setHasMore(false);
                 if (isInitial) setTweets([]);
