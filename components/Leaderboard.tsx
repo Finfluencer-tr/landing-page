@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { Header } from "./Header";
+import { socketService } from "@/lib/socket";
 
 export const Leaderboard = () => {
     const { user, logout } = useAuth();
@@ -58,6 +59,81 @@ export const Leaderboard = () => {
             clearTimeout(timeoutId);
         };
     }, [searchTerm, sortConfig.key]); // Dependencies for API fetch
+
+    // WebSocket: Real-time updates
+    useEffect(() => {
+        // Connect to WebSocket
+        socketService.connect();
+
+        // Handle score changed events
+        const handleScoreChanged = (data: any) => {
+            console.log('📊 Score changed:', data);
+            // Update influencer score if it matches
+            setInfluencers(prev => prev.map(inf => {
+                if (inf.username === data.username) {
+                    // Score changed for this influencer, trigger a refresh
+                    // We'll update the score optimistically or refresh the data
+                    return { ...inf };
+                }
+                return inf;
+            }));
+
+            // Optionally refresh leaderboard data after a short delay
+            setTimeout(() => {
+                fetchInfluencers({
+                    search: searchTerm,
+                    sortBy: sortConfig.key === "rank" || sortConfig.key === "score" ? sortConfig.key : "rank",
+                }).then(data => {
+                    setInfluencers(data);
+                }).catch(err => {
+                    console.error("Failed to refresh leaderboard after score change", err);
+                });
+            }, 1000);
+        };
+
+        // Handle leaderboard updated events
+        const handleLeaderboardUpdated = (data: any) => {
+            console.log('📈 Leaderboard updated:', data);
+            // Update specific influencer in the list
+            setInfluencers(prev => prev.map(inf => {
+                if (inf.username === data.username) {
+                    return {
+                        ...inf,
+                        credibilityScore: data.new_score,
+                        topAsset: data.top_asset,
+                        trend7d: data.trend_7d || inf.trend7d
+                    };
+                }
+                return inf;
+            }));
+
+            // If score changed significantly, refresh full leaderboard to update ranks
+            if (Math.abs((data.old_score || 0) - (data.new_score || 0)) > 1) {
+                setTimeout(() => {
+                    fetchInfluencers({
+                        search: searchTerm,
+                        sortBy: sortConfig.key === "rank" || sortConfig.key === "score" ? sortConfig.key : "rank",
+                    }).then(data => {
+                        setInfluencers(data);
+                    }).catch(err => {
+                        console.error("Failed to refresh leaderboard after update", err);
+                    });
+                }, 500);
+            }
+        };
+
+        // Subscribe to events
+        const unsubscribeScoreChanged = socketService.on('score_changed', handleScoreChanged);
+        const unsubscribeLeaderboardUpdated = socketService.on('leaderboard_updated', handleLeaderboardUpdated);
+
+        // Cleanup on unmount
+        return () => {
+            unsubscribeScoreChanged();
+            unsubscribeLeaderboardUpdated();
+            // Don't disconnect socket here - let it stay connected for other components
+            // socketService.disconnect();
+        };
+    }, [searchTerm, sortConfig.key]);
 
     // Client-side filtering for platform (since API doesn't seem to support it yet)
     // AND Client-side sorting for direction if API doesn't support direction (API docs didn't show order param)
