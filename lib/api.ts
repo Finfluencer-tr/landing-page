@@ -460,6 +460,7 @@ export interface FollowedInfluencer {
   latest_prediction: string;
   avatar: string;
   followed_at: string;
+  notifications_enabled: boolean;
 }
 
 export interface FollowedInfluencersResponse {
@@ -528,6 +529,29 @@ export const getFollowedInfluencers = async (token: string): Promise<FollowedInf
     return data.data;
   } catch (error) {
     console.error("Failed to get followed influencers:", error);
+    throw error;
+  }
+};
+
+export const toggleNotifications = async (username: string, token: string): Promise<{ notifications_enabled: boolean; is_following: boolean }> => {
+  try {
+    const res = await fetch(`${BASE_URL}/influencers/${encodeURIComponent(username)}/notifications/toggle`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || "Failed to toggle notifications");
+    }
+
+    return data.data;
+  } catch (error) {
+    console.error("Failed to toggle notifications:", error);
     throw error;
   }
 };

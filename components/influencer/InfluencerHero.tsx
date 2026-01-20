@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils";
 import { useLanguage } from "@/context/LanguageContext";
 import { getLocale } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
-import { followInfluencer, unfollowInfluencer, getFollowedInfluencers } from "@/lib/api";
+import { followInfluencer, unfollowInfluencer, getFollowedInfluencers, toggleNotifications } from "@/lib/api";
 import { showToast } from "../Toast";
 
 interface InfluencerHeroProps {
@@ -31,6 +31,7 @@ export const InfluencerHero = ({ influencer }: InfluencerHeroProps) => {
     const [isFollowing, setIsFollowing] = useState(false);
     const [isAlarmActive, setIsAlarmActive] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [isNotificationLoading, setIsNotificationLoading] = useState(false);
     const locale = getLocale(language);
 
     const { profile, metrics, stats } = influencer;
@@ -47,8 +48,14 @@ export const InfluencerHero = ({ influencer }: InfluencerHeroProps) => {
         
         try {
             const data = await getFollowedInfluencers(token);
-            const isFollowingUser = data.influencers.some(inf => inf.username === profile.username);
-            setIsFollowing(isFollowingUser);
+            const followedInfluencer = data.influencers.find(inf => inf.username === profile.username);
+            if (followedInfluencer) {
+                setIsFollowing(true);
+                setIsAlarmActive(followedInfluencer.notifications_enabled || false);
+            } else {
+                setIsFollowing(false);
+                setIsAlarmActive(false);
+            }
         } catch (error) {
             console.error("Failed to check following status:", error);
         }
@@ -65,6 +72,7 @@ export const InfluencerHero = ({ influencer }: InfluencerHeroProps) => {
             if (isFollowing) {
                 await unfollowInfluencer(profile.username, token);
                 setIsFollowing(false);
+                setIsAlarmActive(false); // Notifications automatically disabled when unfollowing
                 showToast(`Unfollowed @${profile.username}`, "success");
             } else {
                 await followInfluencer(profile.username, token);
@@ -76,6 +84,36 @@ export const InfluencerHero = ({ influencer }: InfluencerHeroProps) => {
             showToast(error.message || "Failed to update follow status", "error");
         } finally {
             setIsLoading(false);
+        }
+    };
+
+    const handleAlarmToggle = async () => {
+        if (!user || !token) {
+            showToast("Please login to enable notifications", "error");
+            return;
+        }
+
+        setIsNotificationLoading(true);
+        try {
+            const result = await toggleNotifications(profile.username, token);
+            setIsAlarmActive(result.notifications_enabled);
+            
+            // If notifications were enabled and user wasn't following, now they are following
+            if (result.is_following && !isFollowing) {
+                setIsFollowing(true);
+            }
+            
+            showToast(
+                result.notifications_enabled 
+                    ? `Notifications enabled for @${profile.username}` 
+                    : `Notifications disabled for @${profile.username}`,
+                "success"
+            );
+        } catch (error: any) {
+            console.error("Failed to toggle notifications:", error);
+            showToast(error.message || "Failed to toggle notifications", "error");
+        } finally {
+            setIsNotificationLoading(false);
         }
     };
 
@@ -141,17 +179,20 @@ export const InfluencerHero = ({ influencer }: InfluencerHeroProps) => {
                             <span>{t.influencer.view_profile}</span>
                             <IconExternalLink size={16} className="opacity-0 group-hover/profile:opacity-100 transition-opacity" />
                         </a>
-                        <button
-                            onClick={() => setIsAlarmActive(!isAlarmActive)}
-                            className={cn(
-                                "flex items-center justify-center w-12 h-12 rounded-2xl border transition-all hover:scale-105 active:scale-95",
-                                isAlarmActive
-                                    ? "bg-amber-500/20 border-amber-500/40 text-amber-400 shadow-[0_0_20px_rgba(245,158,11,0.2)]"
-                                    : "bg-slate-900/80 border-slate-700 text-slate-400 hover:text-white"
-                            )}
-                        >
-                            {isAlarmActive ? <IconBellFilled size={22} /> : <IconBell size={22} />}
-                        </button>
+                        {user && (
+                            <button
+                                onClick={handleAlarmToggle}
+                                disabled={isNotificationLoading}
+                                className={cn(
+                                    "flex items-center justify-center w-12 h-12 rounded-2xl border transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed",
+                                    isAlarmActive
+                                        ? "bg-amber-500/20 border-amber-500/40 text-amber-400 shadow-[0_0_20px_rgba(245,158,11,0.2)]"
+                                        : "bg-slate-900/80 border-slate-700 text-slate-400 hover:text-white"
+                                )}
+                            >
+                                {isAlarmActive ? <IconBellFilled size={22} /> : <IconBell size={22} />}
+                            </button>
+                        )}
 
                         {user && (
                             <button

@@ -4,14 +4,15 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { useRouter } from "next/navigation";
-import { getFollowedInfluencers, unfollowInfluencer, FollowedInfluencer } from "@/lib/api";
+import { getFollowedInfluencers, unfollowInfluencer, toggleNotifications, FollowedInfluencer } from "@/lib/api";
 import { Header } from "@/components/Header";
 import { AuthModal } from "@/components/AuthModal";
 import { InfluencerImage } from "@/components/InfluencerImage";
 import { getMediaUrl } from "@/lib/api";
-import { IconUserMinus, IconArrowLeft } from "@tabler/icons-react";
+import { IconUserMinus, IconArrowLeft, IconBell, IconBellFilled } from "@tabler/icons-react";
 import Link from "next/link";
 import { showToast } from "@/components/Toast";
+import { cn } from "@/lib/utils";
 
 export default function FollowedPage() {
     const { user, token } = useAuth();
@@ -21,6 +22,7 @@ export default function FollowedPage() {
     const [followedInfluencers, setFollowedInfluencers] = useState<FollowedInfluencer[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [unfollowing, setUnfollowing] = useState<string | null>(null);
+    const [togglingNotifications, setTogglingNotifications] = useState<string | null>(null);
 
     useEffect(() => {
         if (!user || !token) {
@@ -59,6 +61,36 @@ export default function FollowedPage() {
             showToast("Failed to unfollow influencer", "error");
         } finally {
             setUnfollowing(null);
+        }
+    };
+
+    const handleToggleNotifications = async (username: string) => {
+        if (!token) return;
+
+        try {
+            setTogglingNotifications(username);
+            const result = await toggleNotifications(username, token);
+            
+            // Update the influencer's notification status in the list
+            setFollowedInfluencers(prev => 
+                prev.map(inf => 
+                    inf.username === username 
+                        ? { ...inf, notifications_enabled: result.notifications_enabled }
+                        : inf
+                )
+            );
+            
+            showToast(
+                result.notifications_enabled 
+                    ? `Notifications enabled for @${username}` 
+                    : `Notifications disabled for @${username}`,
+                "success"
+            );
+        } catch (error) {
+            console.error("Failed to toggle notifications:", error);
+            showToast("Failed to toggle notifications", "error");
+        } finally {
+            setTogglingNotifications(null);
         }
     };
 
