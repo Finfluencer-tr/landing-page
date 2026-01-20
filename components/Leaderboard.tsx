@@ -100,8 +100,11 @@ export const Leaderboard = () => {
                     return {
                         ...inf,
                         credibilityScore: data.new_score,
-                        topAsset: data.top_asset,
-                        trend7d: data.trend_7d || inf.trend7d
+                        topAsset: {
+                            symbol: data.top_asset || inf.topAsset?.symbol || 'N/A',
+                            icon: inf.topAsset?.icon || ''
+                        },
+                        trend: data.trend_7d || inf.trend
                     };
                 }
                 return inf;

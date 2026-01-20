@@ -24,6 +24,7 @@ export interface Influencer {
     rank: number;
     name: string;
     handle: string;
+    username: string; // Original username without @ prefix, for matching
     avatar: string;
     platform: "twitter" | "instagram" | "telegram";
     slug: string;
@@ -211,6 +212,7 @@ const mapApiInfluencerToInfluencer = (apiInf: ApiInfluencer): Influencer => {
     rank: apiInf.rank,
     name: apiInf.name || apiInf.username, 
     handle: `@${apiInf.username}`,
+    username: apiInf.username, // Store original username for matching
     slug: apiInf.username.toLowerCase().replace(/\s+/g, '-'),
     
     // Mapped fields
