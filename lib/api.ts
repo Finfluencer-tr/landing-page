@@ -568,3 +568,122 @@ export const toggleNotifications = async (username: string, token: string): Prom
     throw error;
   }
 };
+
+export interface Comment {
+  id: string;
+  content: string;
+  created_at: string;
+  updated_at: string;
+  user: {
+    id: string;
+    full_name: string;
+    email: string;
+    role?: string;
+  };
+}
+
+export interface CommentsResponse {
+  comments: Comment[];
+  total: number;
+  limit: number;
+  offset: number;
+}
+
+export interface CreateCommentRequest {
+  influencer_username: string;
+  content: string;
+}
+
+export const getComments = async (
+  username: string,
+  limit: number = 50,
+  offset: number = 0
+): Promise<CommentsResponse> => {
+  try {
+    const language = getCurrentLanguage();
+    const res = await fetch(
+      `${BASE_URL}/influencers/${encodeURIComponent(username)}/comments?limit=${limit}&offset=${offset}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Language": language,
+          "Accept-Language": language,
+        },
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || "Failed to fetch comments");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch comments:", error);
+    throw error;
+  }
+};
+
+export const createComment = async (
+  request: CreateCommentRequest,
+  token: string
+): Promise<Comment> => {
+  try {
+    const language = getCurrentLanguage();
+    const res = await fetch(
+      `${BASE_URL}/influencers/${encodeURIComponent(request.influencer_username)}/comments`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          "X-Language": language,
+          "Accept-Language": language,
+        },
+        body: JSON.stringify({
+          influencer_username: request.influencer_username,
+          content: request.content,
+        }),
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || "Failed to create comment");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Failed to create comment:", error);
+    throw error;
+  }
+};
+
+export const deleteComment = async (
+  commentId: string,
+  token: string
+): Promise<void> => {
+  try {
+    const language = getCurrentLanguage();
+    const res = await fetch(`${BASE_URL}/comments/${encodeURIComponent(commentId)}/delete`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "X-Language": language,
+        "Accept-Language": language,
+      },
+    });
+
+    if (!res.ok) {
+      const data = await res.json();
+      throw new Error(data.error || "Failed to delete comment");
+    }
+  } catch (error) {
+    console.error("Failed to delete comment:", error);
+    throw error;
+  }
+};
