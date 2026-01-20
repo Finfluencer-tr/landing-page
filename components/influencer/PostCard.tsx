@@ -9,6 +9,8 @@ import {
     IconRepeat,
     IconMessageCircle,
     IconChartBar,
+    IconBrandTwitter,
+    IconExternalLink,
 } from "@tabler/icons-react";
 import { InfluencerImage } from "../InfluencerImage";
 import { useState, useEffect } from "react";
@@ -305,26 +307,38 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
                 </div>
             )}
 
-            {/* Metrics */}
-            <div className="flex items-center gap-6 pt-2">
-                <div className="flex items-center gap-1.5 text-slate-500 group-hover:text-rose-400 transition-colors">
-                    <IconHeart size={16} />
-                    <span className="text-xs font-medium">{tweet.metrics.likes}</span>
-                </div>
-                <div className="flex items-center gap-1.5 text-slate-500 group-hover:text-emerald-400 transition-colors">
-                    <IconRepeat size={16} />
-                    <span className="text-xs font-medium">{tweet.metrics.retweets}</span>
-                </div>
-                <div className="flex items-center gap-1.5 text-slate-500 group-hover:text-indigo-400 transition-colors">
-                    <IconMessageCircle size={16} />
-                    <span className="text-xs font-medium">{tweet.metrics.replies}</span>
-                </div>
-                {tweet.metrics.views > 0 && (
-                    <div className="flex items-center gap-1.5 text-slate-500">
-                        <IconChartBar size={16} />
-                        <span className="text-xs font-medium">{tweet.metrics.views}</span>
+            {/* Metrics & Actions */}
+            <div className="flex items-center justify-between pt-2">
+                <div className="flex items-center gap-6">
+                    <div className="flex items-center gap-1.5 text-slate-500 group-hover:text-rose-400 transition-colors">
+                        <IconHeart size={16} />
+                        <span className="text-xs font-medium">{tweet.metrics.likes}</span>
                     </div>
-                )}
+                    <div className="flex items-center gap-1.5 text-slate-500 group-hover:text-emerald-400 transition-colors">
+                        <IconRepeat size={16} />
+                        <span className="text-xs font-medium">{tweet.metrics.retweets}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-slate-500 group-hover:text-indigo-400 transition-colors">
+                        <IconMessageCircle size={16} />
+                        <span className="text-xs font-medium">{tweet.metrics.replies}</span>
+                    </div>
+                    {tweet.metrics.views > 0 && (
+                        <div className="flex items-center gap-1.5 text-slate-500">
+                            <IconChartBar size={16} />
+                            <span className="text-xs font-medium">{tweet.metrics.views}</span>
+                        </div>
+                    )}
+                </div>
+                <a
+                    href={`https://twitter.com/${tweet.author.username}/status/${tweet.id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700/50 hover:border-indigo-500/50 text-slate-400 hover:text-indigo-400 transition-all text-sm font-medium group/btn"
+                >
+                    <IconBrandTwitter size={16} />
+                    <span>{t.influencer.view_tweet}</span>
+                    <IconExternalLink size={14} className="opacity-0 group-hover/btn:opacity-100 transition-opacity" />
+                </a>
             </div>
 
             {/* Media Modal */}

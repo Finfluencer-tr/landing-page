@@ -11,7 +11,8 @@ import {
     IconCalendar,
     IconMapPin,
     IconLink,
-    IconUsers
+    IconUsers,
+    IconExternalLink
 } from "@tabler/icons-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -78,6 +79,16 @@ export const InfluencerHero = ({ influencer }: InfluencerHeroProps) => {
                     </div>
 
                     <div className="flex items-center gap-3">
+                        <a
+                            href={`https://twitter.com/${profile.username}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-slate-900/80 border border-slate-700 text-slate-300 hover:text-white hover:border-indigo-500/50 transition-all hover:scale-105 active:scale-95 font-bold group/profile"
+                        >
+                            <IconBrandTwitter size={20} />
+                            <span>{t.influencer.view_profile}</span>
+                            <IconExternalLink size={16} className="opacity-0 group-hover/profile:opacity-100 transition-opacity" />
+                        </a>
                         <button
                             onClick={() => setIsAlarmActive(!isAlarmActive)}
                             className={cn(

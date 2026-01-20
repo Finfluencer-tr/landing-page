@@ -37,6 +37,8 @@ export const translations = {
       rank_label: "Rank",
       ai_analysis_title: "AI Financial Analysis",
       performance_score: "Performance Score",
+      view_tweet: "View on Twitter",
+      view_profile: "View Profile",
     },
     bento: {
       header: "From Chaos to",
@@ -192,6 +194,8 @@ export const translations = {
       rank_label: "Sıra",
       ai_analysis_title: "Yapay Zeka Finansal Analizi",
       performance_score: "Performans Skoru",
+      view_tweet: "Twitter'da Görüntüle",
+      view_profile: "Profili Görüntüle",
     },
     bento: {
       header: "Kaostan",
@@ -347,6 +351,8 @@ export const translations = {
             rank_label: "排名",
             ai_analysis_title: "人工智能金融分析",
             performance_score: "表现评分",
+            view_tweet: "在 Twitter 上查看",
+            view_profile: "查看个人资料",
         },
     bento: {
       header: "从混乱到",
@@ -502,6 +508,8 @@ export const translations = {
       rank_label: "الترتيب",
       ai_analysis_title: "تحليل مالي بالذكاء الاصطناعي",
       performance_score: "درجة الأداء",
+      view_tweet: "عرض على Twitter",
+      view_profile: "عرض الملف الشخصي",
     },
     bento: {
       header: "من الفوضى إلى",
