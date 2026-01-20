@@ -247,7 +247,7 @@ export const CommentModal = ({ isOpen, onClose, influencerUsername, influencerNa
                                     {isPosting ? (
                                         <>
                                             <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></div>
-                                            <span>{t.leaderboard.loading}</span>
+                                            <span>{t.auth.loading}</span>
                                         </>
                                     ) : (
                                         <>
