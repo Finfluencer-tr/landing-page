@@ -95,13 +95,13 @@ export const InfluencerFeed = ({ influencer }: InfluencerFeedProps) => {
     }, [loadTweets]);
 
     return (
-        <div className="mt-8">
+        <div className="mt-6 sm:mt-8">
             {/* Tabs */}
-            <div className="flex items-center gap-6 border-b border-slate-800 mb-8">
+            <div className="flex items-center gap-4 sm:gap-6 border-b border-slate-800 mb-6 sm:mb-8 overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
                 <button
                     onClick={() => setActiveTab("all")}
                     className={cn(
-                        "pb-3 text-sm font-medium transition-colors relative",
+                        "pb-2.5 sm:pb-3 text-xs sm:text-sm font-medium transition-colors relative whitespace-nowrap flex-shrink-0",
                         activeTab === "all" ? "text-indigo-400" : "text-slate-500 hover:text-slate-300"
                     )}
                 >
@@ -113,7 +113,7 @@ export const InfluencerFeed = ({ influencer }: InfluencerFeedProps) => {
                 <button
                     onClick={() => setActiveTab("financial")}
                     className={cn(
-                        "pb-3 text-sm font-medium transition-colors relative",
+                        "pb-2.5 sm:pb-3 text-xs sm:text-sm font-medium transition-colors relative whitespace-nowrap flex-shrink-0",
                         activeTab === "financial" ? "text-indigo-400" : "text-slate-500 hover:text-slate-300"
                     )}
                 >
@@ -125,7 +125,7 @@ export const InfluencerFeed = ({ influencer }: InfluencerFeedProps) => {
             </div>
 
             {/* Tweets List */}
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
                 <AnimatePresence mode="popLayout">
                     {tweets.map((tweet, index) => (
                         <motion.div

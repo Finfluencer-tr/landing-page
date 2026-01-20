@@ -129,15 +129,15 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
 
             {/* AI Analysis Overlay for Financial Tweets */}
             {tweet.is_financial && tweet.analysis && (
-                <div className="mb-4 p-4 rounded-xl bg-indigo-500/5 border border-indigo-500/10">
-                    <div className="flex items-center justify-between mb-3 pb-2 border-b border-indigo-500/10">
-                        <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">
+                <div className="mb-3 sm:mb-4 p-3 sm:p-4 rounded-xl bg-indigo-500/5 border border-indigo-500/10">
+                    <div className="flex items-center justify-between mb-2 sm:mb-3 pb-2 border-b border-indigo-500/10">
+                        <span className="text-[9px] sm:text-[10px] font-bold text-indigo-400 uppercase tracking-widest">
                             {t.influencer.ai_analysis_title}
                         </span>
                     </div>
 
                     {tweet.analysis.entities && tweet.analysis.entities.length > 0 ? (
-                        <div className="space-y-3">
+                        <div className="space-y-2 sm:space-y-3">
                             {tweet.analysis.entities.map((entity, idx) => {
                                 const sentiment = entity.sentiment.toUpperCase();
                                 const entityChartData = entity.entity_id ? chartData.get(entity.entity_id) : null;
@@ -255,7 +255,7 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
                                         {/* Right: OHLC Chart */}
                                         {entityChartData && (
                                             <div
-                                                className="flex-1 cursor-pointer rounded-lg bg-slate-900/50 p-3 border border-slate-800/50 hover:border-indigo-500/30 transition-all"
+                                                className="w-full sm:flex-1 cursor-pointer rounded-lg bg-slate-900/50 p-2 sm:p-3 border border-slate-800/50 hover:border-indigo-500/30 transition-all"
                                                 onClick={() => setSelectedChart({ entityId: entity.entity_id, symbol: entity.symbol })}
                                             >
                                                 <CompactOHLCChart

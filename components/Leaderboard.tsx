@@ -200,31 +200,31 @@ export const Leaderboard = () => {
             {/* Header / Nav */}
             <Header onOpenAuthModal={() => setIsAuthModalOpen(true)} />
 
-            <main className="container mx-auto px-4 py-12">
+            <main className="container mx-auto px-4 py-6 sm:py-8 md:py-12">
                 {/* Hero Section of Leaderboard */}
-                <div className="mb-12 text-center">
-                    <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400">
+                <div className="mb-6 sm:mb-8 md:mb-12 text-center">
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400 px-2">
                         {t.leaderboard.title}
                     </h1>
-                    <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+                    <p className="text-slate-400 text-sm sm:text-base md:text-lg max-w-2xl mx-auto px-2">
                         {t.leaderboard.subtitle}
                     </p>
                 </div>
 
                 {/* Filters & Search */}
-                <div className="flex flex-col md:flex-row gap-4 mb-8 sticky top-20 z-40 p-2 rounded-2xl bg-slate-900/50 backdrop-blur-xl border border-slate-800/50 shadow-xl">
+                <div className="flex flex-col md:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8 sticky top-16 sm:top-20 z-40 p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-slate-900/50 backdrop-blur-xl border border-slate-800/50 shadow-xl">
                     <div className="relative flex-1">
-                        <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                        <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={16} className="sm:w-[18px] sm:h-[18px]" />
                         <input
                             type="text"
                             placeholder={t.leaderboard.search_placeholder}
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all placeholder:text-slate-600"
+                            className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all placeholder:text-slate-600"
                         />
                     </div>
 
-                    <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
+                    <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-hide -mx-2 px-2 sm:mx-0 sm:px-0">
                         {(["all", "twitter", "instagram", "telegram"] as const).map((platform) => {
                             const isDisabled = platform === "instagram" || platform === "telegram";
                             // Map platform to translation key
