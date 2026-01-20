@@ -28,15 +28,15 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
         if (isRegister) {
             // Validation for register
             if (!fullName.trim()) {
-                setLocalError("Full name is required");
+                setLocalError(t.auth.full_name_required);
                 return;
             }
             if (password.length < 6) {
-                setLocalError("Password must be at least 6 characters");
+                setLocalError(t.auth.password_min_length);
                 return;
             }
             if (password !== confirmPassword) {
-                setLocalError("Passwords do not match");
+                setLocalError(t.auth.passwords_no_match);
                 return;
             }
 
@@ -54,7 +54,7 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
         } else {
             // Login
             if (!email || !password) {
-                setLocalError("Email and password are required");
+                setLocalError(t.auth.email_password_required);
                 return;
             }
 

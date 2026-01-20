@@ -155,7 +155,13 @@ export const translations = {
       please_wait: "Please wait while we sign you in.",
       auth_failed: "Authentication Failed",
       success: "Success!",
-      redirecting: "Redirecting..."
+      redirecting: "Redirecting...",
+      full_name_required: "Full name is required",
+      password_min_length: "Password must be at least 6 characters",
+      passwords_no_match: "Passwords do not match",
+      email_password_required: "Email and password are required",
+      member: "Member",
+      loading: "Loading..."
     },
     error404: {
       title: "Lost in the Signal?",
@@ -318,7 +324,13 @@ export const translations = {
       please_wait: "Lütfen giriş yapılırken bekleyin.",
       auth_failed: "Kimlik Doğrulama Başarısız",
       success: "Başarılı!",
-      redirecting: "Yönlendiriliyor..."
+      redirecting: "Yönlendiriliyor...",
+      full_name_required: "Ad soyad gereklidir",
+      password_min_length: "Şifre en az 6 karakter olmalıdır",
+      passwords_no_match: "Şifreler eşleşmiyor",
+      email_password_required: "E-posta ve şifre gereklidir",
+      member: "Üye",
+      loading: "Yükleniyor..."
     },
     error404: {
       title: "Sinyal Mi Kayboldu?",
@@ -481,7 +493,13 @@ export const translations = {
       please_wait: "请稍候，我们正在为您登录。",
       auth_failed: "身份验证失败",
       success: "成功！",
-      redirecting: "正在重定向..."
+      redirecting: "正在重定向...",
+      full_name_required: "需要全名",
+      password_min_length: "密码必须至少6个字符",
+      passwords_no_match: "密码不匹配",
+      email_password_required: "需要电子邮件和密码",
+      member: "成员",
+      loading: "加载中..."
     },
     error404: {
       title: "信号丢失？",
@@ -644,7 +662,13 @@ export const translations = {
       please_wait: "يرجى الانتظار بينما نقوم بتسجيل الدخول.",
       auth_failed: "فشل المصادقة",
       success: "نجح!",
-      redirecting: "جاري إعادة التوجيه..."
+      redirecting: "جاري إعادة التوجيه...",
+      full_name_required: "الاسم الكامل مطلوب",
+      password_min_length: "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
+      passwords_no_match: "كلمات المرور غير متطابقة",
+      email_password_required: "البريد الإلكتروني وكلمة المرور مطلوبان",
+      member: "عضو",
+      loading: "جاري التحميل..."
     },
     error404: {
       title: "هل فقدت الإشارة؟",

@@ -38,7 +38,7 @@ export const Header = ({ onOpenAuthModal }: HeaderProps) => {
     const handleLogout = () => {
         logout();
         setIsDropdownOpen(false);
-        showToast(t.auth.logout_success || "Successfully logged out", "success");
+        showToast(t.auth.logout_success, "success");
     };
 
     return (
@@ -67,7 +67,7 @@ export const Header = ({ onOpenAuthModal }: HeaderProps) => {
                             >
                                 <div className="text-right hidden sm:block">
                                     <div className="text-sm font-medium">{user.name}</div>
-                                    <div className="text-xs text-slate-500">{t.leaderboard.pro} Member</div>
+                                    <div className="text-xs text-slate-500">{t.leaderboard.pro} {t.auth.member}</div>
                                 </div>
                                 <div className="relative">
                                     <img 
