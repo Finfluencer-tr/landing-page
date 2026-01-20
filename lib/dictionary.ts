@@ -151,7 +151,20 @@ export const translations = {
       miss: "MISS ❌",
       loading_influencers: "Loading influencers...",
       score_label: "SCORE",
-      top_asset_label: "Top Asset"
+      top_asset_label: "Top Asset",
+      comments: "Comments",
+      add_comment: "Add Comment",
+      write_comment: "Write your comment...",
+      post_comment: "Post Comment",
+      no_comments: "No comments yet. Be the first to comment!",
+      delete_comment: "Delete Comment",
+      comment_deleted: "Comment deleted",
+      comment_posted: "Your comment has been posted",
+      comment_failed: "Failed to post comment",
+      delete_failed: "Failed to delete comment",
+      loading_comments: "Loading comments...",
+      comment_placeholder: "What do you think about this influencer?",
+      cancel: "Cancel"
     },
     auth: {
       join_beta: "Join Beta",
@@ -344,7 +357,20 @@ export const translations = {
       miss: "TUTMADI ❌",
       loading_influencers: "Influencer'lar yükleniyor...",
       score_label: "SKOR",
-      top_asset_label: "En İyi Varlık"
+      top_asset_label: "En İyi Varlık",
+      comments: "Yorumlar",
+      add_comment: "Yorum Ekle",
+      write_comment: "Yorumunuzu yazın...",
+      post_comment: "Yorum Gönder",
+      no_comments: "Henüz yorum yok. İlk yorumu siz yapın!",
+      delete_comment: "Yorumu Sil",
+      comment_deleted: "Yorum silindi",
+      comment_posted: "Yorumunuz gönderildi",
+      comment_failed: "Yorum gönderilemedi",
+      delete_failed: "Yorum silinemedi",
+      loading_comments: "Yorumlar yükleniyor...",
+      comment_placeholder: "Bu influencer hakkında ne düşünüyorsunuz?",
+      cancel: "İptal"
     },
     auth: {
       join_beta: "Beta'ya Katıl",

@@ -12,6 +12,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { Header } from "./Header";
 import { socketService } from "@/lib/socket";
+import { CommentModal } from "./CommentModal";
 
 export const Leaderboard = () => {
     const { user, logout } = useAuth();
@@ -179,12 +180,18 @@ export const Leaderboard = () => {
         return <motion.span className="text-indigo-400 ml-1">{direction === "asc" ? "↑" : "↓"}</motion.span>;
     };
 
-    const handleCommentClick = () => {
+    const [selectedInfluencer, setSelectedInfluencer] = useState<{ username: string; name: string } | null>(null);
+    const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
+
+    const handleCommentClick = (influencer: Influencer) => {
         if (!user) {
             setIsAuthModalOpen(true);
         } else {
-            console.log("Open comment dialog (to be implemented)");
-            // In a real app, this would open a specific comment thread or modal
+            setSelectedInfluencer({
+                username: influencer.username,
+                name: influencer.name
+            });
+            setIsCommentModalOpen(true);
         }
     };
 
@@ -280,7 +287,7 @@ export const Leaderboard = () => {
                                     key={influencer.id}
                                     influencer={influencer}
                                     index={index}
-                                    onCommentClick={handleCommentClick}
+                                    onCommentClick={() => handleCommentClick(influencer)}
                                 />
                             ))}
 
@@ -297,6 +304,18 @@ export const Leaderboard = () => {
             </main>
 
             <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
+            
+            {selectedInfluencer && (
+                <CommentModal
+                    isOpen={isCommentModalOpen}
+                    onClose={() => {
+                        setIsCommentModalOpen(false);
+                        setSelectedInfluencer(null);
+                    }}
+                    influencerUsername={selectedInfluencer.username}
+                    influencerName={selectedInfluencer.name}
+                />
+            )}
         </div>
     );
 };
