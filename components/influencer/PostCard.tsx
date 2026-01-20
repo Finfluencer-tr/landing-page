@@ -298,24 +298,24 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
             )}
 
             {/* Metrics & Actions */}
-            <div className="flex items-center justify-between pt-2">
-                <div className="flex items-center gap-6">
-                    <div className="flex items-center gap-1.5 text-slate-500 group-hover:text-rose-400 transition-colors">
-                        <IconHeart size={16} />
-                        <span className="text-xs font-medium">{tweet.metrics.likes}</span>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pt-2 gap-3 sm:gap-0">
+                <div className="flex items-center gap-3 sm:gap-6 flex-wrap">
+                    <div className="flex items-center gap-1 sm:gap-1.5 text-slate-500 group-hover:text-rose-400 transition-colors">
+                        <IconHeart size={14} className="sm:w-4 sm:h-4" />
+                        <span className="text-[10px] sm:text-xs font-medium">{tweet.metrics.likes}</span>
                     </div>
-                    <div className="flex items-center gap-1.5 text-slate-500 group-hover:text-emerald-400 transition-colors">
-                        <IconRepeat size={16} />
-                        <span className="text-xs font-medium">{tweet.metrics.retweets}</span>
+                    <div className="flex items-center gap-1 sm:gap-1.5 text-slate-500 group-hover:text-emerald-400 transition-colors">
+                        <IconRepeat size={14} className="sm:w-4 sm:h-4" />
+                        <span className="text-[10px] sm:text-xs font-medium">{tweet.metrics.retweets}</span>
                     </div>
-                    <div className="flex items-center gap-1.5 text-slate-500 group-hover:text-indigo-400 transition-colors">
-                        <IconMessageCircle size={16} />
-                        <span className="text-xs font-medium">{tweet.metrics.replies}</span>
+                    <div className="flex items-center gap-1 sm:gap-1.5 text-slate-500 group-hover:text-indigo-400 transition-colors">
+                        <IconMessageCircle size={14} className="sm:w-4 sm:h-4" />
+                        <span className="text-[10px] sm:text-xs font-medium">{tweet.metrics.replies}</span>
                     </div>
                     {tweet.metrics.views > 0 && (
-                        <div className="flex items-center gap-1.5 text-slate-500">
-                            <IconChartBar size={16} />
-                            <span className="text-xs font-medium">{tweet.metrics.views}</span>
+                        <div className="flex items-center gap-1 sm:gap-1.5 text-slate-500">
+                            <IconChartBar size={14} className="sm:w-4 sm:h-4" />
+                            <span className="text-[10px] sm:text-xs font-medium">{tweet.metrics.views}</span>
                         </div>
                     )}
                 </div>
@@ -323,13 +323,13 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
                     href={`https://twitter.com/${tweet.author.username}/status/${tweet.id}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700/50 hover:border-indigo-500/50 text-slate-400 hover:text-indigo-400 transition-all text-sm font-medium group/btn"
+                    className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700/50 hover:border-indigo-500/50 text-slate-400 hover:text-indigo-400 transition-all text-xs sm:text-sm font-medium group/btn w-full sm:w-auto justify-center"
                 >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
+                    <svg width="14" height="14" className="sm:w-4 sm:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
                         <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                     </svg>
                     <span>{t.influencer.view_tweet}</span>
-                    <IconExternalLink size={14} className="opacity-0 group-hover/btn:opacity-100 transition-opacity" />
+                    <IconExternalLink size={12} className="sm:w-[14px] sm:h-[14px] opacity-0 group-hover/btn:opacity-100 transition-opacity" />
                 </a>
             </div>
 

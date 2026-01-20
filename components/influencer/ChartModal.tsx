@@ -69,24 +69,24 @@ export const ChartModal = ({
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
                         transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                        className="relative z-10 w-full max-w-6xl bg-slate-900 rounded-2xl border border-white/10 shadow-2xl overflow-hidden"
+                        className="relative z-10 w-full max-w-6xl bg-slate-900 rounded-xl sm:rounded-2xl border border-white/10 shadow-2xl overflow-hidden max-h-[95vh] flex flex-col"
                     >
                         {/* Header */}
-                        <div className="flex items-center justify-between p-6 border-b border-white/10">
-                            <div>
-                                <h2 className="text-2xl font-bold text-white">${symbol}</h2>
-                                <p className="text-sm text-slate-400 mt-1">{t.influencer.price_performance_analysis}</p>
+                        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-white/10 flex-shrink-0">
+                            <div className="min-w-0 flex-1 pr-2">
+                                <h2 className="text-xl sm:text-2xl font-bold text-white truncate">${symbol}</h2>
+                                <p className="text-xs sm:text-sm text-slate-400 mt-1">{t.influencer.price_performance_analysis}</p>
                             </div>
                             <button
                                 onClick={onClose}
-                                className="p-2 rounded-full bg-slate-800/50 hover:bg-slate-700 text-slate-300 hover:text-white transition-all border border-white/5"
+                                className="p-2 rounded-full bg-slate-800/50 hover:bg-slate-700 text-slate-300 hover:text-white transition-all border border-white/5 flex-shrink-0"
                             >
-                                <IconX size={20} />
+                                <IconX size={18} className="sm:w-5 sm:h-5" />
                             </button>
                         </div>
 
                         {/* Stats */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-slate-900/50">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 p-4 sm:p-6 bg-slate-900/50 flex-shrink-0">
                             {tweetPrice && (
                                 <div className="p-4 rounded-xl bg-indigo-500/10 border border-indigo-500/20">
                                     <span className="text-xs text-indigo-400 font-medium uppercase">{t.influencer.tweet_price}</span>
@@ -99,43 +99,45 @@ export const ChartModal = ({
                                     <div className="text-lg font-bold text-white mt-1">${currentPrice.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                                 </div>
                             )}
-                            <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
-                                <span className="text-xs text-emerald-400 font-medium uppercase">{t.influencer.max_price}</span>
-                                <div className="text-lg font-bold text-white mt-1">${maxPrice.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+                            <div className="p-3 sm:p-4 rounded-lg sm:rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                                <span className="text-[10px] sm:text-xs text-emerald-400 font-medium uppercase">{t.influencer.max_price}</span>
+                                <div className="text-sm sm:text-lg font-bold text-white mt-1">${maxPrice.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                             </div>
-                            <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20">
-                                <span className="text-xs text-rose-400 font-medium uppercase">{t.influencer.min_price}</span>
-                                <div className="text-lg font-bold text-white mt-1">${minPrice.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+                            <div className="p-3 sm:p-4 rounded-lg sm:rounded-xl bg-rose-500/10 border border-rose-500/20">
+                                <span className="text-[10px] sm:text-xs text-rose-400 font-medium uppercase">{t.influencer.min_price}</span>
+                                <div className="text-sm sm:text-lg font-bold text-white mt-1">${minPrice.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                             </div>
                         </div>
 
                         {/* Chart */}
-                        <div className="p-6">
-                            <ResponsiveContainer width="100%" height={400}>
+                        <div className="p-3 sm:p-4 md:p-6 flex-1 min-h-0 overflow-auto">
+                            <ResponsiveContainer width="100%" height={300} className="sm:h-[400px]">
                                 <LineChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                                     <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
                                     <XAxis
                                         dataKey="openTime"
-                                        tick={{ fontSize: 12, fill: "#94a3b8" }}
+                                        tick={{ fontSize: 10, fill: "#94a3b8" }}
                                         tickFormatter={(value) => {
                                             return formatDateTime(new Date(value).toISOString(), language);
                                         }}
                                         stroke="#475569"
                                     />
                                     <YAxis
-                                        tick={{ fontSize: 12, fill: "#94a3b8" }}
+                                        tick={{ fontSize: 10, fill: "#94a3b8" }}
                                         domain={['auto', 'auto']}
                                         stroke="#475569"
+                                        width={50}
                                     />
                                     <Tooltip
                                         contentStyle={{
                                             backgroundColor: "#1e293b",
                                             border: "1px solid #475569",
-                                            borderRadius: "12px",
-                                            padding: "12px"
+                                            borderRadius: "8px",
+                                            padding: "8px",
+                                            fontSize: "11px"
                                         }}
-                                        labelStyle={{ color: "#cbd5e1", marginBottom: "8px" }}
-                                        itemStyle={{ color: "#e2e8f0" }}
+                                        labelStyle={{ color: "#cbd5e1", marginBottom: "4px", fontSize: "11px" }}
+                                        itemStyle={{ color: "#e2e8f0", fontSize: "11px" }}
                                         labelFormatter={(value) => {
                                             return new Date(value).toLocaleString(locale);
                                         }}
@@ -172,10 +174,10 @@ export const ChartModal = ({
 
                             {/* Performance Summary */}
                             {tweetPrice && currentPrice && (
-                                <div className="mt-6 p-4 rounded-xl bg-slate-800/30 border border-white/5">
+                                <div className="mt-4 sm:mt-6 p-3 sm:p-4 rounded-lg sm:rounded-xl bg-slate-800/30 border border-white/5">
                                     <div className="flex items-center justify-between">
-                                        <span className="text-sm text-slate-400">{t.influencer.performance_since_tweet}</span>
-                                        <span className={`text-lg font-bold ${priceChange >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                                        <span className="text-xs sm:text-sm text-slate-400">{t.influencer.performance_since_tweet}</span>
+                                        <span className={`text-base sm:text-lg font-bold ${priceChange >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
                                             {priceChange >= 0 ? '+' : ''}{priceChange.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%
                                         </span>
                                     </div>
