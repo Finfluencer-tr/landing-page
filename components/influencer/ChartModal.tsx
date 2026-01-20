@@ -139,6 +139,9 @@ export const ChartModal = ({
                                         labelFormatter={(value) => {
                                             return new Date(value).toLocaleString(locale);
                                         }}
+                                        formatter={(value: number) => {
+                                            return [`$${value.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, t.influencer.close_price];
+                                        }}
                                     />
                                     {tweetPrice && (
                                         <ReferenceLine

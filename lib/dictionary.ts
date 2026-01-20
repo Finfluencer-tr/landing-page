@@ -56,6 +56,7 @@ export const translations = {
       max_price_label: "Max",
       min_price_label: "Min",
       projection_for: "Projection for",
+      close_price: "Close Price",
     },
     bento: {
       header: "From Chaos to",
@@ -245,6 +246,7 @@ export const translations = {
       max_price_label: "Maks",
       min_price_label: "Min",
       projection_for: "Projeksiyon",
+      close_price: "Kapanış Fiyatı",
     },
     bento: {
       header: "Kaostan",
@@ -434,6 +436,7 @@ export const translations = {
             max_price_label: "最高",
             min_price_label: "最低",
             projection_for: "预测",
+            close_price: "收盘价",
         },
     bento: {
       header: "从混乱到",
@@ -623,6 +626,7 @@ export const translations = {
       max_price_label: "الأعلى",
       min_price_label: "الأقل",
       projection_for: "التنبؤ",
+      close_price: "سعر الإغلاق",
     },
     bento: {
       header: "من الفوضى إلى",
