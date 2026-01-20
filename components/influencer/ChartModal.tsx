@@ -6,6 +6,7 @@ import { IconX } from "@tabler/icons-react";
 import { OHLCData } from "@/lib/api";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine, CartesianGrid } from "recharts";
 import { useLanguage } from "@/context/LanguageContext";
+import { formatDateTime, getLocale } from "@/lib/utils";
 
 interface ChartModalProps {
     isOpen: boolean;
@@ -24,7 +25,8 @@ export const ChartModal = ({
     tweetDate,
     sentiment
 }: ChartModalProps) => {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
+    const locale = getLocale(language);
     
     React.useEffect(() => {
         if (isOpen) {
@@ -88,22 +90,22 @@ export const ChartModal = ({
                             {tweetPrice && (
                                 <div className="p-4 rounded-xl bg-indigo-500/10 border border-indigo-500/20">
                                     <span className="text-xs text-indigo-400 font-medium uppercase">{t.influencer.tweet_price}</span>
-                                    <div className="text-lg font-bold text-white mt-1">${tweetPrice.toFixed(2)}</div>
+                                    <div className="text-lg font-bold text-white mt-1">${tweetPrice.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                                 </div>
                             )}
                             {currentPrice && (
                                 <div className="p-4 rounded-xl bg-slate-800/50 border border-white/5">
                                     <span className="text-xs text-slate-400 font-medium uppercase">{t.influencer.current_price}</span>
-                                    <div className="text-lg font-bold text-white mt-1">${currentPrice.toFixed(2)}</div>
+                                    <div className="text-lg font-bold text-white mt-1">${currentPrice.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                                 </div>
                             )}
                             <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
                                 <span className="text-xs text-emerald-400 font-medium uppercase">{t.influencer.max_price}</span>
-                                <div className="text-lg font-bold text-white mt-1">${maxPrice.toFixed(2)}</div>
+                                <div className="text-lg font-bold text-white mt-1">${maxPrice.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                             </div>
                             <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20">
                                 <span className="text-xs text-rose-400 font-medium uppercase">{t.influencer.min_price}</span>
-                                <div className="text-lg font-bold text-white mt-1">${minPrice.toFixed(2)}</div>
+                                <div className="text-lg font-bold text-white mt-1">${minPrice.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                             </div>
                         </div>
 
@@ -116,8 +118,7 @@ export const ChartModal = ({
                                         dataKey="openTime"
                                         tick={{ fontSize: 12, fill: "#94a3b8" }}
                                         tickFormatter={(value) => {
-                                            const date = new Date(value);
-                                            return `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
+                                            return formatDateTime(new Date(value).toISOString(), language);
                                         }}
                                         stroke="#475569"
                                     />
@@ -136,8 +137,7 @@ export const ChartModal = ({
                                         labelStyle={{ color: "#cbd5e1", marginBottom: "8px" }}
                                         itemStyle={{ color: "#e2e8f0" }}
                                         labelFormatter={(value) => {
-                                            const date = new Date(value);
-                                            return date.toLocaleString();
+                                            return new Date(value).toLocaleString(locale);
                                         }}
                                     />
                                     {tweetPrice && (
@@ -147,7 +147,7 @@ export const ChartModal = ({
                                             strokeDasharray="5 5"
                                             strokeWidth={2}
                                             label={{
-                                                value: `${t.influencer.tweet_price}: $${tweetPrice.toFixed(2)}`,
+                                                value: `${t.influencer.tweet_price}: $${tweetPrice.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
                                                 position: "right",
                                                 fill: "#6366f1",
                                                 fontSize: 12,
@@ -172,7 +172,7 @@ export const ChartModal = ({
                                     <div className="flex items-center justify-between">
                                         <span className="text-sm text-slate-400">{t.influencer.performance_since_tweet}</span>
                                         <span className={`text-lg font-bold ${priceChange >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
-                                            {priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)}%
+                                            {priceChange >= 0 ? '+' : ''}{priceChange.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%
                                         </span>
                                     </div>
                                 </div>

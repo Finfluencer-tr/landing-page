@@ -16,15 +16,17 @@ import {
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/context/LanguageContext";
+import { getLocale } from "@/lib/utils";
 
 interface InfluencerHeroProps {
     influencer: DetailedInfluencer;
 }
 
 export const InfluencerHero = ({ influencer }: InfluencerHeroProps) => {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
     const [isFollowing, setIsFollowing] = useState(false);
     const [isAlarmActive, setIsAlarmActive] = useState(false);
+    const locale = getLocale(language);
 
     const { profile, metrics, stats } = influencer;
 
@@ -151,17 +153,17 @@ export const InfluencerHero = ({ influencer }: InfluencerHeroProps) => {
                             )}
                             <div className="flex items-center gap-1.5">
                                 <IconCalendar size={16} />
-                                {new Date(profile.joined_at).getFullYear()}
+                                {new Date(profile.joined_at).toLocaleDateString(locale, { year: 'numeric' })}
                             </div>
                         </div>
 
                         <div className="flex gap-6 pt-2">
                             <div className="flex items-center gap-2">
-                                <span className="text-white font-bold">{profile.followers.toLocaleString()}</span>
+                                <span className="text-white font-bold">{profile.followers.toLocaleString(locale)}</span>
                                 <span className="text-slate-500 uppercase tracking-tighter text-xs font-bold">{t.influencer.followers_label}</span>
                             </div>
                             <div className="flex items-center gap-2">
-                                <span className="text-white font-bold">{profile.following.toLocaleString()}</span>
+                                <span className="text-white font-bold">{profile.following.toLocaleString(locale)}</span>
                                 <span className="text-slate-500 uppercase tracking-tighter text-xs font-bold">{t.influencer.following_label}</span>
                             </div>
                         </div>

@@ -4,6 +4,7 @@ import { OHLCData } from "@/lib/api";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/context/LanguageContext";
+import { formatDateShort, getLocale } from "@/lib/utils";
 
 interface CompactOHLCChartProps {
     data: OHLCData[];
@@ -16,7 +17,8 @@ export const CompactOHLCChart = ({
     tweetDate,
     sentiment
 }: CompactOHLCChartProps) => {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
+    const locale = getLocale(language);
     
     if (!data || data.length === 0) return null;
 
@@ -35,8 +37,7 @@ export const CompactOHLCChart = ({
                         dataKey="openTime"
                         tick={{ fontSize: 10, fill: "#64748b" }}
                         tickFormatter={(value) => {
-                            const date = new Date(value);
-                            return `${date.getMonth() + 1}/${date.getDate()}`;
+                            return formatDateShort(new Date(value).toISOString(), language);
                         }}
                         stroke="#334155"
                     />
@@ -55,8 +56,7 @@ export const CompactOHLCChart = ({
                         labelStyle={{ color: "#94a3b8" }}
                         itemStyle={{ color: "#e2e8f0" }}
                         labelFormatter={(value) => {
-                            const date = new Date(value);
-                            return date.toLocaleString();
+                            return new Date(value).toLocaleString(locale);
                         }}
                     />
                     {tweetPrice && (

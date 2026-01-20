@@ -20,6 +20,7 @@ import { CompactOHLCChart } from "./CompactOHLCChart";
 import { ChartModal } from "./ChartModal";
 import { fetchOHLCData, OHLCResponse } from "@/lib/api";
 import { IconMaximize } from "@tabler/icons-react";
+import { formatDate, getLocale } from "@/lib/utils";
 
 interface PostCardProps {
     tweet: InfluencerTweet;
@@ -27,7 +28,8 @@ interface PostCardProps {
 }
 
 export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
+    const locale = getLocale(language);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [chartData, setChartData] = useState<Map<string, OHLCResponse>>(new Map());
@@ -52,17 +54,6 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
         }
     }, [tweet.analysis?.entities]);
 
-    const formatDate = (dateString: string) => {
-        const date = new Date(dateString);
-        return new Intl.DateTimeFormat('en-US', {
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        }).format(date);
-    };
-
     return (
         <div className={cn(
             "p-6 rounded-2xl border transition-all duration-300 group",
@@ -86,7 +77,7 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
                             </span>
                         )}
                     </div>
-                    <span className="text-xs text-slate-500">{formatDate(tweet.created_at)}</span>
+                    <span className="text-xs text-slate-500">{formatDate(tweet.created_at, language)}</span>
                 </div>
             </div>
 
@@ -163,7 +154,7 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
 
                                 const formatPrice = (price?: number) => {
                                     if (!price) return 'N/A';
-                                    return `$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                                    return `$${price.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
                                 };
 
                                 const calculatePercentChange = (current?: number, base?: number) => {
@@ -208,7 +199,7 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
                                                                     calculatePercentChange(currentPrice, startingPrice)! >= 0 ? "text-emerald-400" : "text-rose-400"
                                                                 )}>
                                                                     {calculatePercentChange(currentPrice, startingPrice)! >= 0 ? "+" : ""}
-                                                                    {calculatePercentChange(currentPrice, startingPrice)!.toFixed(1)}%
+                                                                    {calculatePercentChange(currentPrice, startingPrice)!.toLocaleString(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%
                                                                 </span>
                                                             )}
                                                         </div>
@@ -219,7 +210,7 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
                                                             <span className="text-xs font-semibold text-emerald-400">{formatPrice(maxPrice)}</span>
                                                             {calculatePercentChange(maxPrice, startingPrice) !== null && (
                                                                 <span className="text-[9px] font-bold text-emerald-400">
-                                                                    +{calculatePercentChange(maxPrice, startingPrice)!.toFixed(1)}%
+                                                                    +{calculatePercentChange(maxPrice, startingPrice)!.toLocaleString(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%
                                                                 </span>
                                                             )}
                                                         </div>
@@ -230,7 +221,7 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
                                                             <span className="text-xs font-semibold text-rose-400">{formatPrice(minPrice)}</span>
                                                             {calculatePercentChange(minPrice, startingPrice) !== null && (
                                                                 <span className="text-[9px] font-bold text-rose-400">
-                                                                    {calculatePercentChange(minPrice, startingPrice)!.toFixed(1)}%
+                                                                    {calculatePercentChange(minPrice, startingPrice)!.toLocaleString(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%
                                                                 </span>
                                                             )}
                                                         </div>
