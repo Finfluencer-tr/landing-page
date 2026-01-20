@@ -16,6 +16,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
 import { InfluencerImage } from "./InfluencerImage";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface LeaderboardItemProps {
     influencer: Influencer;
@@ -25,6 +26,7 @@ interface LeaderboardItemProps {
 
 export const LeaderboardItem = ({ influencer, index, onCommentClick }: LeaderboardItemProps) => {
     const router = useRouter();
+    const { t } = useLanguage();
 
     // 1. Determine Platform Icon
     const PlatformIcon = {
@@ -131,7 +133,7 @@ export const LeaderboardItem = ({ influencer, index, onCommentClick }: Leaderboa
                             "text-[8px] font-medium tracking-wider",
                             influencer.credibilityScore >= 80 ? "text-emerald-400" :
                                 influencer.credibilityScore >= 50 ? "text-amber-400" : "text-rose-400"
-                        )}>SCORE</span>
+                        )}>{t.leaderboard.score_label}</span>
                     </div>
                 </div>
             </div>
@@ -155,13 +157,13 @@ export const LeaderboardItem = ({ influencer, index, onCommentClick }: Leaderboa
                     ) : (
                         <IconTrendingDown size={12} className="text-rose-500" />
                     )}
-                    Last 7 Days
+                    {t.leaderboard.last_days}
                 </div>
             </div>
 
             {/* Top Asset */}
             <div className="hidden sm:block w-24 text-center">
-                <div className="text-xs text-slate-500 mb-1">Top Asset</div>
+                <div className="text-xs text-slate-500 mb-1">{t.leaderboard.top_asset_label}</div>
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-800/50 border border-slate-700">
                     <span className="text-sm">{influencer.topAsset.icon}</span>
                     <span className="text-xs font-bold text-slate-300">{influencer.topAsset.symbol}</span>
@@ -170,14 +172,14 @@ export const LeaderboardItem = ({ influencer, index, onCommentClick }: Leaderboa
 
             {/* Last Prediction */}
             <div className="hidden lg:block w-24 text-center">
-                <div className="text-xs text-slate-500 mb-1">Latest</div>
+                <div className="text-xs text-slate-500 mb-1">{t.leaderboard.latest}</div>
                 <span className={cn(
                     "inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium border",
                     influencer.lastPrediction === "hit"
                         ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
                         : "bg-rose-500/10 text-rose-400 border-rose-500/20"
                 )}>
-                    {influencer.lastPrediction === "hit" ? "HIT ✅" : "MISS ❌"}
+                    {influencer.lastPrediction === "hit" ? t.leaderboard.hit : t.leaderboard.miss}
                 </span>
             </div>
 

@@ -130,7 +130,10 @@ export const translations = {
       last_days: "Last 7 Days",
       latest: "Latest",
       hit: "HIT ✅",
-      miss: "MISS ❌"
+      miss: "MISS ❌",
+      loading_influencers: "Loading influencers...",
+      score_label: "SCORE",
+      top_asset_label: "Top Asset"
     },
     auth: {
       join_beta: "Join Beta",
@@ -299,7 +302,10 @@ export const translations = {
       last_days: "Son 7 Gün",
       latest: "Son",
       hit: "TUTTU ✅",
-      miss: "TUTMADI ❌"
+      miss: "TUTMADI ❌",
+      loading_influencers: "Influencer'lar yükleniyor...",
+      score_label: "SKOR",
+      top_asset_label: "En İyi Varlık"
     },
     auth: {
       join_beta: "Beta'ya Katıl",
@@ -468,7 +474,10 @@ export const translations = {
       last_days: "过去7天",
       latest: "最新",
       hit: "命中 ✅",
-      miss: "未中 ❌"
+      miss: "未中 ❌",
+      loading_influencers: "正在加载影响者...",
+      score_label: "评分",
+      top_asset_label: "顶级资产"
     },
     auth: {
       join_beta: "加入测试版",
@@ -637,7 +646,10 @@ export const translations = {
       last_days: "آخر 7 أيام",
       latest: "الأحدث",
       hit: "إصابة ✅",
-      miss: "فشل ❌"
+      miss: "فشل ❌",
+      loading_influencers: "جاري تحميل المؤثرين...",
+      score_label: "النتيجة",
+      top_asset_label: "أفضل أصل"
     },
     auth: {
       join_beta: "انضم إلى النسخة التجريبية",

@@ -271,7 +271,7 @@ export const Leaderboard = () => {
                     {isLoading ? (
                         <div className="py-20 text-center text-slate-500">
                             <div className="animate-spin w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-                            Loading influencers...
+                            {t.leaderboard.loading_influencers}
                         </div>
                     ) : (
                         <>
