@@ -32,9 +32,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [token, setToken] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    
-    // Get language from LanguageContext (will be set by child component)
-    const [currentLanguage, setCurrentLanguage] = useState<string>("en");
 
     // Load user and token from sessionStorage on mount and fetch fresh user data
     useEffect(() => {
