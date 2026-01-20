@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { LanguageSwitcher } from "./LanguageSwitcher";
-import { IconLogout, IconChevronDown } from "@tabler/icons-react";
+import { IconLogout, IconChevronDown, IconUserHeart } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
 import { showToast } from "./Toast";
 
 interface HeaderProps {
@@ -15,6 +16,7 @@ interface HeaderProps {
 export const Header = ({ onOpenAuthModal }: HeaderProps) => {
     const { user, logout } = useAuth();
     const { t } = useLanguage();
+    const router = useRouter();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -88,6 +90,16 @@ export const Header = ({ onOpenAuthModal }: HeaderProps) => {
                                         <div className="text-sm font-medium text-slate-100">{user.name}</div>
                                         <div className="text-xs text-slate-400 truncate">{user.email}</div>
                                     </div>
+                                    <button
+                                        onClick={() => {
+                                            setIsDropdownOpen(false);
+                                            router.push("/followed");
+                                        }}
+                                        className="w-full px-4 py-2.5 text-left text-sm text-slate-300 hover:bg-slate-800 transition-colors flex items-center gap-2"
+                                    >
+                                        <IconUserHeart size={16} />
+                                        {t.auth.followed_influencers || "Takip Edilenler"}
+                                    </button>
                                     <button
                                         onClick={handleLogout}
                                         className="w-full px-4 py-2.5 text-left text-sm text-slate-300 hover:bg-slate-800 transition-colors flex items-center gap-2"

@@ -13,10 +13,13 @@ import {
     IconUsers,
     IconExternalLink
 } from "@tabler/icons-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/context/LanguageContext";
 import { getLocale } from "@/lib/utils";
+import { useAuth } from "@/context/AuthContext";
+import { followInfluencer, unfollowInfluencer, getFollowedInfluencers } from "@/lib/api";
+import { showToast } from "../Toast";
 
 interface InfluencerHeroProps {
     influencer: DetailedInfluencer;
@@ -24,11 +27,57 @@ interface InfluencerHeroProps {
 
 export const InfluencerHero = ({ influencer }: InfluencerHeroProps) => {
     const { t, language } = useLanguage();
+    const { user, token } = useAuth();
     const [isFollowing, setIsFollowing] = useState(false);
     const [isAlarmActive, setIsAlarmActive] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const locale = getLocale(language);
 
     const { profile, metrics, stats } = influencer;
+
+    // Check if user is following this influencer
+    useEffect(() => {
+        if (user && token) {
+            checkFollowingStatus();
+        }
+    }, [user, token, profile.username]);
+
+    const checkFollowingStatus = async () => {
+        if (!token) return;
+        
+        try {
+            const data = await getFollowedInfluencers(token);
+            const isFollowingUser = data.influencers.some(inf => inf.username === profile.username);
+            setIsFollowing(isFollowingUser);
+        } catch (error) {
+            console.error("Failed to check following status:", error);
+        }
+    };
+
+    const handleFollowToggle = async () => {
+        if (!user || !token) {
+            showToast("Please login to follow influencers", "error");
+            return;
+        }
+
+        setIsLoading(true);
+        try {
+            if (isFollowing) {
+                await unfollowInfluencer(profile.username, token);
+                setIsFollowing(false);
+                showToast(`Unfollowed @${profile.username}`, "success");
+            } else {
+                await followInfluencer(profile.username, token);
+                setIsFollowing(true);
+                showToast(`Following @${profile.username}`, "success");
+            }
+        } catch (error: any) {
+            console.error("Failed to toggle follow:", error);
+            showToast(error.message || "Failed to update follow status", "error");
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const getScoreColor = (score: number) => {
         if (score >= 80) return "text-emerald-400 border-emerald-500/50 bg-emerald-500/10";
@@ -104,18 +153,21 @@ export const InfluencerHero = ({ influencer }: InfluencerHeroProps) => {
                             {isAlarmActive ? <IconBellFilled size={22} /> : <IconBell size={22} />}
                         </button>
 
-                        <button
-                            onClick={() => setIsFollowing(!isFollowing)}
-                            className={cn(
-                                "flex items-center gap-2 px-8 py-3.5 rounded-2xl font-bold transition-all hover:scale-105 active:scale-95 shadow-lg",
-                                isFollowing
-                                    ? "bg-slate-800 text-slate-300 border border-slate-700"
-                                    : "bg-gradient-to-r from-indigo-600 to-indigo-500 text-white shadow-indigo-500/20"
-                            )}
-                        >
-                            <IconUserPlus size={20} />
-                            {isFollowing ? t.influencer.following : t.influencer.follow}
-                        </button>
+                        {user && (
+                            <button
+                                onClick={handleFollowToggle}
+                                disabled={isLoading}
+                                className={cn(
+                                    "flex items-center gap-2 px-8 py-3.5 rounded-2xl font-bold transition-all hover:scale-105 active:scale-95 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed",
+                                    isFollowing
+                                        ? "bg-slate-800 text-slate-300 border border-slate-700"
+                                        : "bg-gradient-to-r from-indigo-600 to-indigo-500 text-white shadow-indigo-500/20"
+                                )}
+                            >
+                                <IconUserPlus size={20} />
+                                {isLoading ? t.auth.processing : (isFollowing ? t.influencer.following : t.influencer.follow)}
+                            </button>
+                        )}
                     </div>
                 </div>
 

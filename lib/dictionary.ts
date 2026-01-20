@@ -182,6 +182,7 @@ export const translations = {
       passwords_no_match: "Passwords do not match",
       email_password_required: "Email and password are required",
       member: "Member",
+      followed_influencers: "Followed Influencers",
       loading: "Loading..."
     },
     error404: {
@@ -372,6 +373,9 @@ export const translations = {
       passwords_no_match: "Şifreler eşleşmiyor",
       email_password_required: "E-posta ve şifre gereklidir",
       member: "Üye",
+      followed_influencers: "Takip Edilenler",
+      no_followed_influencers: "Takip edilen influencer yok",
+      start_following: "Influencer'ları takip etmeye başlayın, burada görünecekler.",
       loading: "Yükleniyor..."
     },
     error404: {
@@ -562,6 +566,9 @@ export const translations = {
       passwords_no_match: "密码不匹配",
       email_password_required: "需要电子邮件和密码",
       member: "成员",
+      followed_influencers: "关注的影响者",
+      no_followed_influencers: "没有关注的影响者",
+      start_following: "开始关注影响者，他们将显示在这里。",
       loading: "加载中..."
     },
     error404: {
@@ -752,6 +759,9 @@ export const translations = {
       passwords_no_match: "كلمات المرور غير متطابقة",
       email_password_required: "البريد الإلكتروني وكلمة المرور مطلوبان",
       member: "عضو",
+      followed_influencers: "المؤثرون المتابعون",
+      no_followed_influencers: "لا يوجد مؤثرون متابعون",
+      start_following: "ابدأ بمتابعة المؤثرين لرؤيتهم هنا.",
       loading: "جاري التحميل..."
     },
     error404: {

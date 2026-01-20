@@ -449,3 +449,85 @@ export const googleOAuthCallback = async (code: string): Promise<AuthResponse> =
     throw error;
   }
 };
+
+export interface FollowedInfluencer {
+  username: string;
+  name: string;
+  followers: number;
+  score: number;
+  top_asset: string;
+  trend_7d: number[];
+  latest_prediction: string;
+  avatar: string;
+  followed_at: string;
+}
+
+export interface FollowedInfluencersResponse {
+  influencers: FollowedInfluencer[];
+  total: number;
+}
+
+export const followInfluencer = async (username: string, token: string): Promise<void> => {
+  try {
+    const res = await fetch(`${BASE_URL}/influencers/${encodeURIComponent(username)}/follow`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || "Failed to follow influencer");
+    }
+  } catch (error) {
+    console.error("Failed to follow influencer:", error);
+    throw error;
+  }
+};
+
+export const unfollowInfluencer = async (username: string, token: string): Promise<void> => {
+  try {
+    const res = await fetch(`${BASE_URL}/influencers/${encodeURIComponent(username)}/unfollow`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || "Failed to unfollow influencer");
+    }
+  } catch (error) {
+    console.error("Failed to unfollow influencer:", error);
+    throw error;
+  }
+};
+
+export const getFollowedInfluencers = async (token: string): Promise<FollowedInfluencersResponse> => {
+  try {
+    const res = await fetch(`${BASE_URL}/influencers/followed`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || "Failed to get followed influencers");
+    }
+
+    return data.data;
+  } catch (error) {
+    console.error("Failed to get followed influencers:", error);
+    throw error;
+  }
+};
