@@ -173,7 +173,7 @@ export const InfluencerHero = ({ influencer }: InfluencerHeroProps) => {
                             rel="noopener noreferrer"
                             className="flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3.5 rounded-xl sm:rounded-2xl bg-slate-900/80 border border-slate-700 text-slate-300 hover:text-white hover:border-indigo-500/50 transition-all hover:scale-105 active:scale-95 font-bold text-sm sm:text-base group/profile flex-1 sm:flex-initial"
                         >
-                            <svg width="18" height="18" className="sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
+                            <svg width="18" height="18" className="sm:w-5 sm:h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                             </svg>
                             <span className="hidden sm:inline">{t.influencer.view_profile}</span>
