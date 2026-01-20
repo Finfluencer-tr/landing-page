@@ -563,7 +563,20 @@ export const translations = {
       miss: "未中 ❌",
       loading_influencers: "正在加载影响者...",
       score_label: "评分",
-      top_asset_label: "顶级资产"
+      top_asset_label: "顶级资产",
+      comments: "评论",
+      add_comment: "添加评论",
+      write_comment: "写下您的评论...",
+      post_comment: "发布评论",
+      no_comments: "还没有评论。成为第一个评论的人！",
+      delete_comment: "删除评论",
+      comment_deleted: "评论已删除",
+      comment_posted: "您的评论已发布",
+      comment_failed: "发布评论失败",
+      delete_failed: "删除评论失败",
+      loading_comments: "正在加载评论...",
+      comment_placeholder: "您对这个影响者有什么看法？",
+      cancel: "取消"
     },
     auth: {
       join_beta: "加入测试版",
@@ -756,7 +769,20 @@ export const translations = {
       miss: "فشل ❌",
       loading_influencers: "جاري تحميل المؤثرين...",
       score_label: "النتيجة",
-      top_asset_label: "أفضل أصل"
+      top_asset_label: "أفضل أصل",
+      comments: "التعليقات",
+      add_comment: "إضافة تعليق",
+      write_comment: "اكتب تعليقك...",
+      post_comment: "نشر التعليق",
+      no_comments: "لا توجد تعليقات بعد. كن أول من يعلق!",
+      delete_comment: "حذف التعليق",
+      comment_deleted: "تم حذف التعليق",
+      comment_posted: "تم نشر تعليقك",
+      comment_failed: "فشل في نشر التعليق",
+      delete_failed: "فشل في حذف التعليق",
+      loading_comments: "جاري تحميل التعليقات...",
+      comment_placeholder: "ما رأيك في هذا المؤثر؟",
+      cancel: "إلغاء"
     },
     auth: {
       join_beta: "انضم إلى النسخة التجريبية",
