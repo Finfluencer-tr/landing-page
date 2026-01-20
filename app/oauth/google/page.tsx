@@ -102,16 +102,21 @@ function GoogleOAuthCallbackContent() {
     );
 }
 
+function LoadingFallback() {
+    const { t } = useLanguage();
+    return (
+        <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
+            <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center">
+                <div className="animate-spin w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                <h2 className="text-xl font-bold text-slate-100 mb-2">{t.auth?.loading || "Loading..."}</h2>
+            </div>
+        </div>
+    );
+}
+
 export default function GoogleOAuthCallbackPage() {
     return (
-        <Suspense fallback={
-            <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
-                <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center">
-                    <div className="animate-spin w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-                    <h2 className="text-xl font-bold text-slate-100 mb-2">{t.auth?.loading || "Loading..."}</h2>
-                </div>
-            </div>
-        }>
+        <Suspense fallback={<LoadingFallback />}>
             <GoogleOAuthCallbackContent />
         </Suspense>
     );
