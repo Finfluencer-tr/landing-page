@@ -6,6 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { IconLogout, IconChevronDown } from "@tabler/icons-react";
+import { showToast } from "./Toast";
 
 interface HeaderProps {
     onOpenAuthModal: () => void;
@@ -37,6 +38,7 @@ export const Header = ({ onOpenAuthModal }: HeaderProps) => {
     const handleLogout = () => {
         logout();
         setIsDropdownOpen(false);
+        showToast(t.auth.logout_success || "Successfully logged out", "success");
     };
 
     return (
