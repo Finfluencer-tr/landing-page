@@ -21,7 +21,7 @@ function GoogleOAuthCallbackContent() {
             setError("Google authentication was cancelled or failed.");
             setIsLoading(false);
             setTimeout(() => {
-                router.push("/");
+                router.push("/leaderboard");
             }, 3000);
             return;
         }
@@ -30,7 +30,7 @@ function GoogleOAuthCallbackContent() {
             setError("No authorization code received from Google.");
             setIsLoading(false);
             setTimeout(() => {
-                router.push("/");
+                router.push("/leaderboard");
             }, 3000);
             return;
         }
@@ -38,14 +38,14 @@ function GoogleOAuthCallbackContent() {
         // Handle the OAuth callback
         handleGoogleCallback(code)
             .then(() => {
-                // Success - redirect to home page
-                router.push("/");
+                // Success - redirect to leaderboard page
+                router.push("/leaderboard");
             })
             .catch((err) => {
                 setError(err.message || "Failed to authenticate with Google.");
                 setIsLoading(false);
                 setTimeout(() => {
-                    router.push("/");
+                    router.push("/leaderboard");
                 }, 3000);
             });
     }, [searchParams, handleGoogleCallback, router]);
