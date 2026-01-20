@@ -82,7 +82,7 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
                         <span className="font-bold text-slate-100 truncate">@{tweet.author.username}</span>
                         {tweet.is_financial && (
                             <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 uppercase tracking-wider">
-                                Financial
+                                {t.influencer.financial_badge}
                             </span>
                         )}
                     </div>
@@ -195,11 +195,11 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
                                             {entityChartData && (
                                                 <div className="grid grid-cols-2 gap-2">
                                                     <div className="flex flex-col">
-                                                        <span className="text-[10px] text-slate-500 uppercase">Starting</span>
+                                                        <span className="text-[10px] text-slate-500 uppercase">{t.influencer.starting_price}</span>
                                                         <span className="text-xs font-semibold text-indigo-400">{formatPrice(startingPrice)}</span>
                                                     </div>
                                                     <div className="flex flex-col">
-                                                        <span className="text-[10px] text-slate-500 uppercase">Current</span>
+                                                        <span className="text-[10px] text-slate-500 uppercase">{t.influencer.current_price_label}</span>
                                                         <div className="flex items-center gap-1">
                                                             <span className="text-xs font-semibold text-slate-300">{formatPrice(currentPrice)}</span>
                                                             {calculatePercentChange(currentPrice, startingPrice) !== null && (
@@ -214,7 +214,7 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
                                                         </div>
                                                     </div>
                                                     <div className="flex flex-col">
-                                                        <span className="text-[10px] text-emerald-500 uppercase">Max</span>
+                                                        <span className="text-[10px] text-emerald-500 uppercase">{t.influencer.max_price_label}</span>
                                                         <div className="flex items-center gap-1">
                                                             <span className="text-xs font-semibold text-emerald-400">{formatPrice(maxPrice)}</span>
                                                             {calculatePercentChange(maxPrice, startingPrice) !== null && (
@@ -225,7 +225,7 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
                                                         </div>
                                                     </div>
                                                     <div className="flex flex-col">
-                                                        <span className="text-[10px] text-rose-500 uppercase">Min</span>
+                                                        <span className="text-[10px] text-rose-500 uppercase">{t.influencer.min_price_label}</span>
                                                         <div className="flex items-center gap-1">
                                                             <span className="text-xs font-semibold text-rose-400">{formatPrice(minPrice)}</span>
                                                             {calculatePercentChange(minPrice, startingPrice) !== null && (
@@ -298,7 +298,7 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
                             </div>
                             {tweet.analysis.asset && (
                                 <div className="text-sm font-medium text-slate-300">
-                                    Projection for <span className="text-indigo-400 font-bold">${tweet.analysis.asset}</span>
+                                    {t.influencer.projection_for} <span className="text-indigo-400 font-bold">${tweet.analysis.asset}</span>
                                 </div>
                             )}
                         </div>

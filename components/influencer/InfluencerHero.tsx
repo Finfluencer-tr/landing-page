@@ -45,7 +45,7 @@ export const InfluencerHero = ({ influencer }: InfluencerHeroProps) => {
                 {bannerUrl ? (
                     <InfluencerImage
                         src={bannerUrl}
-                        alt="Banner"
+                        alt={t.influencer.banner}
                         className="w-full h-full object-cover"
                         fallback="https://api.placeholder.com/1200/400"
                     />
@@ -70,7 +70,7 @@ export const InfluencerHero = ({ influencer }: InfluencerHeroProps) => {
                                 />
                             </div>
                             {profile.verified && (
-                                <div className="absolute bottom-1 right-1 bg-indigo-500 text-white p-1.5 rounded-full border-4 border-slate-950 shadow-lg z-10" title="Verified">
+                                <div className="absolute bottom-1 right-1 bg-indigo-500 text-white p-1.5 rounded-full border-4 border-slate-950 shadow-lg z-10" title={t.influencer.verified}>
                                     <IconCheck size={16} strokeWidth={3} />
                                 </div>
                             )}

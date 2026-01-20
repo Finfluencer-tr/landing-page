@@ -105,7 +105,7 @@ export const InfluencerFeed = ({ influencer }: InfluencerFeedProps) => {
                         activeTab === "all" ? "text-indigo-400" : "text-slate-500 hover:text-slate-300"
                     )}
                 >
-                    {t.influencer.all_activity || "All Activity"}
+                    {t.influencer.all_activity}
                     {activeTab === "all" && (
                         <motion.div layoutId="activeTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-500" />
                     )}
@@ -153,8 +153,8 @@ export const InfluencerFeed = ({ influencer }: InfluencerFeedProps) => {
                         <IconGhost className="w-12 h-12 text-slate-700 mx-auto mb-4" />
                         <p className="text-slate-500 font-medium">
                             {activeTab === "all"
-                                ? (t.influencer.no_posts || "No posts found.")
-                                : "No financial signals found for this influencer."}
+                                ? t.influencer.no_posts
+                                : t.influencer.no_financial_signals}
                         </p>
                     </div>
                 )}
@@ -162,7 +162,7 @@ export const InfluencerFeed = ({ influencer }: InfluencerFeedProps) => {
                 {/* End of results */}
                 {!hasMore && tweets.length > 0 && (
                     <div className="text-center py-8 text-slate-600 text-sm font-medium">
-                        You've reached the end of the signal.
+                        {t.influencer.end_of_signal}
                     </div>
                 )}
             </div>

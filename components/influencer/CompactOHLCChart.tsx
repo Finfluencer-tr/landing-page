@@ -3,6 +3,7 @@
 import { OHLCData } from "@/lib/api";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface CompactOHLCChartProps {
     data: OHLCData[];
@@ -15,6 +16,8 @@ export const CompactOHLCChart = ({
     tweetDate,
     sentiment
 }: CompactOHLCChartProps) => {
+    const { t } = useLanguage();
+    
     if (!data || data.length === 0) return null;
 
     const sentimentColor = sentiment === "BULLISH" ? "#10b981" : sentiment === "BEARISH" ? "#ef4444" : "#64748b";
@@ -61,7 +64,7 @@ export const CompactOHLCChart = ({
                             y={tweetPrice}
                             stroke="#6366f1"
                             strokeDasharray="3 3"
-                            label={{ value: "Tweet", position: "right", fill: "#6366f1", fontSize: 10 }}
+                            label={{ value: t.influencer.tweet_label, position: "right", fill: "#6366f1", fontSize: 10 }}
                         />
                     )}
                     <Line
