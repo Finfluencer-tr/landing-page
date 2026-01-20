@@ -5,7 +5,6 @@ import { InfluencerImage } from "../InfluencerImage";
 import {
     IconBell,
     IconBellFilled,
-    IconBrandTwitter,
     IconUserPlus,
     IconCheck,
     IconCalendar,
@@ -85,7 +84,9 @@ export const InfluencerHero = ({ influencer }: InfluencerHeroProps) => {
                             rel="noopener noreferrer"
                             className="flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-slate-900/80 border border-slate-700 text-slate-300 hover:text-white hover:border-indigo-500/50 transition-all hover:scale-105 active:scale-95 font-bold group/profile"
                         >
-                            <IconBrandTwitter size={20} />
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
                             <span>{t.influencer.view_profile}</span>
                             <IconExternalLink size={16} className="opacity-0 group-hover/profile:opacity-100 transition-opacity" />
                         </a>
@@ -122,7 +123,9 @@ export const InfluencerHero = ({ influencer }: InfluencerHeroProps) => {
                         <div>
                             <div className="flex items-center gap-2 mb-1">
                                 <h1 className="text-3xl md:text-4xl font-black text-white">{profile.name}</h1>
-                                <IconBrandTwitter className="text-indigo-400" size={24} />
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-indigo-400 flex-shrink-0">
+                                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                                </svg>
                             </div>
                             <p className="text-xl text-slate-400 font-medium">@{profile.username}</p>
                         </div>
