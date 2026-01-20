@@ -330,3 +330,98 @@ export const fetchOHLCData = async (entityId: string): Promise<OHLCResponse | nu
     return null;
   }
 };
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface RegisterRequest {
+  email: string;
+  password: string;
+  fullName: string;
+}
+
+export interface AuthResponse {
+  user: {
+    id: string;
+    email: string;
+    full_name: string | null;
+    role: string;
+    created_at: string;
+  };
+  token: string;
+}
+
+export interface AuthError {
+  error: string;
+}
+
+export const login = async (credentials: LoginRequest): Promise<AuthResponse> => {
+  try {
+    const res = await fetch(`${BASE_URL}/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(credentials),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || "Login failed");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Failed to login:", error);
+    throw error;
+  }
+};
+
+export const register = async (credentials: RegisterRequest): Promise<AuthResponse> => {
+  try {
+    const res = await fetch(`${BASE_URL}/auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(credentials),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || "Registration failed");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Failed to register:", error);
+    throw error;
+  }
+};
+
+export const getMe = async (token: string): Promise<AuthResponse["user"]> => {
+  try {
+    const res = await fetch(`${BASE_URL}/auth/me`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || "Failed to get user info");
+    }
+
+    return data.user;
+  } catch (error) {
+    console.error("Failed to get user info:", error);
+    throw error;
+  }
+};

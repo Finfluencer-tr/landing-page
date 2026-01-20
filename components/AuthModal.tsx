@@ -12,17 +12,70 @@ interface AuthModalProps {
 }
 
 export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
-    const { login, isLoading } = useAuth();
+    const { login, register, isLoading, error } = useAuth();
     const { t } = useLanguage();
     const [email, setEmail] = useState("");
-
+    const [password, setPassword] = useState("");
+    const [fullName, setFullName] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [isRegister, setIsRegister] = useState(false);
+    const [localError, setLocalError] = useState<string | null>(null);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // In a real app, this would handle register vs login
-        login(email);
-        setTimeout(onClose, 1000);
+        setLocalError(null);
+
+        if (isRegister) {
+            // Validation for register
+            if (!fullName.trim()) {
+                setLocalError("Full name is required");
+                return;
+            }
+            if (password.length < 6) {
+                setLocalError("Password must be at least 6 characters");
+                return;
+            }
+            if (password !== confirmPassword) {
+                setLocalError("Passwords do not match");
+                return;
+            }
+
+            try {
+                await register(email, password, fullName);
+                onClose();
+                // Reset form
+                setEmail("");
+                setPassword("");
+                setFullName("");
+                setConfirmPassword("");
+            } catch (error) {
+                // Error is handled by AuthContext
+            }
+        } else {
+            // Login
+            if (!email || !password) {
+                setLocalError("Email and password are required");
+                return;
+            }
+
+            try {
+                await login(email, password);
+                onClose();
+                // Reset form
+                setEmail("");
+                setPassword("");
+            } catch (error) {
+                // Error is handled by AuthContext
+            }
+        }
+    };
+
+    const handleToggleMode = () => {
+        setIsRegister(!isRegister);
+        setLocalError(null);
+        setPassword("");
+        setConfirmPassword("");
+        setFullName("");
     };
 
     return (
@@ -64,6 +117,12 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                         </div>
 
                         <form onSubmit={handleSubmit} className="space-y-4">
+                            {(error || localError) && (
+                                <div className="p-3 bg-red-950/50 border border-red-800 rounded-xl text-red-400 text-sm">
+                                    {error || localError}
+                                </div>
+                            )}
+
                             <AnimatePresence>
                                 {isRegister && (
                                     <motion.div
@@ -75,8 +134,11 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                                         <label className="block text-xs font-medium text-slate-400 mb-1.5 ml-1">{t.auth.full_name}</label>
                                         <input
                                             type="text"
+                                            value={fullName}
+                                            onChange={(e) => setFullName(e.target.value)}
                                             placeholder="Satoshi Nakamoto"
                                             className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
+                                            required={isRegister}
                                         />
                                     </motion.div>
                                 )}
@@ -103,9 +165,12 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                                     <IconLock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
                                     <input
                                         type="password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
                                         placeholder="••••••••"
                                         className="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
                                         required
+                                        minLength={isRegister ? 6 : undefined}
                                     />
                                 </div>
                             </div>
@@ -123,9 +188,11 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                                             <IconLock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
                                             <input
                                                 type="password"
+                                                value={confirmPassword}
+                                                onChange={(e) => setConfirmPassword(e.target.value)}
                                                 placeholder="••••••••"
                                                 className="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
-                                                required
+                                                required={isRegister}
                                             />
                                         </div>
                                     </motion.div>
@@ -179,7 +246,8 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                                 {isRegister ? t.auth.already_have_account : t.auth.dont_have_account}
                             </span>
                             <button
-                                onClick={() => setIsRegister(!isRegister)}
+                                type="button"
+                                onClick={handleToggleMode}
                                 className="ml-2 text-indigo-400 hover:text-indigo-300 font-medium transition-colors"
                             >
                                 {isRegister ? t.auth.sign_in : t.auth.register}
