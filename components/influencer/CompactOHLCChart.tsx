@@ -58,8 +58,9 @@ export const CompactOHLCChart = ({
                         labelFormatter={(value) => {
                             return new Date(value).toLocaleString(locale);
                         }}
-                        formatter={(value: number) => {
-                            return [`$${value.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, t.influencer.close_price];
+                        formatter={(value: any) => {
+                            const numValue = typeof value === 'number' ? value : 0;
+                            return [`$${numValue.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, t.influencer.close_price];
                         }}
                     />
                     {tweetPrice && (
