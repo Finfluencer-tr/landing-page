@@ -235,6 +235,15 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
 
                         <button
                             type="button"
+                            onClick={() => {
+                                // Redirect to Google OAuth
+                                const clientId = "963968052338-t2kvp84l2o0lhibm5525j1rts6jjnjua.apps.googleusercontent.com";
+                                const redirectUri = encodeURIComponent("https://finfluencer.tr/oauth/google");
+                                const scope = encodeURIComponent("openid email profile");
+                                const responseType = "code";
+                                const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}&access_type=offline&prompt=consent`;
+                                window.location.href = googleAuthUrl;
+                            }}
                             className="w-full flex items-center justify-center gap-3 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl font-medium border border-slate-700 transition-colors"
                         >
                             <IconBrandGoogle size={18} />

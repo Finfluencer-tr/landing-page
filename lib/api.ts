@@ -427,3 +427,25 @@ export const getMe = async (token: string): Promise<AuthResponse["user"]> => {
     throw error;
   }
 };
+
+export const googleOAuthCallback = async (code: string): Promise<AuthResponse> => {
+  try {
+    const res = await fetch(`${BASE_URL}/auth/google/callback?code=${encodeURIComponent(code)}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || "Failed to authenticate with Google");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Failed to authenticate with Google:", error);
+    throw error;
+  }
+};

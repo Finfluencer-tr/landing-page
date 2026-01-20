@@ -149,7 +149,12 @@ export const translations = {
       already_have_account: "Already have an account?",
       dont_have_account: "Don't have an account?",
       register: "Register",
-      processing: "Processing..."
+      processing: "Processing...",
+      authenticating: "Authenticating...",
+      please_wait: "Please wait while we sign you in.",
+      auth_failed: "Authentication Failed",
+      success: "Success!",
+      redirecting: "Redirecting..."
     },
     error404: {
       title: "Lost in the Signal?",
@@ -306,7 +311,12 @@ export const translations = {
       already_have_account: "Zaten hesabın var mı?",
       dont_have_account: "Hesabın yok mu?",
       register: "Kayıt Ol",
-      processing: "İşleniyor..."
+      processing: "İşleniyor...",
+      authenticating: "Kimlik doğrulanıyor...",
+      please_wait: "Lütfen giriş yapılırken bekleyin.",
+      auth_failed: "Kimlik Doğrulama Başarısız",
+      success: "Başarılı!",
+      redirecting: "Yönlendiriliyor..."
     },
     error404: {
       title: "Sinyal Mi Kayboldu?",
@@ -463,7 +473,12 @@ export const translations = {
       already_have_account: "已经有账户了吗？",
       dont_have_account: "还没有账户？",
       register: "注册",
-      processing: "处理中..."
+      processing: "处理中...",
+      authenticating: "正在验证...",
+      please_wait: "请稍候，我们正在为您登录。",
+      auth_failed: "身份验证失败",
+      success: "成功！",
+      redirecting: "正在重定向..."
     },
     error404: {
       title: "信号丢失？",
@@ -620,7 +635,12 @@ export const translations = {
       already_have_account: "هل لديك حساب بالفعل؟",
       dont_have_account: "ليس لديك حساب؟",
       register: "تسجيل",
-      processing: "جاري المعالجة..."
+      processing: "جاري المعالجة...",
+      authenticating: "جاري المصادقة...",
+      please_wait: "يرجى الانتظار بينما نقوم بتسجيل الدخول.",
+      auth_failed: "فشل المصادقة",
+      success: "نجح!",
+      redirecting: "جاري إعادة التوجيه..."
     },
     error404: {
       title: "هل فقدت الإشارة؟",

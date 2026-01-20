@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
-import { login as apiLogin, register as apiRegister, getMe, AuthResponse } from "@/lib/api";
+import { login as apiLogin, register as apiRegister, getMe, googleOAuthCallback, AuthResponse } from "@/lib/api";
 
 interface User {
     id: string;
@@ -16,6 +16,7 @@ interface AuthContextType {
     token: string | null;
     login: (email: string, password: string) => Promise<void>;
     register: (email: string, password: string, fullName: string) => Promise<void>;
+    handleGoogleCallback: (code: string) => Promise<void>;
     logout: () => void;
     isLoading: boolean;
     error: string | null;
@@ -136,6 +137,36 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
     };
 
+    const handleGoogleCallback = async (code: string) => {
+        setIsLoading(true);
+        setError(null);
+        
+        try {
+            const response: AuthResponse = await googleOAuthCallback(code);
+            
+            const userData: User = {
+                id: response.user.id,
+                name: response.user.full_name || response.user.email.split("@")[0],
+                email: response.user.email,
+                avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${response.user.email}`,
+                role: response.user.role,
+            };
+
+            setUser(userData);
+            setToken(response.token);
+            
+            // Store in sessionStorage
+            sessionStorage.setItem(TOKEN_KEY, response.token);
+            sessionStorage.setItem(USER_KEY, JSON.stringify(userData));
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : "Google authentication failed";
+            setError(errorMessage);
+            throw error;
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const logout = () => {
         setUser(null);
         setToken(null);
@@ -144,7 +175,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, token, login, register, logout, isLoading, error }}>
+        <AuthContext.Provider value={{ user, token, login, register, handleGoogleCallback, logout, isLoading, error }}>
             {children}
         </AuthContext.Provider>
     );
