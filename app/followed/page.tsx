@@ -202,7 +202,7 @@ export default function FollowedPage() {
                                 </div>
 
                                 <div className="pt-4 border-t border-slate-800">
-                                    <div className="text-xs text-slate-500 uppercase mb-1">{t.leaderboard.asset}</div>
+                                    <div className="text-xs text-slate-500 uppercase mb-1">{t.leaderboard.top_asset_label}</div>
                                     <div className="text-sm font-semibold text-indigo-400">${influencer.top_asset}</div>
                                 </div>
                             </div>
