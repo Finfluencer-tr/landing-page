@@ -214,7 +214,7 @@ export const Leaderboard = () => {
                 {/* Filters & Search */}
                 <div className="flex flex-col md:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8 sticky top-16 sm:top-20 z-40 p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-slate-900/50 backdrop-blur-xl border border-slate-800/50 shadow-xl">
                     <div className="relative flex-1">
-                        <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={16} className="sm:w-[18px] sm:h-[18px]" />
+                        <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 sm:w-[18px] sm:h-[18px]" size={16} />
                         <input
                             type="text"
                             placeholder={t.leaderboard.search_placeholder}
