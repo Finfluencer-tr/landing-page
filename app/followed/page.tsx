@@ -163,13 +163,31 @@ export default function FollowedPage() {
                                             <p className="text-sm text-slate-400 truncate">{influencer.name}</p>
                                         </div>
                                     </Link>
-                                    <button
-                                        onClick={() => handleUnfollow(influencer.username)}
-                                        disabled={unfollowing === influencer.username}
-                                        className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-red-400 transition-colors disabled:opacity-50"
-                                    >
-                                        <IconUserMinus size={18} />
-                                    </button>
+                                    <div className="flex items-center gap-2">
+                                        <button
+                                            onClick={() => handleToggleNotifications(influencer.username)}
+                                            disabled={togglingNotifications === influencer.username}
+                                            className={cn(
+                                                "p-2 rounded-lg transition-colors disabled:opacity-50",
+                                                influencer.notifications_enabled
+                                                    ? "bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 border border-amber-500/40"
+                                                    : "bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-amber-400"
+                                            )}
+                                        >
+                                            {influencer.notifications_enabled ? (
+                                                <IconBellFilled size={18} />
+                                            ) : (
+                                                <IconBell size={18} />
+                                            )}
+                                        </button>
+                                        <button
+                                            onClick={() => handleUnfollow(influencer.username)}
+                                            disabled={unfollowing === influencer.username}
+                                            className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-red-400 transition-colors disabled:opacity-50"
+                                        >
+                                            <IconUserMinus size={18} />
+                                        </button>
+                                    </div>
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4 mb-4">
