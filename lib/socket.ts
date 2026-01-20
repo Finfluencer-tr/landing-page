@@ -3,7 +3,7 @@
  * Manages WebSocket connection for real-time leaderboard updates and score changes.
  */
 
-type EventType = 'score_changed' | 'leaderboard_updated' | 'connected' | 'error' | 'pong';
+type EventType = 'score_changed' | 'leaderboard_updated' | 'connected' | 'error' | 'pong' | 'subscribed' | 'unsubscribed';
 
 type EventCallback = (data: any) => void;
 
