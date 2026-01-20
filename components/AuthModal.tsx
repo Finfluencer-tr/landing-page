@@ -97,28 +97,27 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                         animate={{ scale: 1, opacity: 1, y: 0, rotateX: 0 }}
                         exit={{ scale: 0.9, opacity: 0, y: 20 }}
                         transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md p-6 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl z-[101]"
+                        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md mx-4 p-4 sm:p-6 bg-slate-900 border border-slate-800 rounded-xl sm:rounded-2xl shadow-2xl z-[101] max-h-[90vh] overflow-y-auto"
                     >
                         <button
                             onClick={onClose}
-                            className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors"
+                            className="absolute top-3 right-3 sm:top-4 sm:right-4 text-slate-400 hover:text-white transition-colors z-10"
                         >
-                            <IconX size={20} />
+                            <IconX size={18} className="sm:w-5 sm:h-5" />
                         </button>
 
-                        <div className="flex flex-col items-center mb-8">
-
-                            <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-400">
+                        <div className="flex flex-col items-center mb-6 sm:mb-8">
+                            <h2 className="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-400 text-center">
                                 {isRegister ? t.auth.join_beta : t.auth.welcome_back}
                             </h2>
-                            <p className="text-slate-400 text-sm mt-1">
+                            <p className="text-slate-400 text-xs sm:text-sm mt-1 text-center px-2">
                                 {isRegister ? t.auth.start_tracking : t.auth.sign_in_text}
                             </p>
                         </div>
 
-                        <form onSubmit={handleSubmit} className="space-y-4">
+                        <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
                             {(error || localError) && (
-                                <div className="p-3 bg-red-950/50 border border-red-800 rounded-xl text-red-400 text-sm">
+                                <div className="p-2.5 sm:p-3 bg-red-950/50 border border-red-800 rounded-xl text-red-400 text-xs sm:text-sm">
                                     {error || localError}
                                 </div>
                             )}

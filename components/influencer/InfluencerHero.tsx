@@ -166,67 +166,74 @@ export const InfluencerHero = ({ influencer }: InfluencerHeroProps) => {
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full sm:w-auto">
                         <a
                             href={`https://twitter.com/${profile.username}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-slate-900/80 border border-slate-700 text-slate-300 hover:text-white hover:border-indigo-500/50 transition-all hover:scale-105 active:scale-95 font-bold group/profile"
+                            className="flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3.5 rounded-xl sm:rounded-2xl bg-slate-900/80 border border-slate-700 text-slate-300 hover:text-white hover:border-indigo-500/50 transition-all hover:scale-105 active:scale-95 font-bold text-sm sm:text-base group/profile flex-1 sm:flex-initial"
                         >
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
+                            <svg width="18" height="18" className="sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
                                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                             </svg>
-                            <span>{t.influencer.view_profile}</span>
-                            <IconExternalLink size={16} className="opacity-0 group-hover/profile:opacity-100 transition-opacity" />
+                            <span className="hidden sm:inline">{t.influencer.view_profile}</span>
+                            <span className="sm:hidden">View</span>
+                            <IconExternalLink size={14} className="sm:w-4 sm:h-4 opacity-0 group-hover/profile:opacity-100 transition-opacity" />
                         </a>
                         {user && (
-                            <button
-                                onClick={handleAlarmToggle}
-                                disabled={isNotificationLoading}
-                                className={cn(
-                                    "flex items-center justify-center w-12 h-12 rounded-2xl border transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed",
-                                    isAlarmActive
-                                        ? "bg-amber-500/20 border-amber-500/40 text-amber-400 shadow-[0_0_20px_rgba(245,158,11,0.2)]"
-                                        : "bg-slate-900/80 border-slate-700 text-slate-400 hover:text-white"
-                                )}
-                            >
-                                {isAlarmActive ? <IconBellFilled size={22} /> : <IconBell size={22} />}
-                            </button>
-                        )}
-
-                        {user && (
-                            <button
-                                onClick={handleFollowToggle}
-                                disabled={isLoading}
-                                className={cn(
-                                    "flex items-center gap-2 px-8 py-3.5 rounded-2xl font-bold transition-all hover:scale-105 active:scale-95 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed",
-                                    isFollowing
-                                        ? "bg-slate-800 text-slate-300 border border-slate-700"
-                                        : "bg-gradient-to-r from-indigo-600 to-indigo-500 text-white shadow-indigo-500/20"
-                                )}
-                            >
-                                <IconUserPlus size={20} />
-                                {isLoading ? t.auth.processing : (isFollowing ? t.influencer.following : t.influencer.follow)}
-                            </button>
+                            <>
+                                <button
+                                    onClick={handleAlarmToggle}
+                                    disabled={isNotificationLoading}
+                                    className={cn(
+                                        "flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl border transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0",
+                                        isAlarmActive
+                                            ? "bg-amber-500/20 border-amber-500/40 text-amber-400 shadow-[0_0_20px_rgba(245,158,11,0.2)]"
+                                            : "bg-slate-900/80 border-slate-700 text-slate-400 hover:text-white"
+                                    )}
+                                >
+                                    {isAlarmActive ? <IconBellFilled size={18} className="sm:w-[22px] sm:h-[22px]" /> : <IconBell size={18} className="sm:w-[22px] sm:h-[22px]" />}
+                                </button>
+                                <button
+                                    onClick={handleFollowToggle}
+                                    disabled={isLoading}
+                                    className={cn(
+                                        "flex items-center gap-1.5 sm:gap-2 px-4 sm:px-8 py-2.5 sm:py-3.5 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base transition-all hover:scale-105 active:scale-95 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex-1 sm:flex-initial",
+                                        isFollowing
+                                            ? "bg-slate-800 text-slate-300 border border-slate-700"
+                                            : "bg-gradient-to-r from-indigo-600 to-indigo-500 text-white shadow-indigo-500/20"
+                                    )}
+                                >
+                                    <IconUserPlus size={16} className="sm:w-5 sm:h-5" />
+                                    {isLoading ? (
+                                        <span className="hidden sm:inline">{t.auth.processing}</span>
+                                    ) : (
+                                        <>
+                                            <span className="hidden sm:inline">{isFollowing ? t.influencer.following : t.influencer.follow}</span>
+                                            <span className="sm:hidden">{isFollowing ? "Following" : "Follow"}</span>
+                                        </>
+                                    )}
+                                </button>
+                            </>
                         )}
                     </div>
                 </div>
 
                 {/* Info & Description */}
-                <div className="mt-6 flex flex-col lg:flex-row gap-8 lg:items-start">
-                    <div className="flex-1 space-y-4">
+                <div className="mt-4 sm:mt-6 flex flex-col lg:flex-row gap-6 sm:gap-8 lg:items-start">
+                    <div className="flex-1 space-y-3 sm:space-y-4">
                         <div>
-                            <div className="flex items-center gap-2 mb-1">
-                                <h1 className="text-3xl md:text-4xl font-black text-white">{profile.name}</h1>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-indigo-400 flex-shrink-0">
+                            <div className="flex items-center gap-2 mb-1 flex-wrap">
+                                <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white break-words">{profile.name}</h1>
+                                <svg width="20" height="20" className="sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-indigo-400 flex-shrink-0">
                                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                                 </svg>
                             </div>
-                            <p className="text-xl text-slate-400 font-medium">@{profile.username}</p>
+                            <p className="text-lg sm:text-xl text-slate-400 font-medium">@{profile.username}</p>
                         </div>
 
                         {profile.description && (
-                            <p className="text-slate-300 text-lg leading-relaxed max-w-3xl">
+                            <p className="text-slate-300 text-sm sm:text-lg leading-relaxed max-w-3xl break-words">
                                 {profile.description}
                             </p>
                         )}
@@ -263,10 +270,10 @@ export const InfluencerHero = ({ influencer }: InfluencerHeroProps) => {
                     </div>
 
                     {/* Trust Score Card */}
-                    <div className={cn("lg:w-72 p-6 rounded-3xl border text-center space-y-3 shadow-xl", scoreStyle)}>
-                        <div className="text-sm font-black uppercase tracking-[0.2em] opacity-80">{t.influencer.trust_score}</div>
-                        <div className="text-6xl font-black tracking-tight">{metrics.score}</div>
-                        <div className="text-xs font-bold opacity-60 uppercase">{t.influencer.rank_label} #{metrics.rank || "N/A"}</div>
+                    <div className={cn("w-full lg:w-72 p-4 sm:p-6 rounded-2xl sm:rounded-3xl border text-center space-y-2 sm:space-y-3 shadow-xl", scoreStyle)}>
+                        <div className="text-xs sm:text-sm font-black uppercase tracking-[0.2em] opacity-80">{t.influencer.trust_score}</div>
+                        <div className="text-4xl sm:text-6xl font-black tracking-tight">{metrics.score}</div>
+                        <div className="text-[10px] sm:text-xs font-bold opacity-60 uppercase">{t.influencer.rank_label} #{metrics.rank || "N/A"}</div>
                         <div className="pt-2">
                             <div className="h-2 w-full bg-black/20 rounded-full overflow-hidden">
                                 <motion.div

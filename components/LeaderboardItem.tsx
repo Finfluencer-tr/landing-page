@@ -55,52 +55,88 @@ export const LeaderboardItem = ({ influencer, index, onCommentClick }: Leaderboa
             transition={{ delay: index * 0.1, duration: 0.4 }}
             whileHover={{ y: -4, scale: 1.01 }}
             onClick={() => router.push(`/influencer/${influencer.slug}`)}
-            className="group relative flex items-center justify-between p-4 mb-3 rounded-2xl bg-slate-900/50 border border-slate-800 backdrop-blur-sm hover:border-indigo-500/30 hover:shadow-[0_0_20px_-10px_rgba(99,102,241,0.3)] transition-all duration-300 cursor-pointer"
+            className="group relative flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 sm:p-4 mb-3 rounded-2xl bg-slate-900/50 border border-slate-800 backdrop-blur-sm hover:border-indigo-500/30 hover:shadow-[0_0_20px_-10px_rgba(99,102,241,0.3)] transition-all duration-300 cursor-pointer gap-3 sm:gap-0"
         >
-            {/* Rank */}
-            <div className="w-12 flex-shrink-0 text-center">
-                <span className={cn(
-                    "text-xl font-bold font-mono",
-                    index === 0 ? "text-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.5)]" :
-                        index === 1 ? "text-slate-300" :
-                            index === 2 ? "text-orange-400" :
-                                "text-slate-500"
-                )}>
-                    #{influencer.rank}
-                </span>
-            </div>
+            {/* Mobile: Top Row - Rank, Info, Score */}
+            <div className="flex items-center gap-3 sm:gap-0 w-full sm:w-auto sm:flex-1">
+                {/* Rank */}
+                <div className="w-10 sm:w-12 flex-shrink-0 text-center">
+                    <span className={cn(
+                        "text-lg sm:text-xl font-bold font-mono",
+                        index === 0 ? "text-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.5)]" :
+                            index === 1 ? "text-slate-300" :
+                                index === 2 ? "text-orange-400" :
+                                    "text-slate-500"
+                    )}>
+                        #{influencer.rank}
+                    </span>
+                </div>
 
-            {/* Influencer Info */}
-            <div className="flex-1 flex items-center gap-4 min-w-[200px]">
-                <div className="relative">
-                    <InfluencerImage
-                        src={getMediaUrl(influencer.avatar)}
-                        alt={influencer.name}
-                        className="w-12 h-12 rounded-full object-cover border-2 border-slate-800 group-hover:border-slate-600 transition-colors"
-                    />
-                    <div className="absolute -bottom-1 -right-1 bg-slate-900 rounded-full p-0.5 border border-slate-700">
-                        {PlatformIcon && <PlatformIcon size={14} className="text-slate-400" />}
+                {/* Influencer Info */}
+                <div className="flex-1 flex items-center gap-3 sm:gap-4 min-w-0">
+                    <div className="relative flex-shrink-0">
+                        <InfluencerImage
+                            src={getMediaUrl(influencer.avatar)}
+                            alt={influencer.name}
+                            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-slate-800 group-hover:border-slate-600 transition-colors"
+                        />
+                        <div className="absolute -bottom-1 -right-1 bg-slate-900 rounded-full p-0.5 border border-slate-700">
+                            {PlatformIcon && <PlatformIcon size={12} className="sm:w-[14px] sm:h-[14px] text-slate-400" />}
+                        </div>
+                    </div>
+                    <div className="min-w-0 flex-1">
+                        <Link href={`/influencer/${influencer.slug}`} className="font-bold text-sm sm:text-base text-slate-200 group-hover:text-indigo-400 transition-colors block truncate">
+                            {influencer.name}
+                        </Link>
+                        <a
+                            href={`https://${influencer.platform}.com/${influencer.handle.replace("@", "")}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs text-slate-500 hover:text-slate-400 hover:underline truncate block"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            {influencer.handle}
+                        </a>
                     </div>
                 </div>
-                <div>
-                    <Link href={`/influencer/${influencer.slug}`} className="font-bold text-slate-200 group-hover:text-indigo-400 transition-colors block">
-                        {influencer.name}
-                    </Link>
-                    <a
-                        href={`https://${influencer.platform}.com/${influencer.handle.replace("@", "")}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs text-slate-500 hover:text-slate-400 hover:underline"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        {influencer.handle}
-                    </a>
+
+                {/* Credibility Score - Mobile */}
+                <div className="sm:hidden flex-shrink-0">
+                    <div className="relative w-12 h-12 flex items-center justify-center">
+                        <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 36 36">
+                            <path
+                                className="text-slate-800"
+                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="3"
+                            />
+                            <motion.path
+                                className={cn(
+                                    influencer.credibilityScore >= 80 ? "text-emerald-500" :
+                                        influencer.credibilityScore >= 50 ? "text-amber-500" : "text-rose-500"
+                                )}
+                                strokeDasharray={`${influencer.credibilityScore}, 100`}
+                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="3"
+                                strokeLinecap="round"
+                                initial={{ pathLength: 0 }}
+                                animate={{ pathLength: 1 }}
+                                transition={{ duration: 1, ease: "easeOut", delay: index * 0.1 + 0.3 }}
+                            />
+                        </svg>
+                        <div className="flex flex-col items-center justify-center z-10">
+                            <span className="text-sm font-bold text-white leading-none">{influencer.credibilityScore}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            {/* Credibility Score */}
-            <div className="w-24 flex-shrink-0 flex flex-col items-center">
+
+            {/* Desktop: Credibility Score */}
+            <div className="hidden sm:flex w-24 flex-shrink-0 flex-col items-center">
                 <div className="relative w-16 h-16 flex items-center justify-center">
-                    {/* Background Circle */}
                     <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 36 36">
                         <path
                             className="text-slate-800"
@@ -109,7 +145,6 @@ export const LeaderboardItem = ({ influencer, index, onCommentClick }: Leaderboa
                             stroke="currentColor"
                             strokeWidth="3"
                         />
-                        {/* Progress Circle */}
                         <motion.path
                             className={cn(
                                 influencer.credibilityScore >= 80 ? "text-emerald-500" :
@@ -126,7 +161,6 @@ export const LeaderboardItem = ({ influencer, index, onCommentClick }: Leaderboa
                             transition={{ duration: 1, ease: "easeOut", delay: index * 0.1 + 0.3 }}
                         />
                     </svg>
-
                     <div className="flex flex-col items-center justify-center z-10">
                         <span className="text-lg font-bold text-white leading-none mb-0.5">{influencer.credibilityScore}</span>
                         <span className={cn(
@@ -138,14 +172,34 @@ export const LeaderboardItem = ({ influencer, index, onCommentClick }: Leaderboa
                 </div>
             </div>
 
-            {/* Trend Sparkline (Desktop Only) */}
+            {/* Mobile: Bottom Row - Top Asset, Action */}
+            <div className="sm:hidden flex items-center justify-between w-full pt-2 border-t border-slate-800">
+                <div className="flex items-center gap-2">
+                    <div className="text-xs text-slate-500">{t.leaderboard.top_asset_label}:</div>
+                    <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-800/50 border border-slate-700">
+                        <span className="text-xs">{influencer.topAsset.icon}</span>
+                        <span className="text-xs font-bold text-slate-300">{influencer.topAsset.symbol}</span>
+                    </div>
+                </div>
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onCommentClick();
+                    }}
+                    className="p-2 rounded-xl bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 transition-colors"
+                >
+                    <IconMessageCircle size={18} />
+                </button>
+            </div>
+
+            {/* Desktop: Trend Sparkline */}
             <div className="hidden md:block w-32 h-12 mx-4">
                 <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={sparklineData}>
                         <Line
                             type="monotone"
                             dataKey="val"
-                            stroke={isTrendingUp ? "#10b981" : "#f43f5e"} // Emerald or Rose
+                            stroke={isTrendingUp ? "#10b981" : "#f43f5e"}
                             strokeWidth={2}
                             dot={false}
                         />
@@ -161,7 +215,7 @@ export const LeaderboardItem = ({ influencer, index, onCommentClick }: Leaderboa
                 </div>
             </div>
 
-            {/* Top Asset */}
+            {/* Desktop: Top Asset */}
             <div className="hidden sm:block w-24 text-center">
                 <div className="text-xs text-slate-500 mb-1">{t.leaderboard.top_asset_label}</div>
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-800/50 border border-slate-700">
@@ -170,7 +224,7 @@ export const LeaderboardItem = ({ influencer, index, onCommentClick }: Leaderboa
                 </div>
             </div>
 
-            {/* Last Prediction */}
+            {/* Desktop: Last Prediction */}
             <div className="hidden lg:block w-24 text-center">
                 <div className="text-xs text-slate-500 mb-1">{t.leaderboard.latest}</div>
                 <span className={cn(
@@ -183,8 +237,8 @@ export const LeaderboardItem = ({ influencer, index, onCommentClick }: Leaderboa
                 </span>
             </div>
 
-            {/* Action */}
-            <div className="w-16 flex justify-end">
+            {/* Desktop: Action */}
+            <div className="hidden sm:flex w-16 justify-end">
                 <button
                     onClick={(e) => {
                         e.stopPropagation();

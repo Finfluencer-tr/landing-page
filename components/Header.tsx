@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { LanguageSwitcher } from "./LanguageSwitcher";
-import { IconLogout, IconChevronDown, IconUserHeart } from "@tabler/icons-react";
+import { IconLogout, IconChevronDown, IconUserHeart, IconMenu2, IconX } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { showToast } from "./Toast";
 
@@ -18,6 +18,7 @@ export const Header = ({ onOpenAuthModal }: HeaderProps) => {
     const { t } = useLanguage();
     const router = useRouter();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     // Close dropdown when clicking outside
@@ -47,19 +48,20 @@ export const Header = ({ onOpenAuthModal }: HeaderProps) => {
         <header className="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
             <div className="container mx-auto px-4 h-16 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                    <Link href="/" className="flex items-center gap-2 group">
-                        <div className="relative w-8 h-8 rounded-lg overflow-hidden">
+                    <Link href="/" className="flex items-center gap-2 group" onClick={() => setIsMobileMenuOpen(false)}>
+                        <div className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-lg overflow-hidden">
                             <img src="/logo/logo.png" alt="Finfluencer Logo" className="w-full h-full object-cover" />
                         </div>
-                        <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-400 group-hover:opacity-80 transition-opacity">
+                        <span className="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-400 group-hover:opacity-80 transition-opacity">
                             Finfluencer
                         </span>
                     </Link>
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">BETA</span>
+                    <span className="hidden sm:inline text-xs px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">BETA</span>
                 </div>
 
-                <div className="flex items-center gap-3">
-                    <LanguageSwitcher className="relative top-0 right-0 hidden sm:block" />
+                {/* Desktop Menu */}
+                <div className="hidden sm:flex items-center gap-3">
+                    <LanguageSwitcher className="relative top-0 right-0" />
 
                     {user ? (
                         <div className="relative" ref={dropdownRef}>
@@ -67,7 +69,7 @@ export const Header = ({ onOpenAuthModal }: HeaderProps) => {
                                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                                 className="flex items-center gap-2 group"
                             >
-                                <div className="text-right hidden sm:block">
+                                <div className="text-right">
                                     <div className="text-sm font-medium">{user.name}</div>
                                     <div className="text-xs text-slate-500">{t.leaderboard.pro} {t.auth.member}</div>
                                 </div>
@@ -119,7 +121,73 @@ export const Header = ({ onOpenAuthModal }: HeaderProps) => {
                         </button>
                     )}
                 </div>
+
+                {/* Mobile Menu Button */}
+                <div className="sm:hidden flex items-center gap-2">
+                    <LanguageSwitcher className="relative top-0 right-0" />
+                    <button
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        className="p-2 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
+                    >
+                        {isMobileMenuOpen ? <IconX size={24} /> : <IconMenu2 size={24} />}
+                    </button>
+                </div>
             </div>
+
+            {/* Mobile Menu */}
+            {isMobileMenuOpen && (
+                <div className="sm:hidden border-t border-slate-800 bg-slate-950/95 backdrop-blur-md">
+                    <div className="container mx-auto px-4 py-4 space-y-3">
+                        {user ? (
+                            <>
+                                <div className="px-4 py-3 border-b border-slate-800">
+                                    <div className="flex items-center gap-3 mb-2">
+                                        <img 
+                                            src={user.avatar} 
+                                            alt={user.name} 
+                                            className="w-10 h-10 rounded-full border border-slate-700" 
+                                        />
+                                        <div>
+                                            <div className="text-sm font-medium text-slate-100">{user.name}</div>
+                                            <div className="text-xs text-slate-400 truncate">{user.email}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button
+                                    onClick={() => {
+                                        setIsMobileMenuOpen(false);
+                                        router.push("/followed");
+                                    }}
+                                    className="w-full px-4 py-3 text-left text-sm text-slate-300 hover:bg-slate-800 rounded-lg transition-colors flex items-center gap-2"
+                                >
+                                    <IconUserHeart size={18} />
+                                    {t.auth.followed_influencers || "Takip Edilenler"}
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        handleLogout();
+                                        setIsMobileMenuOpen(false);
+                                    }}
+                                    className="w-full px-4 py-3 text-left text-sm text-slate-300 hover:bg-slate-800 rounded-lg transition-colors flex items-center gap-2"
+                                >
+                                    <IconLogout size={18} />
+                                    {t.auth.logout}
+                                </button>
+                            </>
+                        ) : (
+                            <button
+                                onClick={() => {
+                                    setIsMobileMenuOpen(false);
+                                    onOpenAuthModal();
+                                }}
+                                className="w-full px-4 py-3 text-sm font-medium bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors border border-slate-700"
+                            >
+                                {t.auth.join_beta}
+                            </button>
+                        )}
+                    </div>
+                </div>
+            )}
         </header>
     );
 };

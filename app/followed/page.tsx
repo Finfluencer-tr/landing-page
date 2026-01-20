@@ -108,19 +108,19 @@ export default function FollowedPage() {
             <Header onOpenAuthModal={() => setIsAuthModalOpen(true)} />
             <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
 
-            <div className="container mx-auto px-4 py-8">
-                <div className="mb-6">
+            <div className="container mx-auto px-4 py-6 sm:py-8">
+                <div className="mb-4 sm:mb-6">
                     <Link 
                         href="/leaderboard"
-                        className="inline-flex items-center gap-2 text-slate-400 hover:text-slate-200 transition-colors mb-4"
+                        className="inline-flex items-center gap-2 text-slate-400 hover:text-slate-200 transition-colors mb-3 sm:mb-4 text-sm sm:text-base"
                     >
-                        <IconArrowLeft size={20} />
+                        <IconArrowLeft size={18} className="sm:w-5 sm:h-5" />
                         <span>{t.influencer.back_to_leaderboard}</span>
                     </Link>
-                    <h1 className="text-3xl font-bold text-white mb-2">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">
                         {t.auth.followed_influencers || "Takip Edilenler"}
                     </h1>
-                    <p className="text-slate-400">
+                    <p className="text-sm sm:text-base text-slate-400">
                         {followedInfluencers.length} {t.influencer.signals || "influencer"}
                     </p>
                 </div>

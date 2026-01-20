@@ -56,33 +56,33 @@ export const PostCard = ({ tweet, authorAvatar }: PostCardProps) => {
 
     return (
         <div className={cn(
-            "p-6 rounded-2xl border transition-all duration-300 group",
+            "p-4 sm:p-6 rounded-xl sm:rounded-2xl border transition-all duration-300 group",
             tweet.is_financial
                 ? "bg-slate-900/40 border-indigo-500/20 hover:border-indigo-500/40 shadow-lg shadow-indigo-500/5"
                 : "bg-slate-950/20 border-white/5 opacity-80 hover:opacity-100"
         )}>
             {/* Author Info */}
-            <div className="flex items-center gap-3 mb-4">
+            <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
                 <InfluencerImage
                     src={authorAvatar || getMediaUrl(tweet.author.avatar)}
                     alt={tweet.author.username}
-                    className="w-10 h-10 rounded-full border border-slate-800"
+                    className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-slate-800 flex-shrink-0"
                 />
                 <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                        <span className="font-bold text-slate-100 truncate">@{tweet.author.username}</span>
+                    <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                        <span className="font-bold text-xs sm:text-sm text-slate-100 truncate">@{tweet.author.username}</span>
                         {tweet.is_financial && (
-                            <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 uppercase tracking-wider">
+                            <span className="px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 uppercase tracking-wider flex-shrink-0">
                                 {t.influencer.financial_badge}
                             </span>
                         )}
                     </div>
-                    <span className="text-xs text-slate-500">{formatDate(tweet.created_at, language)}</span>
+                    <span className="text-[10px] sm:text-xs text-slate-500">{formatDate(tweet.created_at, language)}</span>
                 </div>
             </div>
 
             {/* Content */}
-            <p className="text-slate-200 text-sm leading-relaxed mb-4 whitespace-pre-wrap">
+            <p className="text-slate-200 text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4 whitespace-pre-wrap break-words">
                 {tweet.text}
             </p>
 
