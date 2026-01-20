@@ -183,6 +183,8 @@ export const translations = {
       email_password_required: "Email and password are required",
       member: "Member",
       followed_influencers: "Followed Influencers",
+      no_followed_influencers: "No followed influencers",
+      start_following: "Start following influencers to see them here.",
       loading: "Loading..."
     },
     error404: {
