@@ -32,15 +32,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    // Load user and token from localStorage on mount and fetch fresh user data
+    // Load user and token from sessionStorage on mount and fetch fresh user data
     useEffect(() => {
-        const storedToken = localStorage.getItem(TOKEN_KEY);
-        const storedUser = localStorage.getItem(USER_KEY);
+        const storedToken = sessionStorage.getItem(TOKEN_KEY);
+        const storedUser = sessionStorage.getItem(USER_KEY);
         
         if (storedToken) {
             setToken(storedToken);
             
-            // Try to load from localStorage first for immediate UI update
+            // Try to load from sessionStorage first for immediate UI update
             if (storedUser) {
                 try {
                     const parsedUser = JSON.parse(storedUser);
@@ -61,14 +61,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                         role: userData.role,
                     };
                     setUser(user);
-                    localStorage.setItem(USER_KEY, JSON.stringify(user));
+                    sessionStorage.setItem(USER_KEY, JSON.stringify(user));
                 })
                 .catch((error) => {
                     console.error("Failed to fetch user info:", error);
                     // If token is invalid, clear everything
                     if (error.message.includes("Invalid token") || error.message.includes("Unauthorized")) {
-                        localStorage.removeItem(TOKEN_KEY);
-                        localStorage.removeItem(USER_KEY);
+                        sessionStorage.removeItem(TOKEN_KEY);
+                        sessionStorage.removeItem(USER_KEY);
                         setToken(null);
                         setUser(null);
                     }
@@ -94,9 +94,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             setUser(userData);
             setToken(response.token);
             
-            // Store in localStorage
-            localStorage.setItem(TOKEN_KEY, response.token);
-            localStorage.setItem(USER_KEY, JSON.stringify(userData));
+            // Store in sessionStorage
+            sessionStorage.setItem(TOKEN_KEY, response.token);
+            sessionStorage.setItem(USER_KEY, JSON.stringify(userData));
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : "Login failed";
             setError(errorMessage);
@@ -124,9 +124,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             setUser(userData);
             setToken(response.token);
             
-            // Store in localStorage
-            localStorage.setItem(TOKEN_KEY, response.token);
-            localStorage.setItem(USER_KEY, JSON.stringify(userData));
+            // Store in sessionStorage
+            sessionStorage.setItem(TOKEN_KEY, response.token);
+            sessionStorage.setItem(USER_KEY, JSON.stringify(userData));
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : "Registration failed";
             setError(errorMessage);
@@ -139,8 +139,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const logout = () => {
         setUser(null);
         setToken(null);
-        localStorage.removeItem(TOKEN_KEY);
-        localStorage.removeItem(USER_KEY);
+        sessionStorage.removeItem(TOKEN_KEY);
+        sessionStorage.removeItem(USER_KEY);
     };
 
     return (

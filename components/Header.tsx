@@ -1,10 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { IconLogout, IconChevronDown } from "@tabler/icons-react";
 
 interface HeaderProps {
     onOpenAuthModal: () => void;
@@ -13,6 +14,30 @@ interface HeaderProps {
 export const Header = ({ onOpenAuthModal }: HeaderProps) => {
     const { user, logout } = useAuth();
     const { t } = useLanguage();
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsDropdownOpen(false);
+            }
+        };
+
+        if (isDropdownOpen) {
+            document.addEventListener("mousedown", handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [isDropdownOpen]);
+
+    const handleLogout = () => {
+        logout();
+        setIsDropdownOpen(false);
+    };
 
     return (
         <header className="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
@@ -33,15 +58,44 @@ export const Header = ({ onOpenAuthModal }: HeaderProps) => {
                     <LanguageSwitcher className="relative top-0 right-0 hidden sm:block" />
 
                     {user ? (
-                        <>
-                            <div className="text-right hidden sm:block">
-                                <div className="text-sm font-medium">{user.name}</div>
-                                <div className="text-xs text-slate-500">{t.leaderboard.pro} Member</div>
-                            </div>
-                            <button onClick={logout} className="relative group">
-                                <img src={user.avatar} alt={user.name} className="w-9 h-9 rounded-full border border-slate-700" />
+                        <div className="relative" ref={dropdownRef}>
+                            <button
+                                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                className="flex items-center gap-2 group"
+                            >
+                                <div className="text-right hidden sm:block">
+                                    <div className="text-sm font-medium">{user.name}</div>
+                                    <div className="text-xs text-slate-500">{t.leaderboard.pro} Member</div>
+                                </div>
+                                <div className="relative">
+                                    <img 
+                                        src={user.avatar} 
+                                        alt={user.name} 
+                                        className="w-9 h-9 rounded-full border border-slate-700 group-hover:border-indigo-500 transition-colors" 
+                                    />
+                                    <IconChevronDown 
+                                        size={12} 
+                                        className={`absolute -bottom-1 -right-1 text-slate-400 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`}
+                                    />
+                                </div>
                             </button>
-                        </>
+
+                            {isDropdownOpen && (
+                                <div className="absolute right-0 mt-2 w-48 bg-slate-900 border border-slate-800 rounded-xl shadow-xl overflow-hidden">
+                                    <div className="px-4 py-3 border-b border-slate-800">
+                                        <div className="text-sm font-medium text-slate-100">{user.name}</div>
+                                        <div className="text-xs text-slate-400 truncate">{user.email}</div>
+                                    </div>
+                                    <button
+                                        onClick={handleLogout}
+                                        className="w-full px-4 py-2.5 text-left text-sm text-slate-300 hover:bg-slate-800 transition-colors flex items-center gap-2"
+                                    >
+                                        <IconLogout size={16} />
+                                        {t.auth.logout}
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                     ) : (
                         <button
                             onClick={onOpenAuthModal}
