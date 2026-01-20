@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, Suspense, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
@@ -12,12 +12,19 @@ function GoogleOAuthCallbackContent() {
     const { t } = useLanguage();
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const hasProcessed = useRef(false); // Prevent multiple calls
 
     useEffect(() => {
+        // Prevent multiple executions
+        if (hasProcessed.current) {
+            return;
+        }
+
         const code = searchParams.get("code");
         const errorParam = searchParams.get("error");
 
         if (errorParam) {
+            hasProcessed.current = true;
             setError("Google authentication was cancelled or failed.");
             setIsLoading(false);
             setTimeout(() => {
@@ -27,6 +34,7 @@ function GoogleOAuthCallbackContent() {
         }
 
         if (!code) {
+            hasProcessed.current = true;
             setError("No authorization code received from Google.");
             setIsLoading(false);
             setTimeout(() => {
@@ -34,6 +42,9 @@ function GoogleOAuthCallbackContent() {
             }, 3000);
             return;
         }
+
+        // Mark as processed before making the API call
+        hasProcessed.current = true;
 
         // Handle the OAuth callback
         handleGoogleCallback(code)
@@ -48,7 +59,8 @@ function GoogleOAuthCallbackContent() {
                     router.push("/leaderboard");
                 }, 3000);
             });
-    }, [searchParams, handleGoogleCallback, router]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []); // Empty dependency array - only run once on mount
 
     return (
         <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
