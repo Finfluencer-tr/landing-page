@@ -1,5 +1,12 @@
 const BASE_URL = "https://api.finfluencer.tr";
 
+// Helper function to get current language from document or localStorage
+const getCurrentLanguage = (): string => {
+    if (typeof window === 'undefined') return 'en';
+    const lang = document.documentElement.lang || localStorage.getItem('language') || 'en';
+    return ['en', 'tr', 'zh', 'ar'].includes(lang) ? lang : 'en';
+};
+
 export interface AIAnalysis {
     asset: string;
     sentiment: "Bullish" | "Bearish" | "Neutral";
@@ -384,10 +391,13 @@ export const login = async (credentials: LoginRequest): Promise<AuthResponse> =>
 
 export const register = async (credentials: RegisterRequest): Promise<AuthResponse> => {
   try {
+    const language = getCurrentLanguage();
     const res = await fetch(`${BASE_URL}/auth/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-Language": language,
+        "Accept-Language": language,
       },
       body: JSON.stringify(credentials),
     });
@@ -430,10 +440,13 @@ export const getMe = async (token: string): Promise<AuthResponse["user"]> => {
 
 export const googleOAuthCallback = async (code: string): Promise<AuthResponse> => {
   try {
+    const language = getCurrentLanguage();
     const res = await fetch(`${BASE_URL}/auth/google/callback?code=${encodeURIComponent(code)}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "X-Language": language,
+        "Accept-Language": language,
       },
     });
 
