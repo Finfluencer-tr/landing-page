@@ -1,13 +1,38 @@
 "use client";
-import React from "react";
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
+import React, { useEffect, useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { translations, Language } from "@/lib/dictionary";
 import { useLanguage } from "@/context/LanguageContext";
 import Link from "next/link";
 import { IconChevronDown } from "@tabler/icons-react";
 
 export const Hero = () => {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
+    const headlineVariants = useMemo(() => {
+        const entries = Object.entries(translations).map(([lang, value]) => ({
+            lang: lang as Language,
+            start: value.hero.title_start,
+            end: value.hero.title_end,
+        }));
+        const english = entries.find((item) => item.lang === "en");
+        const rest = entries.filter((item) => item.lang !== "en");
+        return english ? [english, ...rest] : entries;
+    }, []);
+    const [headlineIndex, setHeadlineIndex] = useState(0);
+
+    // Cycle the headline through every language to add motion to the hero.
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setHeadlineIndex((prev) => (prev + 1) % headlineVariants.length);
+        }, 3200);
+        return () => clearInterval(intervalId);
+    }, [headlineVariants.length]);
+
+    // Sync animation starting point when the user changes the active language.
+    useEffect(() => {
+        // Always restart from English so "Trust Data" is visible quickly.
+        setHeadlineIndex(0);
+    }, [language]);
 
     return (
         <div className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden bg-slate-950">
@@ -25,10 +50,25 @@ export const Hero = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, ease: "easeOut" }}
-                        className="text-4xl md:text-6xl lg:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400"
+                        className="text-4xl md:text-6xl lg:text-7xl font-bold text-white"
                     >
-                        {t.hero.title_start} <br />
-                        <span className="text-emerald-500">{t.hero.title_end}</span>
+                        <div className="relative min-h-[140px] md:min-h-[170px] lg:min-h-[190px] leading-tight overflow-visible">
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={headlineVariants[headlineIndex]?.lang}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -20 }}
+                                    transition={{ duration: 0.6, ease: "easeOut" }}
+                                    className="absolute inset-0 flex flex-col justify-center"
+                                >
+                                    <span className="bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400">
+                                        {headlineVariants[headlineIndex]?.start}
+                                    </span>
+                                    <span className="text-emerald-500">{headlineVariants[headlineIndex]?.end}</span>
+                                </motion.div>
+                            </AnimatePresence>
+                        </div>
                     </motion.h1>
 
                     <motion.p
